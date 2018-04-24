@@ -50,7 +50,7 @@ public class ApiController {
         return idea;
     }
 
-
+//TODO: Does not work for now - to repare
     @GetMapping(value = "getUser/{id}")
     public Object getUserById(@PathVariable(value = "id") Long userId){
         User user = userRepository.getOne(userId);
