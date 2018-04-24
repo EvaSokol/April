@@ -15,10 +15,11 @@ public class TestprojectApplicationTests {
 	@Autowired
 	UserRepository userRepository;
 
-//	@Test
-//	public void contextLoads() {
-//		User user = new User("Pit");
-//		userRepository.save(user);
-//	}
+	@Test
+	public void contextLoads() {
+		User user = new User();
+		user.setName("PeteTest");
+		userRepository.save(user);
+	}
 
 }

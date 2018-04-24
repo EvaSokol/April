@@ -3,7 +3,15 @@ package com.april.testproject.dto;
 public class UserDto {
     private String name;
     private String role;
+    private String country;
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public String getName() {
         return name;
