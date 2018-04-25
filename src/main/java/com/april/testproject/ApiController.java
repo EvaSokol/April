@@ -16,7 +16,7 @@ import java.util.HashMap;
 @Component
 @RestController
 @RequestMapping("/api/1")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ApiController {
     @Autowired
     private UserRepository userRepository;
@@ -53,7 +53,7 @@ public class ApiController {
 //TODO: Does not work for now - to repare
     @GetMapping(value = "getUser/{id}")
     public Object getUserById(@PathVariable(value = "id") Long userId){
-        User user = userRepository.getOne(userId);
+        User user = userRepository.findOne(userId);
         return user;
     }
 
