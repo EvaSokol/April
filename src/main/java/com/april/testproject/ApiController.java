@@ -6,17 +6,16 @@ import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
 import com.april.testproject.repository.IdeasRepository;
 import com.april.testproject.repository.UserRepository;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Set;
 
 @Component
 @RestController
 @RequestMapping("/api/1")
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ApiController {
     @Autowired
     private UserRepository userRepository;
@@ -50,11 +49,15 @@ public class ApiController {
         return idea;
     }
 
-//TODO: Does not work for now - to repare
     @GetMapping(value = "getUser/{id}")
     public Object getUserById(@PathVariable(value = "id") Long userId){
         User user = userRepository.findOne(userId);
         return user;
+    }
+
+    @GetMapping(value = "getIdeasOfUser/{id)")
+    public Set<Idea> getIdeasOfUserById(@PathVariable(value = "id") Long userId){
+        return userRepository.findOne(userId).getIdeaSet();
     }
 
     @GetMapping(value = "getUsers", consumes = "application/json")

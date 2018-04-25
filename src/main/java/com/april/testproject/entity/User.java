@@ -3,13 +3,11 @@ package com.april.testproject.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-//@Data
+@Data
 //@NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -18,11 +16,25 @@ public class User {
     @GeneratedValue
     private Long id;
 
+//    @OneToOne(cascade = CascadeType.ALL)
     private String name;
 
+//    @OneToOne(cascade = CascadeType.ALL)
     private String country;
 
+//    @OneToOne(cascade = CascadeType.ALL)
     private String role;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    public Set<Idea> ideaSet;
+
+    public Set<Idea> getIdeaSet() {
+        return ideaSet;
+    }
+
+    public void setIdeaSet(Set<Idea> ideaSet) {
+        this.ideaSet = ideaSet;
+    }
 
 
 //    public User(String name) {
