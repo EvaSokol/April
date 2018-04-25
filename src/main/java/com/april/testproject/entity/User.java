@@ -2,6 +2,7 @@ package com.april.testproject.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -16,7 +17,7 @@ public class User {
     @GeneratedValue
     private Long id;
 
-//    @OneToOne(cascade = CascadeType.ALL)
+    @NotEmpty
     private String name;
 
 //    @OneToOne(cascade = CascadeType.ALL)

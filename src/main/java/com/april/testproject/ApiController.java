@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class ApiController {
     }
 
     @PostMapping(value = "createUser", consumes = "application/json")
-    public Object createUser(@RequestBody UserDto userDto){
+    public Object createUser(@Valid @RequestBody UserDto userDto){
 
         User user = new User();
         user.setName(userDto.getName());
