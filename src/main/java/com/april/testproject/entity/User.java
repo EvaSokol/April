@@ -1,14 +1,18 @@
 package com.april.testproject.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
+//@Getter
+//@Setter
 //@NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -20,10 +24,8 @@ public class User {
     @NotEmpty
     private String name;
 
-//    @OneToOne(cascade = CascadeType.ALL)
     private String country;
 
-//    @OneToOne(cascade = CascadeType.ALL)
     private String role;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -36,12 +38,6 @@ public class User {
     public void setIdeaSet(Set<Idea> ideaSet) {
         this.ideaSet = ideaSet;
     }
-
-
-//    public User(String name) {
-//        this.name = name;
-//    }
-
 
     public Long getId() {
         return id;
