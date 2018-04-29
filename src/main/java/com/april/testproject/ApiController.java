@@ -11,8 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 
 @Component
 @RestController
@@ -24,10 +23,10 @@ public class ApiController {
     @Autowired
     private IdeasRepository ideasRepository;
 
-    @GetMapping("test")
-    public Object test(){
-        return new HashMap<>();
-    }
+//    @GetMapping("test")
+//    public Object test(){
+//        return new HashMap<>();
+//    }
 
     @PostMapping(value = "createUser", consumes = "application/json")
     public Object createUser(@Valid @RequestBody UserDto userDto){
@@ -50,20 +49,31 @@ public class ApiController {
         return idea;
     }
 
-    @GetMapping(value = "getUser/{id}")
+    @GetMapping(value = "getUser/{id}", consumes = "application/json")
     public Object getUserById(@PathVariable(value = "id") Long userId){
         User user = userRepository.findOne(userId);
         return user;
     }
 
-    @GetMapping(value = "getIdeasOfUser/{id)")
-    public Set<Idea> getIdeasOfUserById(@PathVariable(value = "id") Long userId){
-        return userRepository.findOne(userId).getIdeaSet();
-    }
 
     @GetMapping(value = "getUsers", consumes = "application/json")
     public Object getUsers(){
         return userRepository.findAll();
     }
 
+    @GetMapping(value = "getIdea/{id}", consumes = "application/json")
+    public Object getIdeaById(@PathVariable(value = "id") Long ideaId){
+        Idea idea = ideasRepository.findOne(ideaId);
+        return idea;
+    }
+
+    @GetMapping(value = "getIdeas", consumes = "application/json")
+    public Object getIdeas(){
+        return ideasRepository.findAll();
+    }
+
+    @GetMapping(value = "getIdeasByUserId/{userId}", consumes = "application/json")
+    public List<Idea> getIdeasByUserId(@PathVariable("userId") String userId){
+        return ideasRepository.findByUserId(userId);
+    }
 }

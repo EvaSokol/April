@@ -2,13 +2,11 @@ package com.april.testproject.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
+//@NamedQuery(name = "IdeasRepository.findByUserId", query = "SELECT i FROM ideas i WHERE i.user_id = ?1")
 @Table(name = "ideas")
 public class Idea {
 
@@ -20,6 +18,7 @@ public class Idea {
 
     private String status;
 
+    @Column(name = "user_id")
     private String userId;
 
     public Long getId() {
