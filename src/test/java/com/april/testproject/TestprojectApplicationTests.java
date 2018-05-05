@@ -4,15 +4,13 @@ import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
 import com.april.testproject.repository.IdeasRepository;
 import com.april.testproject.repository.UserRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.util.List;
-
 import static junit.framework.TestCase.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -101,4 +99,17 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		}
 	}
 
+	//TODO: make autostart application for test
+	//TODO: fix this test
+//	@Test
+	public void checkRequests() throws Exception {
+
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("name", "Virender"); // Cast
+		requestParams.put("country", "Some Country");
+		requestParams.put("role", "user");
+
+		String uri = "http://localhost:8080/api/1/createUser";
+		RestTests.post(uri, requestParams);
+			}
 }

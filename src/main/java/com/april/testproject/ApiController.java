@@ -76,8 +76,14 @@ public class ApiController {
         return ideasRepository.findByUserId(userId);
     }
 
-//    @PutMapping(value = "updateUser", consumes = "application/json")
-//    public Object updateUser(@Valid @RequestBody UserDto userDto){
-//        User user = userRepository.findOne(userDto.getUserId());
-//    }
+    @PutMapping(value = "updateUser", consumes = "application/json")
+    public Object updateUser(@Valid @RequestBody UserDto userDto){
+        Long id = Long.valueOf(userDto.getId());
+        User user = userRepository.findOne(id);
+        if (userDto.getCountry() != null) user.setCountry(userDto.getCountry());
+        if (userDto.getName() != null) user.setName(userDto.getName());
+        if (userDto.getRole() != null) user.setRole(userDto.getRole());
+        userRepository.save(user);
+        return user;
+    }
 }
