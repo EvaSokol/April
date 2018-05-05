@@ -52,4 +52,12 @@ public class Idea {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public void print(){
+        System.out.println("id:" + id);
+        System.out.println("short_description:" + short_description);
+        System.out.println("status:" + status);
+        System.out.println("userId:" + userId);
+        System.out.println("---------------------------");
+    }
 }

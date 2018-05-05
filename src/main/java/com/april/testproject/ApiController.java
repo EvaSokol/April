@@ -55,7 +55,6 @@ public class ApiController {
         return user;
     }
 
-
     @GetMapping(value = "getUsers", consumes = "application/json")
     public Object getUsers(){
         return userRepository.findAll();
@@ -76,4 +75,9 @@ public class ApiController {
     public List<Idea> getIdeasByUserId(@PathVariable("userId") String userId){
         return ideasRepository.findByUserId(userId);
     }
+
+//    @PutMapping(value = "updateUser", consumes = "application/json")
+//    public Object updateUser(@Valid @RequestBody UserDto userDto){
+//        User user = userRepository.findOne(userDto.getUserId());
+//    }
 }

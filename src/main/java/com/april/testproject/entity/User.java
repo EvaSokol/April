@@ -71,4 +71,12 @@ public class User implements Serializable {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public void print(){
+        System.out.println("id:" + id);
+        System.out.println("name:" + name);
+        System.out.println("country:" + country);
+        System.out.println("role:" + role);
+        System.out.println("---------------------------");
+    }
 }

@@ -4,6 +4,11 @@ public class UserDto {
     private String name;
     private String role;
     private String country;
+    private Long userId;
+
+    public Long getUserId() {
+        return userId;
+    }
 
     public String getCountry() {
         return country;
