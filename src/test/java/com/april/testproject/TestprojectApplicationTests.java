@@ -41,7 +41,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	public void createUser() {
 		User user = new User();
 		user.setName("TestUser" + random);
-		user.setCountry("SomeCountry" + random);
+		user.setCountry("Some Country" + random);
 		user.setRole("user");
 		userId = userRepository.save(user).getId();
 		user.print();
@@ -100,16 +100,19 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	//TODO: make autostart application for test
-	//TODO: fix this test
-//	@Test
+	@Test
 	public void checkRequests() throws Exception {
-
+		String country = "Some Country";
+		String name = "Virender" + random;
 		JSONObject requestParams = new JSONObject();
-		requestParams.put("name", "Virender"); // Cast
-		requestParams.put("country", "Some Country");
+		requestParams.put("name", name);
+		requestParams.put("country", country);
 		requestParams.put("role", "user");
 
 		String uri = "http://localhost:8080/api/1/createUser";
-		RestTests.post(uri, requestParams);
-			}
+		int actual = RestTests.post(uri, requestParams).get("id");
+		User user = userRepository.findOne(Long.valueOf(actual));
+		assertTrue(user.getName().contains(String.valueOf(name)));
+		assertTrue(user.getCountry().contains(String.valueOf(country)));
+		}
 }
