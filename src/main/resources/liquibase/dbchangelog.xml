@@ -30,10 +30,10 @@
         <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
         <sql>drop table users2</sql>
     </changeSet>
-
     <changeSet author="AlexRazumenko" id="20180430-4">
         <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
         <sql>insert into users values ('3', 'Kim Jon In', 'DPRK', 'admin')</sql>
     </changeSet>
+
 
 </databaseChangeLog>
