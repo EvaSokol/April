@@ -37,11 +37,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.liquibase</groupId>-->
-			<!--<artifactId>liquibase-core</artifactId>-->
-		<!--</dependency>-->
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -67,12 +62,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!--dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-maven-plugin</artifactId>
-			<version>3.6.1</version>
-		</dependenc-->
-        <dependency>
+		<dependency>
         <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>3.6.1</version>
@@ -97,9 +87,6 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.6.1</version>
                 <configuration>
-                    <!--changeLogFile>${basedir}/src/main/resources/liquubase/dbchangelog.xml</changeLogFile>
-                    <driver>org.postgresql.Driver</driver>
-                    <!--changeLogFile>/liquibase/dbchangelog.xml</changeLogFile-->
                     <propertyFile>/liquibase.properties</propertyFile>
                     </configuration>
             </plugin>
