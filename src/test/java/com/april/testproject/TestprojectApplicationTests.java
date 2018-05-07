@@ -4,6 +4,8 @@ import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
 import com.april.testproject.repository.IdeasRepository;
 import com.april.testproject.repository.UserRepository;
+import com.jayway.restassured.path.json.JsonPath;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,8 +39,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		numbetOfIdeas = ideasRepository.findAll().size();
 	}
 
-	@Test
-	public void createUser() {
+	@Test(enabled = false)
+	public void createUserFast() {
 		User user = new User();
 		user.setName("TestUser" + random);
 		user.setCountry("Some Country" + random);
@@ -64,8 +66,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertTrue(user.getCountry().contains(String.valueOf(random)));
 	}
 
-	@Test(dependsOnMethods = "createUser")
-	public void createIdea(){
+	@Test(dependsOnMethods = "createUser",enabled = false)
+	public void createIdeaFast(){
 		Idea idea = new Idea();
 		idea.setShort_description("ShortDescription" + random);
 		idea.setStatus("new");
@@ -101,8 +103,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 	//TODO: make autostart application for test
 	@Test
-	public void checkRequests() throws Exception {
-		String country = "Some Country";
+	public void createUser() throws Exception {
+		String country = "Some Country" + random;
 		String name = "Virender" + random;
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("name", name);
@@ -110,9 +112,27 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("role", "user");
 
 		String uri = "http://localhost:8080/api/1/createUser";
-		int actual = RestTests.post(uri, requestParams).get("id");
-		User user = userRepository.findOne(Long.valueOf(actual));
-		assertTrue(user.getName().contains(String.valueOf(name)));
-		assertTrue(user.getCountry().contains(String.valueOf(country)));
+		JsonPath response = RestTests.post(uri, requestParams);
+		userId = Long.valueOf((response).get("id").toString());
+		User user = userRepository.findOne(Long.valueOf(userId));
+		assertTrue(user.getName().equalsIgnoreCase(String.valueOf(name)));
+		assertTrue(user.getCountry().equalsIgnoreCase(String.valueOf(country)));
+		}
+
+	@Test(dependsOnMethods = "createUser")
+	public void createIdea() throws JSONException {
+		String shortDescription = "ShortDescription" + random;
+		String status = "new";
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("short_description", shortDescription);
+		requestParams.put("status", status);
+		requestParams.put("userId", userId.toString());
+
+		String uri = "http://localhost:8080/api/1/createIdea";
+		ideaId = Long.valueOf(RestTests.post(uri, requestParams).get("id").toString());
+		Idea idea = ideasRepository.findOne(Long.valueOf(ideaId));
+		assertTrue(idea.getShort_description().equalsIgnoreCase(String.valueOf(shortDescription)));
+		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
+		assertTrue(idea.getUserId().equals(String.valueOf(userId)));
 		}
 }
