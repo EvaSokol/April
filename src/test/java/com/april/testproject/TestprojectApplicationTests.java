@@ -1,25 +1,118 @@
 package com.april.testproject;
 
+import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
+import com.april.testproject.repository.IdeasRepository;
 import com.april.testproject.repository.UserRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import java.util.List;
+import static junit.framework.TestCase.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
-public class TestprojectApplicationTests {
+public class TestprojectApplicationTests extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	UserRepository userRepository;
 
-	@Test
-	public void contextLoads() {
-		User user = new User();
-		user.setName("PeteTest");
-		userRepository.save(user);
+	@Autowired
+	IdeasRepository ideasRepository;
+
+	private int random;
+	private Long userId;
+	private Long ideaId;
+	private int numbetOfUsers;
+	private int numbetOfIdeas;
+
+
+	@BeforeClass
+	public void init(){
+		random = (int) (Math.random() * 1000);
+		numbetOfUsers = userRepository.findAll().size();
+		numbetOfIdeas = ideasRepository.findAll().size();
 	}
 
+	@Test
+	public void createUser() {
+		User user = new User();
+		user.setName("TestUser" + random);
+		user.setCountry("Some Country" + random);
+		user.setRole("user");
+		userId = userRepository.save(user).getId();
+		user.print();
+		assertEquals(userRepository.findAll().size(), numbetOfUsers + 1);
+	}
+
+	@Test(dependsOnMethods = "createUser")
+	public void getAllUsers(){
+		List<User> users =  userRepository.findAll();
+		for (User us : users){
+			us.print();
+		}
+		assertTrue(users.size()>0);
+	}
+
+	@Test(dependsOnMethods = "createUser")
+	public void getUserById(){
+		User user = userRepository.findOne(userId);
+		user.print();
+		assertTrue(user.getCountry().contains(String.valueOf(random)));
+	}
+
+	@Test(dependsOnMethods = "createUser")
+	public void createIdea(){
+		Idea idea = new Idea();
+		idea.setShort_description("ShortDescription" + random);
+		idea.setStatus("new");
+		idea.setUserId(userId.toString());
+		ideaId = ideasRepository.save(idea).getId();
+		idea.print();
+		assertEquals(ideasRepository.findAll().size(), numbetOfIdeas + 1);
+	}
+
+	@Test(dependsOnMethods = "createIdea")
+	public void getIdeaById(){
+		Idea idea = ideasRepository.findOne(ideaId);
+		idea.print();
+		assertTrue(idea.getShort_description().contains(String.valueOf(random)));
+	}
+
+	@Test(dependsOnMethods = "createIdea")
+	public void getAllIdeas(){
+		List<Idea> ideas = ideasRepository.findAll();
+		for (Idea idea : ideas){
+			idea.print();
+		}
+		assertTrue(ideas.size() > 0);
+	}
+
+	@Test(dependsOnMethods = "createIdea")
+	public void getIdeasByUserId(){
+		List<Idea> ideas = ideasRepository.findByUserId(userId.toString());
+		for (Idea idea : ideas){
+			idea.print();
+		}
+	}
+
+	//TODO: make autostart application for test
+	@Test
+	public void checkRequests() throws Exception {
+		String country = "Some Country";
+		String name = "Virender" + random;
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("name", name);
+		requestParams.put("country", country);
+		requestParams.put("role", "user");
+
+		String uri = "http://localhost:8080/api/1/createUser";
+		int actual = RestTests.post(uri, requestParams).get("id");
+		User user = userRepository.findOne(Long.valueOf(actual));
+		assertTrue(user.getName().contains(String.valueOf(name)));
+		assertTrue(user.getCountry().contains(String.valueOf(country)));
+		}
 }
