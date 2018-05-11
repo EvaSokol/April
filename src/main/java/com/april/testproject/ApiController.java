@@ -35,6 +35,7 @@ public class ApiController {
         user.setName(userDto.getName());
         user.setRole(userDto.getRole());
         user.setCountry(userDto.getCountry());
+        user.setPassword(userDto.getPassword());
         userRepository.save(user);
         return user;
     }
@@ -86,4 +87,5 @@ public class ApiController {
         userRepository.save(user);
         return user;
     }
+
 }

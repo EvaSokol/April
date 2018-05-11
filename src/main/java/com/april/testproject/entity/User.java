@@ -27,7 +27,17 @@ public class User implements Serializable {
 
     private String country;
 
-    private String role;
+    private UserRoleEnum role;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    private String password;
 
     @OneToMany(cascade = CascadeType.ALL)
     public Set<Idea> ideaSet;
@@ -64,11 +74,11 @@ public class User implements Serializable {
         this.country = country;
     }
 
-    public String getRole() {
+    public UserRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRoleEnum role) {
         this.role = role;
     }
 
@@ -80,3 +90,5 @@ public class User implements Serializable {
         System.out.println("---------------------------");
     }
 }
+
+

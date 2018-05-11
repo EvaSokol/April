@@ -1,10 +1,21 @@
 package com.april.testproject.dto;
 
+import com.april.testproject.entity.UserRoleEnum;
+
 public class UserDto {
     private String name;
-    private String role;
+    private UserRoleEnum role;
     private String country;
     private Long id;
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
@@ -26,11 +37,11 @@ public class UserDto {
         this.name = name;
     }
 
-    public String getRole() {
+    public UserRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRoleEnum role) {
         this.role = role;
     }
 }
