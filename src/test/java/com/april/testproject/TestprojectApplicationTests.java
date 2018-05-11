@@ -2,6 +2,7 @@ package com.april.testproject;
 
 import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
+import com.april.testproject.entity.UserRoleEnum;
 import com.april.testproject.repository.IdeasRepository;
 import com.april.testproject.repository.UserRepository;
 import com.jayway.restassured.path.json.JsonPath;
@@ -30,7 +31,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	private Long ideaId;
 	private int numbetOfUsers;
 	private int numbetOfIdeas;
-
+    private String password = "password123";
 
 	@BeforeClass
 	public void init(){
@@ -44,7 +45,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		User user = new User();
 		user.setName("TestUser" + random);
 		user.setCountry("Some Country" + random);
-		user.setRole("user");
+		user.setRole(UserRoleEnum.USER);
 		userId = userRepository.save(user).getId();
 		user.print();
 		assertEquals(userRepository.findAll().size(), numbetOfUsers + 1);
@@ -109,7 +110,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("name", name);
 		requestParams.put("country", country);
-		requestParams.put("role", "user");
+		requestParams.put("role", UserRoleEnum.USER);
+		requestParams.put("password", password);
 
 		String uri = "http://localhost:8080/api/1/createUser";
 		JsonPath response = RestTests.post(uri, requestParams);
