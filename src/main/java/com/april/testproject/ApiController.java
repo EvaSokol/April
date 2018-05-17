@@ -4,7 +4,7 @@ import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.dto.UserDto;
 import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
-import com.april.testproject.repository.IdeasRepository;
+import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,20 +15,15 @@ import java.util.List;
 
 @Component
 @RestController
-@RequestMapping("/api/1")
+@RequestMapping("/api/v1")
 public class ApiController {
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private IdeasRepository ideasRepository;
+    private IdeaRepository ideaRepository;
 
-//    @GetMapping("test")
-//    public Object test(){
-//        return new HashMap<>();
-//    }
-
-    @PostMapping(value = "createUser", consumes = "application/json")
+    @PostMapping(value = "user", consumes = "application/json")
     public Object createUser(@Valid @RequestBody UserDto userDto){
 
         User user = new User();
@@ -40,44 +35,44 @@ public class ApiController {
         return user;
     }
 
-    @PostMapping(value = "createIdea", consumes = "application/json")
+    @PostMapping(value = "idea", consumes = "application/json")
     public Object createIdea(@RequestBody IdeaDto ideaDto){
         Idea idea = new Idea();
-        idea.setShort_description(ideaDto.getShort_description());
+        idea.setShortDescription(ideaDto.getShortDescription());
         idea.setStatus(ideaDto.getStatus());
         idea.setUserId(ideaDto.getUserId());
-        ideasRepository.save(idea);
+        ideaRepository.save(idea);
         return idea;
     }
 
-    @GetMapping(value = "getUser/{id}", consumes = "application/json")
+    @GetMapping(value = "user/{id}", consumes = "application/json")
     public Object getUserById(@PathVariable(value = "id") Long userId){
         User user = userRepository.findOne(userId);
         return user;
     }
 
-    @GetMapping(value = "getUsers", consumes = "application/json")
+    @GetMapping(value = "users", consumes = "application/json")
     public Object getUsers(){
         return userRepository.findAll();
     }
 
-    @GetMapping(value = "getIdea/{id}", consumes = "application/json")
+    @GetMapping(value = "idea/{id}", consumes = "application/json")
     public Object getIdeaById(@PathVariable(value = "id") Long ideaId){
-        Idea idea = ideasRepository.findOne(ideaId);
+        Idea idea = ideaRepository.findOne(ideaId);
         return idea;
     }
 
-    @GetMapping(value = "getIdeas", consumes = "application/json")
+    @GetMapping(value = "ideas", consumes = "application/json")
     public Object getIdeas(){
-        return ideasRepository.findAll();
+        return ideaRepository.findAll();
     }
 
     @GetMapping(value = "getIdeasByUserId/{userId}", consumes = "application/json")
     public List<Idea> getIdeasByUserId(@PathVariable("userId") String userId){
-        return ideasRepository.findByUserId(userId);
+        return ideaRepository.findByUserId(userId);
     }
 
-    @PutMapping(value = "updateUser", consumes = "application/json")
+    @PutMapping(value = "user", consumes = "application/json")
     public Object updateUser(@Valid @RequestBody UserDto userDto){
         Long id = Long.valueOf(userDto.getId());
         User user = userRepository.findOne(id);

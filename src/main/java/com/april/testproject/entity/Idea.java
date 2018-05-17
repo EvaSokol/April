@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-//@NamedQuery(name = "IdeasRepository.findByUserId", query = "SELECT i FROM ideas i WHERE i.user_id = ?1")
+//@NamedQuery(name = "IdeaRepository.findByUserId", query = "SELECT i FROM ideas i WHERE i.user_id = ?1")
 @Table(name = "ideas")
 public class Idea {
 
@@ -14,7 +14,7 @@ public class Idea {
     @GeneratedValue
     private Long id;
 
-    private String short_description;
+    private String shortDescription;
 
     private String status;
 
@@ -29,12 +29,12 @@ public class Idea {
         this.id = id;
     }
 
-    public String getShort_description() {
-        return short_description;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public void setShort_description(String short_description) {
-        this.short_description = short_description;
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
     public String getStatus() {
@@ -55,7 +55,7 @@ public class Idea {
 
     public void print(){
         System.out.println("id:" + id);
-        System.out.println("short_description:" + short_description);
+        System.out.println("shortDescription:" + shortDescription);
         System.out.println("status:" + status);
         System.out.println("userId:" + userId);
         System.out.println("---------------------------");
