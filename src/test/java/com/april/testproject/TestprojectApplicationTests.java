@@ -157,4 +157,55 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
         assertTrue(user.getName().equalsIgnoreCase(String.valueOf(name)));
         assertTrue(user.getCountry().equalsIgnoreCase(String.valueOf(country)));
     }
+
+    @Test(dependsOnMethods = "createIdea", enabled = true)
+    public void updateIdea() throws JSONException {
+        String shortDescription = "New ShortDescription" + random;
+        String status = "approved";
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("shortDescription", shortDescription);
+        requestParams.put("status", status);
+        requestParams.put("userId", userId.toString());
+        requestParams.put("id", ideaId.toString());
+
+        String uri = baseUrl + "idea";
+        ideaId = Long.valueOf(RestTests.put(uri, requestParams).get("id").toString());
+        Idea idea = ideaRepository.findOne(Long.valueOf(ideaId));
+        assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
+        assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
+        assertTrue(idea.getUserId().equals(String.valueOf(userId)));
+    }
+
+    @Test
+    public void deleteUser() throws JSONException {
+        String country = "Some Country" + random;
+        String name = "Virender" + random;
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("name", name);
+        requestParams.put("country", country);
+        requestParams.put("role", UserRoleEnum.USER);
+        requestParams.put("password", password);
+
+        String uri = baseUrl + "user";
+        JsonPath response = RestTests.post(uri, requestParams);
+        Long newUserId = Long.valueOf((response).get("id").toString());
+
+        uri += "/" + newUserId;
+        String result = RestTests.delete(uri);
+        assertEquals(newUserId, Long.valueOf(result));
+    }
+
+    @Test
+    public void deleteIdea(){
+        Idea idea = new Idea();
+        idea.setShortDescription("ShortDescription" + random);
+        idea.setStatus("new");
+        idea.setUserId(userId.toString());
+        Long newIdeaId = ideaRepository.save(idea).getId();
+
+        String uri = baseUrl + "idea/" + newIdeaId;
+        String result = RestTests.delete(uri);
+        assertEquals(newIdeaId, Long.valueOf(result));
+
+    }
 }

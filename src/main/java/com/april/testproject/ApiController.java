@@ -83,4 +83,27 @@ public class ApiController {
         return user;
     }
 
+    @PutMapping(value = "idea", consumes = "application/json")
+    public Object updateIdea(@Valid @RequestBody IdeaDto ideaDto) {
+        Long id = Long.valueOf(ideaDto.getId());
+        Idea idea = ideaRepository.findOne(id);
+        if (ideaDto.getShortDescription() != null) idea.setShortDescription(ideaDto.getShortDescription());
+        if (ideaDto.getStatus() != null) idea.setStatus(ideaDto.getStatus());
+        if (ideaDto.getUserId() != null) idea.setUserId(ideaDto.getUserId());
+        ideaRepository.save(idea);
+        return idea;
+    }
+
+    @DeleteMapping(value = "user/{id}")
+    public Object deleteUser(@PathVariable("id") Long id){
+        userRepository.delete(id);
+        return id;
+    }
+
+    @DeleteMapping(value = "idea/{id}")
+    public Object deleteIdea(@PathVariable("id") Long id){
+        ideaRepository.delete(id);
+        return id;
+    }
+
 }

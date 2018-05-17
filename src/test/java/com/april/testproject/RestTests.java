@@ -41,8 +41,16 @@ public class RestTests{
         return jsonPathEvaluator;
     }
 
+    static String delete(String uri) {
+        RestAssured.baseURI = uri;
+        RequestSpecification request = RestAssured.given();
+        Response response = request.delete();
+        return response.asString();
+    }
+
     public static String getFromJson(JsonPath json, String fieldName){
         return json.get(fieldName);
+
     }
 }
 
