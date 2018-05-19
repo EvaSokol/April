@@ -27,7 +27,7 @@ public class User implements Serializable {
 
     private String country;
 
-    private UserRoleEnum role;
+    private String role;
 
     public String getPassword() {
         return password;
@@ -74,11 +74,11 @@ public class User implements Serializable {
         this.country = country;
     }
 
-    public UserRoleEnum getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(UserRoleEnum role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

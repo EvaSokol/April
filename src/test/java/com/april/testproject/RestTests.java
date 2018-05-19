@@ -48,6 +48,14 @@ public class RestTests{
         return response.asString();
     }
 
+    static JsonPath get(String uri) {
+        RestAssured.baseURI = uri;
+        RequestSpecification request = RestAssured.given();
+        Response response = request.get();
+        JsonPath jsonPathEvaluator = response.jsonPath();
+        return jsonPathEvaluator;
+    }
+
     public static String getFromJson(JsonPath json, String fieldName){
         return json.get(fieldName);
 
