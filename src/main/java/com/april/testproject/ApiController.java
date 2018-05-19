@@ -25,7 +25,6 @@ public class ApiController {
 
     @PostMapping(value = "user", consumes = "application/json")
     public Object createUser(@Valid @RequestBody UserDto userDto){
-
         User user = new User();
         user.setName(userDto.getName());
         user.setRole(userDto.getRole());
@@ -106,4 +105,8 @@ public class ApiController {
         return id;
     }
 
+    @GetMapping(value = "getUserByName/{name}")
+    public List<User> getUserByName(@PathVariable("name") String name){
+        return userRepository.findByUsername(name);
+    }
 }
