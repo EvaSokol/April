@@ -46,10 +46,11 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		User user = new User();
 		user.setName("TestUser" + random);
 		user.setCountry("Some Country" + random);
-		user.setRole(UserRoleEnum.USER);
+		user.setRole(UserRoleEnum.USER.toString());
+		user.setPassword(password);
 		userId = userRepository.save(user).getId();
 		user.print();
-		assertEquals(userRepository.findAll().size(), numberOfUsers + 1);
+		assertTrue(userRepository.findAll().contains(user));
 	}
 
 	@Test(dependsOnMethods = "createUser")
@@ -111,7 +112,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("name", name);
 		requestParams.put("country", country);
-		requestParams.put("role", UserRoleEnum.USER);
+		requestParams.put("role", UserRoleEnum.ADMIN);
 		requestParams.put("password", password);
 
 		String uri = baseUrl + "user";
@@ -206,6 +207,22 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
         String uri = baseUrl + "idea/" + newIdeaId;
         String result = RestTests.delete(uri);
         assertEquals(newIdeaId, Long.valueOf(result));
-
     }
+
+    @Test
+	public void getUserByName() throws JSONException {
+		User user = userRepository.findOne(userId);
+		String userName = user.getName();
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("name", userName);
+
+		String uri = baseUrl + "getUserByName/" + user.getName();
+		JsonPath response = RestTests.get(uri);
+
+		List <String> res = response.get("name");
+		String newName = res.get(0);
+
+		assertEquals(userName, newName);
+
+	}
 }
