@@ -1,16 +1,25 @@
 package com.april.testproject.dto;
 
 public class IdeaDto {
-    private String short_description;
+    private String shortDescription;
     private String status;
     private String userId;
+    private Long id;
 
-    public String getShort_description() {
-        return short_description;
+    public Long getId() {
+        return id;
     }
 
-    public void setShort_description(String short_description) {
-        this.short_description = short_description;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
     public String getStatus() {

@@ -26,8 +26,31 @@ public class RestTests{
         return jsonPathEvaluator;
     }
 
+    static JsonPath put(String uri, JSONObject jsonObject){
+        RestAssured.baseURI = uri;
+        RequestSpecification request = RestAssured.given();
+        request.body(jsonObject.toString());
+        request.contentType("application/json");
+        Response response = request.put();
+
+        System.out.println(response.getStatusCode());
+        System.out.println(response.getBody().asString());
+        JsonPath jsonPathEvaluator = response.jsonPath();
+        int id = jsonPathEvaluator.get("id");
+        System.out.println(id);
+        return jsonPathEvaluator;
+    }
+
+    static String delete(String uri) {
+        RestAssured.baseURI = uri;
+        RequestSpecification request = RestAssured.given();
+        Response response = request.delete();
+        return response.asString();
+    }
+
     public static String getFromJson(JsonPath json, String fieldName){
         return json.get(fieldName);
+
     }
 }
 
