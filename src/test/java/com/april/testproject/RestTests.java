@@ -16,6 +16,7 @@ public class RestTests{
         RequestSpecification request = RestAssured.given();
         request.body(jsonObject.toString());
         request.contentType("application/json");
+        request.authentication().basic("admin", "admin");
         Response response = request.post();
 
         System.out.println(response.getStatusCode());
@@ -31,6 +32,7 @@ public class RestTests{
         RequestSpecification request = RestAssured.given();
         request.body(jsonObject.toString());
         request.contentType("application/json");
+        request.authentication().basic("admin", "admin");
         Response response = request.put();
 
         System.out.println(response.getStatusCode());
@@ -44,6 +46,8 @@ public class RestTests{
     static String delete(String uri) {
         RestAssured.baseURI = uri;
         RequestSpecification request = RestAssured.given();
+        request.contentType("application/json");
+        request.authentication().basic("admin", "admin");
         Response response = request.delete();
         return response.asString();
     }
@@ -51,6 +55,8 @@ public class RestTests{
     static JsonPath get(String uri) {
         RestAssured.baseURI = uri;
         RequestSpecification request = RestAssured.given();
+        request.contentType("application/json");
+        request.authentication().basic("admin", "admin");
         Response response = request.get();
         JsonPath jsonPathEvaluator = response.jsonPath();
         return jsonPathEvaluator;

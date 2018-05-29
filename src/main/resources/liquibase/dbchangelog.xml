@@ -4,8 +4,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="20180430-1" author="AlexRazumenko">
-        <createTable tableName="users2">
+    <changeSet id="20180430-1" author="EvaSokolyanskaya">
+        <createTable tableName="users">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -18,21 +18,37 @@
             <column name="role" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="password" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
-    <changeSet author="AlexRazumenko" id="20180430-2">
-        <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
-        <sql>insert into users values ('2', 'Amy', 'Italy', 'admin')</sql>
+    <changeSet author="EvaSokolyanskaya" id="20180529-0">
+        <sql dbms="postgresql"
+             splitStatements="true"
+             stripComments="true">
+            insert into public.users (id, name, country, password, role) values ('2', 'Amy', 'Italy', '$2a$10$MHEjf46YXYz7MiXQweGByuGrCs6OU3w1OyrwkDi.cs8bjAry7M2Pa', 'ROLE_ADMIN')
+            <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
+        </sql>
     </changeSet>
 
-    <changeSet author="AlexRazumenko" id="20180430-3">
-        <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
-        <sql>drop table users2</sql>
+    <changeSet author="EvaSokolyanskaya" id="20180529-2">
+        <sql dbms="postgresql"
+             splitStatements="true"
+             stripComments="true">
+            insert into public.users (id, name, country, password, role) values ('3', 'Kim Jon In', 'DPRK', '$2a$10$FwFJEreSyUeo0Ri5PZ.MF.ZzXoxOO84xdXSdRVeB4f5UlBYrbrYRq','ROLE_ADMIN')
+            <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
+        </sql>
     </changeSet>
-    <changeSet author="AlexRazumenko" id="20180430-4">
-        <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
-        <sql>insert into users values ('3', 'Kim Jon In', 'DPRK', 'admin')</sql>
+
+    <changeSet author="EvaSokolyanskaya" id="20180529-3">
+        <sql dbms="postgresql"
+             splitStatements="true"
+             stripComments="true">
+            insert into public.users (id, name, country, password, role) values ('5', 'admin', 'Admin Country', '$2a$10$UINtn7n5MhfSuYIamN36s./oKDJC/2dkyLI.0xEdIVpeHmA.Fx246','ROLE_ADMIN')
+            <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
+        </sql>
     </changeSet>
 
 
