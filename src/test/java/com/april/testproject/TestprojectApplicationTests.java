@@ -108,7 +108,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertEquals("Amy", newName);
 	}
 
-	@Test(dependsOnMethods = "createIdea", enabled = false)
+	@Test(dependsOnMethods = "createIdea", enabled = true)
 	public void getIdeaById(){
 		Idea idea = ideaRepository.findOne(ideaId);
 		idea.print();
@@ -116,7 +116,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	//TODO: make autostart application for test
-	@Test(enabled = false)
+	@Test(dependsOnMethods = "getAllIdeasFast", enabled = true)
 	public void createUser() throws Exception {
 		String country = "Some Country" + random;
 		String name = "Virender" + random;
@@ -134,7 +134,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertTrue(user.getCountry().equalsIgnoreCase(String.valueOf(country)));
 		}
 
-	@Test(dependsOnMethods = "createUser", enabled = false)
+	@Test(dependsOnMethods = "createUser", enabled = true)
 	public void createIdea() throws JSONException {
 		String shortDescription = "ShortDescription" + random;
 		String status = "new";
@@ -151,7 +151,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertTrue(idea.getUserId().equals(String.valueOf(userId)));
 		}
 
-	@Test(dependsOnMethods = "createUser", enabled = false)
+	@Test(dependsOnMethods = "createUser", enabled = true)
     public void updateUser() throws JSONException {
         String country = "Some Another Country" + random;
         String name = "Virender Second" + random;
@@ -170,7 +170,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
         assertTrue(user.getCountry().equalsIgnoreCase(String.valueOf(country)));
     }
 
-    @Test(dependsOnMethods = "createIdea", enabled = false)
+    @Test(dependsOnMethods = "createIdea", enabled = true)
     public void updateIdea() throws JSONException {
         String shortDescription = "New ShortDescription" + random;
         String status = "approved";
@@ -188,7 +188,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
         assertTrue(idea.getUserId().equals(String.valueOf(userId)));
     }
 
-    @Test(dependsOnMethods = "createUser", enabled = false)
+    @Test(dependsOnMethods = "createUser", enabled = true)
     public void deleteUser() throws JSONException {
         String country = "Some Country" + random;
         String name = "Virender" + random;
@@ -207,7 +207,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
         assertEquals(newUserId, Long.valueOf(result));
     }
 
-    @Test(dependsOnMethods = "createIdea", enabled = false)
+    @Test(dependsOnMethods = "createIdea", enabled = true)
     public void deleteIdea(){
         Idea idea = new Idea();
         idea.setShortDescription("ShortDescription" + random);
@@ -220,7 +220,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
         assertEquals(newIdeaId, Long.valueOf(result));
     }
 
-    @Test(dependsOnMethods = "createUser", enabled = false)
+    @Test(dependsOnMethods = "createUser", enabled = true)
 	public void getUserByName() throws JSONException {
 		User user = userRepository.findOne(userId);
 		String userName = user.getName();
