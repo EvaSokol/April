@@ -83,9 +83,15 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	public void createIdeaFast() {
 		numberOfIdeas = ideaRepository.findAll().size();
 		Idea idea = new Idea();
-		idea.setShortDescription("ShortDescription" + random);
 		idea.setStatus("new");
+		idea.setTags("tags" + random);
 		idea.setUserId(userId.toString());
+		idea.setHeader("Header" + random);
+		idea.setMainPicture("Main Picture " + random);
+		idea.setShortDescription("Short Description" + random);
+		idea.setFullDescription("Full Description" + random);
+		idea.setPictureList("Picture List " + random);
+
 		ideaId = ideaRepository.save(idea).getId();
 		idea.print();
 		assertEquals(ideaRepository.findAll().size(), numberOfIdeas + 1);
@@ -163,9 +169,14 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String shortDescription = "ShortDescription" + random;
 		String status = "new";
 		JSONObject requestParams = new JSONObject();
-		requestParams.put("shortDescription", shortDescription);
 		requestParams.put("status", status);
+		requestParams.put("tags", "tag" + random);
 		requestParams.put("userId", userId.toString());
+		requestParams.put("header", "header" + random);
+		requestParams.put("mainPicture", "mainPicture" + random);
+		requestParams.put("shortDescription", shortDescription);
+		requestParams.put("fullDescription", "fullDescription" + random);
+		requestParams.put("pictureList", "pictureList" + random);
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.post(uri, requestParams).get("id").toString());
@@ -246,12 +257,19 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 	@Test(dependsOnMethods = "createIdea", enabled = true)
 	public void deleteIdea() {
+		// Create idea to delete
 		Idea idea = new Idea();
-		idea.setShortDescription("ShortDescription" + random);
 		idea.setStatus("new");
+		idea.setTags("tags" + random);
 		idea.setUserId(userId.toString());
-		Long newIdeaId = ideaRepository.save(idea).getId();
+		idea.setHeader("Header" + random);
+		idea.setMainPicture("Main Picture " + random);
+		idea.setShortDescription("Short Description" + random);
+		idea.setFullDescription("Full Description" + random);
+		idea.setPictureList("Picture List " + random);
 
+		Long newIdeaId = ideaRepository.save(idea).getId();
+		// Delete idea
 		String uri = baseUrl + "idea/" + newIdeaId;
 		String result = RestTests.delete(uri);
 		assertEquals(newIdeaId, Long.valueOf(result));

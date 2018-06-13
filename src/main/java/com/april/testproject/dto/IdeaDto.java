@@ -1,40 +1,85 @@
 package com.april.testproject.dto;
 
 public class IdeaDto {
-    private String shortDescription;
-    private String status;
-    private String userId;
-    private Long id;
+	private Long id;
+	private String status;
+	private String tags;
+	private String userId;
+	private String header;
+	private String mainPicture;
+	private String shortDescription;
+	private String fullDescription;
+	private String pictureList;
 
-    public Long getId() {
-        return id;
-    }
+	public String getTags() {
+		return tags;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
 
-    public String getShortDescription() {
-        return shortDescription;
-    }
+	public String getHeader() {
+		return header;
+	}
 
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
+	public void setHeader(String header) {
+		this.header = header;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getMainPicture() {
+		return mainPicture;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setMainPicture(String mainPicture) {
+		this.mainPicture = mainPicture;
+	}
 
-    public String getUserId() {
-        return userId;
-    }
+	public String getFullDescription() {
+		return fullDescription;
+	}
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	public void setFullDescription(String fullDescription) {
+		this.fullDescription = fullDescription;
+	}
+
+	public String getPictureList() {
+		return pictureList;
+	}
+
+	public void setPictureList(String pictureList) {
+		this.pictureList = pictureList;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getShortDescription() {
+		return shortDescription;
+	}
+
+	public void setShortDescription(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 }

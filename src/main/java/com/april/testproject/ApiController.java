@@ -45,9 +45,14 @@ public class ApiController {
 	@PostMapping(value = "idea", consumes = "application/json")
 	public Object createIdea(@RequestBody IdeaDto ideaDto) {
 		Idea idea = new Idea();
-		idea.setShortDescription(ideaDto.getShortDescription());
 		idea.setStatus(ideaDto.getStatus());
+		idea.setTags(ideaDto.getTags());
 		idea.setUserId(ideaDto.getUserId());
+		idea.setHeader(ideaDto.getHeader());
+		idea.setMainPicture(ideaDto.getMainPicture());
+		idea.setShortDescription(ideaDto.getShortDescription());
+		idea.setFullDescription(ideaDto.getFullDescription());
+		idea.setPictureList(ideaDto.getPictureList());
 		ideaRepository.save(idea);
 		return idea;
 	}
@@ -93,9 +98,14 @@ public class ApiController {
 	public Object updateIdea(@Valid @RequestBody IdeaDto ideaDto) {
 		Long id = ideaDto.getId();
 		Idea idea = ideaRepository.findOne(id);
-		if (ideaDto.getShortDescription() != null) idea.setShortDescription(ideaDto.getShortDescription());
 		if (ideaDto.getStatus() != null) idea.setStatus(ideaDto.getStatus());
+		if (ideaDto.getTags() != null) idea.setTags(ideaDto.getTags());
 		if (ideaDto.getUserId() != null) idea.setUserId(ideaDto.getUserId());
+		if (ideaDto.getHeader() != null) idea.setHeader(ideaDto.getHeader());
+		if (ideaDto.getMainPicture() != null) idea.setMainPicture(ideaDto.getMainPicture());
+		if (ideaDto.getShortDescription() != null) idea.setShortDescription(ideaDto.getShortDescription());
+		if (ideaDto.getFullDescription() != null) idea.setFullDescription(ideaDto.getFullDescription());
+		if (ideaDto.getPictureList() != null) idea.setPictureList(ideaDto.getPictureList());
 		ideaRepository.save(idea);
 		return idea;
 	}
