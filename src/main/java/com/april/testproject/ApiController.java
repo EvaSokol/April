@@ -46,8 +46,7 @@ public class ApiController {
 
     @GetMapping(value = "user/{id}", consumes = "application/json")
     public Object getUserById(@PathVariable(value = "id") Long userId){
-        User user = userRepository.findOne(userId);
-        return user;
+        return userRepository.findOne(userId);
     }
 
     @GetMapping(value = "users", consumes = "application/json")
@@ -57,8 +56,7 @@ public class ApiController {
 
     @GetMapping(value = "idea/{id}", consumes = "application/json")
     public Object getIdeaById(@PathVariable(value = "id") Long ideaId){
-        Idea idea = ideaRepository.findOne(ideaId);
-        return idea;
+        return ideaRepository.findOne(ideaId);
     }
 
     @GetMapping(value = "ideas", consumes = "application/json")
@@ -73,7 +71,7 @@ public class ApiController {
 
     @PutMapping(value = "user", consumes = "application/json")
     public Object updateUser(@Valid @RequestBody UserDto userDto){
-        Long id = Long.valueOf(userDto.getId());
+        Long id = userDto.getId();
         User user = userRepository.findOne(id);
         if (userDto.getCountry() != null) user.setCountry(userDto.getCountry());
         if (userDto.getName() != null) user.setName(userDto.getName());
@@ -84,7 +82,7 @@ public class ApiController {
 
     @PutMapping(value = "idea", consumes = "application/json")
     public Object updateIdea(@Valid @RequestBody IdeaDto ideaDto) {
-        Long id = Long.valueOf(ideaDto.getId());
+        Long id = ideaDto.getId();
         Idea idea = ideaRepository.findOne(id);
         if (ideaDto.getShortDescription() != null) idea.setShortDescription(ideaDto.getShortDescription());
         if (ideaDto.getStatus() != null) idea.setStatus(ideaDto.getStatus());
@@ -107,6 +105,6 @@ public class ApiController {
 
     @GetMapping(value = "getUserByName/{name}")
     public List<User> getUserByName(@PathVariable("name") String name){
-        return userRepository.findByUsername(name);
+        return userRepository.findByNameContaining(name);
     }
 }
