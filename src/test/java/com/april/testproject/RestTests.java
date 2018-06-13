@@ -5,6 +5,7 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Created by Eva Sokolyanskaya on 05/05/2018.
@@ -48,7 +49,7 @@ public class RestTests{
         return response.asString();
     }
 
-    static JsonPath get(String uri) {
+    public static JsonPath get(String uri) {
         RestAssured.baseURI = uri;
         RequestSpecification request = RestAssured.given();
         Response response = request.get();
@@ -58,7 +59,13 @@ public class RestTests{
 
     public static String getFromJson(JsonPath json, String fieldName){
         return json.get(fieldName);
+    }
 
+    public static String encryptPassword(String password) {
+        // Amy:1234
+        // Kim Jon In:test
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode("admin");
     }
 }
 
