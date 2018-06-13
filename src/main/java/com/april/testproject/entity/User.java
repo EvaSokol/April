@@ -23,7 +23,7 @@ public class User implements Serializable {
     private Long id;
 
     @NotEmpty
-    private String name;
+    private String firstName;
 
     @NotEmpty
     private String email;
@@ -61,15 +61,15 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getCountry() {
+	public String getCountry() {
         return country;
     }
 
@@ -96,7 +96,7 @@ public class User implements Serializable {
     public void print(){
         System.out.println("id:" + id);
 	      System.out.println("email:" + email);
-        System.out.println("name:" + name);
+        System.out.println("firstName:" + firstName);
         System.out.println("country:" + country);
         System.out.println("role:" + role);
         System.out.println("---------------------------");

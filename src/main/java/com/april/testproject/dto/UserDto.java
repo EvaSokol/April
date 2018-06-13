@@ -4,7 +4,7 @@ import com.april.testproject.entity.UserRoleEnum;
 
 public class UserDto {
     private String email;
-    private String name;
+    private String firstName;
     private String role;
     private String country;
     private Long id;
@@ -30,15 +30,15 @@ public class UserDto {
         this.country = country;
     }
 
-    public String getName() {
-        return name;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getRole() {
+	public String getRole() {
         return role;
     }
 

@@ -26,7 +26,7 @@ public class ApiController {
     @PostMapping(value = "user", consumes = "application/json")
     public Object createUser(@Valid @RequestBody UserDto userDto){
         User user = new User();
-        user.setName(userDto.getName());
+        user.setFirstName(userDto.getFirstName());
         user.setEmail(userDto.getEmail());
         user.setRole(userDto.getRole());
         user.setCountry(userDto.getCountry());
@@ -76,7 +76,7 @@ public class ApiController {
         User user = userRepository.findOne(id);
         if (userDto.getCountry() != null) user.setCountry(userDto.getCountry());
         if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
-        if (userDto.getName() != null) user.setName(userDto.getName());
+        if (userDto.getFirstName() != null) user.setFirstName(userDto.getFirstName());
         if (userDto.getRole() != null) user.setRole(userDto.getRole());
         userRepository.save(user);
         return user;
@@ -107,6 +107,6 @@ public class ApiController {
 
     @GetMapping(value = "getUserByName/{name}")
     public List<User> getUserByName(@PathVariable("name") String name){
-        return userRepository.findByNameContaining(name);
+        return userRepository.findByFirstNameContaining(name);
     }
 }
