@@ -17,7 +17,7 @@ public class RestTests{
         RequestSpecification request = RestAssured.given();
         request.body(jsonObject.toString());
         request.contentType("application/json");
-        request.authentication().basic("admin", "admin");
+        request.authentication().basic("admin@mail.test", "admin");
         Response response = request.post();
 
         System.out.println(response.getStatusCode());
@@ -33,7 +33,7 @@ public class RestTests{
         RequestSpecification request = RestAssured.given();
         request.body(jsonObject.toString());
         request.contentType("application/json");
-        request.authentication().basic("admin", "admin");
+        request.authentication().basic("admin@mail.test", "admin");
         Response response = request.put();
 
         System.out.println(response.getStatusCode());
@@ -48,7 +48,7 @@ public class RestTests{
         RestAssured.baseURI = uri;
         RequestSpecification request = RestAssured.given();
         request.contentType("application/json");
-        request.authentication().basic("admin", "admin");
+        request.authentication().basic("admin@mail.test", "admin");
         Response response = request.delete();
         return response.asString();
     }
@@ -57,7 +57,7 @@ public class RestTests{
         RestAssured.baseURI = uri;
         RequestSpecification request = RestAssured.given();
         request.contentType("application/json");
-        request.authentication().basic("admin", "admin");
+        request.authentication().basic("admin@mail.test", "admin");
         Response response = request.get();
         JsonPath jsonPathEvaluator = response.jsonPath();
         return jsonPathEvaluator;
@@ -71,7 +71,7 @@ public class RestTests{
         // Amy:1234
         // Kim Jon In:test
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.encode("admin");
+        return encoder.encode("admin@mail.test");
     }
 }
 
