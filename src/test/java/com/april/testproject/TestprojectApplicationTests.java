@@ -40,17 +40,23 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	public void init() {
 		random = (int) (Math.random() * 1000);
 		numberOfUsers = userRepository.findAll().size();
-		numberOfIdeas = ideaRepository.findAll().size();
+//		numberOfIdeas = ideaRepository.findAll().size();
 	}
 
 	@Test(enabled = true)
 	public void createUserFast() {
 		User user = new User();
 		user.setEmail("testmail" + random + "@mail.test");
-		user.setFirstName("TestUser" + random);
-		user.setCountry("Some Country" + random);
-		user.setRole(UserRoleEnum.ROLE_USER.toString());
 		user.setPassword(password);
+		user.setRole(UserRoleEnum.ROLE_USER.toString());
+		user.setTags("tags" + random);
+		user.setFirstName("TestUser" + random);
+		user.setLastName("TestLastName" + random);
+		user.setAvatarPicture("TestAva" + random);
+		user.setAboutUser("About User " + random);
+		user.setAboutCompany("About Company " + random);
+		user.setCountry("Some Country" + random);
+		user.setCity("Some City" + random);
 		userId = userRepository.save(user).getId();
 		user.print();
 		assertEquals("Amy", userRepository.findAll().get(0).getFirstName());
@@ -75,6 +81,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 	@Test(dependsOnMethods = "createUserFast", enabled = true)
 	public void createIdeaFast() {
+		numberOfIdeas = ideaRepository.findAll().size();
 		Idea idea = new Idea();
 		idea.setShortDescription("ShortDescription" + random);
 		idea.setStatus("new");
@@ -123,23 +130,30 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	//TODO: make autostart application for test
-	@Test(dependsOnMethods = "getAllIdeasFast", enabled = true)
+	@Test(enabled = true)
 	public void createUser() throws Exception {
 		String country = "Some Country" + random;
-		String first_name = "Virender" + random;
+		String firstName = "Virender" + random;
 		String email = "testmail" + random + "@mail.test";
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("email", email);
-		requestParams.put("firstName", first_name);
-		requestParams.put("country", country);
-		requestParams.put("role", UserRoleEnum.ROLE_ADMIN);
 		requestParams.put("password", password);
+		requestParams.put("role", UserRoleEnum.ROLE_ADMIN);
+		requestParams.put("tags", random);
+		requestParams.put("firstName", firstName);
+		requestParams.put("lastName", "TestLastName" + random);
+		requestParams.put("avatarPicture","TestAva" + random);
+		requestParams.put("aboutUser", "About User " + random);
+		requestParams.put("aboutCompany", "About Company " + random);
+		requestParams.put("country", country);
+		requestParams.put("city", "Some City" + random);
+
 
 		String uri = baseUrl + "user";
 		JsonPath response = RestTests.post(uri, requestParams);
 		userId = Long.valueOf((response).get("id").toString());
 		User user = userRepository.findOne(Long.valueOf(userId));
-		assertTrue(user.getFirstName().equalsIgnoreCase(String.valueOf(first_name)));
+		assertTrue(user.getFirstName().equalsIgnoreCase(String.valueOf(firstName)));
 		assertTrue(user.getCountry().equalsIgnoreCase(String.valueOf(country)));
 		assertTrue(user.getEmail().equalsIgnoreCase(String.valueOf(email)));
 	}
@@ -206,13 +220,19 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		//Create user to delete
 		String country = "Some Country" + random;
 		String firstName = "Virender" + random;
-		String email = "testmail" + random + "@mail.test";
+		String email = "anothertestmail" + random + "@mail.test";
 		JSONObject requestParams = new JSONObject();
-		requestParams.put("firstName", firstName);
 		requestParams.put("email", email);
-		requestParams.put("country", country);
-		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("password", password);
+		requestParams.put("role", UserRoleEnum.ROLE_USER);
+		requestParams.put("tags", random);
+		requestParams.put("firstName", firstName);
+		requestParams.put("lastName", "TestLastName" + random);
+		requestParams.put("avatarPicture","TestAva" + random);
+		requestParams.put("aboutUser", "About User " + random);
+		requestParams.put("aboutCompany", "About Company " + random);
+		requestParams.put("country", country);
+		requestParams.put("city", "Some City" + random);
 
 		String uri = baseUrl + "user";
 		JsonPath response = RestTests.post(uri, requestParams);
