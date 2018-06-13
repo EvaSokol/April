@@ -25,6 +25,9 @@ public class User implements Serializable {
     @NotEmpty
     private String name;
 
+    @NotEmpty
+    private String email;
+
     private String country;
 
     private String role;
@@ -39,16 +42,16 @@ public class User implements Serializable {
 
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    public Set<Idea> ideaSet;
+//    @OneToMany(cascade = CascadeType.ALL)
+//    public Set<Idea> ideaSet;
 
-    public Set<Idea> getIdeaSet() {
-        return ideaSet;
-    }
+//    public Set<Idea> getIdeaSet() {
+//        return ideaSet;
+//    }
 
-    public void setIdeaSet(Set<Idea> ideaSet) {
-        this.ideaSet = ideaSet;
-    }
+//    public void setIdeaSet(Set<Idea> ideaSet) {
+//        this.ideaSet = ideaSet;
+//    }
 
     public Long getId() {
         return id;
@@ -82,8 +85,17 @@ public class User implements Serializable {
         this.role = role;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void print(){
         System.out.println("id:" + id);
+	      System.out.println("email:" + email);
         System.out.println("name:" + name);
         System.out.println("country:" + country);
         System.out.println("role:" + role);

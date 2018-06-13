@@ -12,6 +12,9 @@
             <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="email" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
             <column name="country" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
@@ -28,7 +31,7 @@
         <sql dbms="postgresql"
              splitStatements="true"
              stripComments="true">
-            insert into public.users (id, name, country, password, role) values ('2', 'Amy', 'Italy', '$2a$10$MHEjf46YXYz7MiXQweGByuGrCs6OU3w1OyrwkDi.cs8bjAry7M2Pa', 'ROLE_ADMIN')
+            insert into public.users (id, name, email, country, password, role) values ('2', 'Amy', 'amy@mail.test', 'Italy', '$2a$10$MHEjf46YXYz7MiXQweGByuGrCs6OU3w1OyrwkDi.cs8bjAry7M2Pa', 'ROLE_ADMIN')
             <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
         </sql>
     </changeSet>
@@ -37,7 +40,7 @@
         <sql dbms="postgresql"
              splitStatements="true"
              stripComments="true">
-            insert into public.users (id, name, country, password, role) values ('3', 'Kim Jon In', 'DPRK', '$2a$10$FwFJEreSyUeo0Ri5PZ.MF.ZzXoxOO84xdXSdRVeB4f5UlBYrbrYRq','ROLE_ADMIN')
+            insert into public.users (id, name, email, country, password, role) values ('3', 'Kim Jon In', 'kim@mail.test', 'DPRK', '$2a$10$FwFJEreSyUeo0Ri5PZ.MF.ZzXoxOO84xdXSdRVeB4f5UlBYrbrYRq','ROLE_ADMIN')
             <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
         </sql>
     </changeSet>
@@ -46,7 +49,7 @@
         <sql dbms="postgresql"
              splitStatements="true"
              stripComments="true">
-            insert into public.users (id, name, country, password, role) values ('5', 'admin', 'Admin Country', '$2a$10$UINtn7n5MhfSuYIamN36s./oKDJC/2dkyLI.0xEdIVpeHmA.Fx246','ROLE_ADMIN')
+            insert into public.users (id, name, email, country, password, role) values ('5', 'admin', 'admin@mail.test', 'Admin Country', '$2a$10$UINtn7n5MhfSuYIamN36s./oKDJC/2dkyLI.0xEdIVpeHmA.Fx246','ROLE_ADMIN')
             <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
         </sql>
     </changeSet>

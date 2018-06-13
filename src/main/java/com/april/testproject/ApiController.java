@@ -27,6 +27,7 @@ public class ApiController {
     public Object createUser(@Valid @RequestBody UserDto userDto){
         User user = new User();
         user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
         user.setRole(userDto.getRole());
         user.setCountry(userDto.getCountry());
         user.setPassword(userDto.getPassword());
@@ -74,6 +75,7 @@ public class ApiController {
         Long id = userDto.getId();
         User user = userRepository.findOne(id);
         if (userDto.getCountry() != null) user.setCountry(userDto.getCountry());
+        if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
         if (userDto.getName() != null) user.setName(userDto.getName());
         if (userDto.getRole() != null) user.setRole(userDto.getRole());
         userRepository.save(user);
