@@ -18,77 +18,132 @@ import java.util.Set;
 @Table(name = "users")
 public class User implements Serializable {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+	@Id
+	@GeneratedValue
+	private Long id;
 
-    @NotEmpty
-    private String name;
+	@NotEmpty
+	private String email;
 
-    private String country;
+	@NotEmpty
+	private String password;
 
-    private String role;
+	private String role;
+	private String tags;
 
-    public String getPassword() {
-        return password;
-    }
+	@NotEmpty
+	private String firstName;
+	private String lastName;
+	private String avatarPicture;
+	private String aboutUser;
+	private String aboutCompany;
+	private String country;
+	private String city;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void print() {
+		System.out.println("id:" + id);
+		System.out.println("email:" + email);
+		System.out.println("firstName:" + firstName);
+		System.out.println("country:" + country);
+		System.out.println("role:" + role);
+		System.out.println("---------------------------");
+	}
 
-    private String password;
+	public String getLastName() {
+		return lastName;
+	}
 
-    @OneToMany(cascade = CascadeType.ALL)
-    public Set<Idea> ideaSet;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public Set<Idea> getIdeaSet() {
-        return ideaSet;
-    }
+	public String getAvatarPicture() {
+		return avatarPicture;
+	}
 
-    public void setIdeaSet(Set<Idea> ideaSet) {
-        this.ideaSet = ideaSet;
-    }
+	public void setAvatarPicture(String avaterPicture) {
+		this.avatarPicture = avaterPicture;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public String getAboutUser() {
+		return aboutUser;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setAboutUser(String aboutUser) {
+		this.aboutUser = aboutUser;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getAboutCompany() {
+		return aboutCompany;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setAboutCompany(String aboutCompany) {
+		this.aboutCompany = aboutCompany;
+	}
 
-    public String getCountry() {
-        return country;
-    }
+	public String getCity() {
+		return city;
+	}
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-    public String getRole() {
-        return role;
-    }
+	public String getTags() {
+		return tags;
+	}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
 
-    public void print(){
-        System.out.println("id:" + id);
-        System.out.println("name:" + name);
-        System.out.println("country:" + country);
-        System.out.println("role:" + role);
-        System.out.println("---------------------------");
-    }
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+//	public void setId(Long id) {
+//		this.id = id;
+//	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }
 
 
