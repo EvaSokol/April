@@ -18,13 +18,23 @@ public class AppUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
+
     @Override
+    public UserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException {
+        com.april.testproject.entity.User activeUserInfo = repository.findByEmail(email);
+        GrantedAuthority authority = new SimpleGrantedAuthority(activeUserInfo.getRole());
+        return new User(activeUserInfo.getEmail(),
+                activeUserInfo.getPassword(), Arrays.asList(authority));
+    }
+
+    /*@Override
     public UserDetails loadUserByUsername(String userName)
             throws UsernameNotFoundException {
         com.april.testproject.entity.User activeUserInfo = repository.findByName(userName);
         GrantedAuthority authority = new SimpleGrantedAuthority(activeUserInfo.getRole());
         return new User(activeUserInfo.getName(),
                 activeUserInfo.getPassword(), Arrays.asList(authority));
-    }
+    }*/
 
 }
