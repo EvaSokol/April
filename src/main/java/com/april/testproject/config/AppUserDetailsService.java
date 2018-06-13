@@ -21,9 +21,9 @@ public class AppUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName)
             throws UsernameNotFoundException {
-        com.april.testproject.entity.User activeUserInfo = repository.findByName(userName);
+        com.april.testproject.entity.User activeUserInfo = repository.findByFirstName(userName);
         GrantedAuthority authority = new SimpleGrantedAuthority(activeUserInfo.getRole());
-        return new User(activeUserInfo.getName(),
+        return new User(activeUserInfo.getFirstName(),
                 activeUserInfo.getPassword(), Arrays.asList(authority));
     }
 
