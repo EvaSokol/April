@@ -13,10 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
+import java.util.Date;
 import java.util.List;
-
-import static com.april.testproject.utils.Formatter.getCurrentTime;
 import static junit.framework.TestCase.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -92,15 +90,15 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setShortDescription("Short Description" + random);
 		idea.setFullDescription("Full Description" + random);
 		idea.setPictureList("Picture List " + random);
-		idea.setRate(String.valueOf(random));
-		idea.setCreationDate(getCurrentTime());
+		idea.setRate(random);
+		idea.setCreationDate(new Date());
 
 		ideaId = ideaRepository.save(idea).getId();
 		idea.print();
 		assertEquals(ideaRepository.findAll().size(), numberOfIdeas + 1);
 	}
 
-	@Test(dependsOnMethods = "createIdeaFast")
+	@Test
 	public void getAllIdeasFast() {
 		List<Idea> ideas = ideaRepository.findAll();
 		for (Idea idea : ideas) {
@@ -129,6 +127,17 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		res = response.get("email");
 		String email = res.get(0);
 		assertEquals("amy@mail.test", email);
+	}
+
+	@Test(enabled = true)
+	public void getAllIdeas() {
+		String uri = baseUrl + "ideas";
+		JsonPath response = RestTests.get(uri);
+
+		List<String> rates = response.get("rate");
+		for (String rate : rates) {
+			System.out.println(rate);
+		}
 	}
 
 	@Test(dependsOnMethods = "createIdea", enabled = true)
@@ -180,6 +189,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("shortDescription", shortDescription);
 		requestParams.put("fullDescription", "fullDescription" + random);
 		requestParams.put("pictureList", "pictureList" + random);
+		requestParams.put("rate", random);
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.post(uri, requestParams).get("id").toString());
@@ -280,11 +290,9 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 	//TODO: Fix bug: find user which contains expected name as part
 	@Test(dependsOnMethods = "createUser", enabled = true)
-	public void getUserByName() throws JSONException {
+	public void getUserByName(){
 		User user = userRepository.findOne(userId);
 		String userName = user.getFirstName();
-//		JSONObject requestParams = new JSONObject();
-//		requestParams.put("firstName", userName);
 
 		String uri = baseUrl + "getUserByName/" + user.getFirstName();
 		JsonPath response = RestTests.get(uri);
@@ -297,11 +305,9 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
-	public void getUserByEmail() throws JSONException {
+	public void getUserByEmail(){
 		User user = userRepository.findOne(userId);
 		String email = user.getEmail();
-//		JSONObject requestParams = new JSONObject();
-//		requestParams.put("email", email);
 
 		String uri = baseUrl + "getUserByEmail/" + user.getEmail();
 		JsonPath response = RestTests.get(uri);

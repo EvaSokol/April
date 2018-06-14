@@ -60,8 +60,8 @@ public class ApiController {
 		idea.setShortDescription(ideaDto.getShortDescription());
 		idea.setFullDescription(ideaDto.getFullDescription());
 		idea.setPictureList(ideaDto.getPictureList());
-		idea.setRate("0");
-		idea.setCreationDate(getCurrentTime());
+		idea.setRate(0);
+		idea.setCreationDate(new Date());
 		ideaRepository.save(idea);
 		return idea;
 	}

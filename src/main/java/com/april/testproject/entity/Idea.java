@@ -4,9 +4,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Comparator;
 
 @Entity
 @Data
@@ -15,7 +18,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 //@NamedQuery(name = "IdeaRepository.findByUserId", query = "SELECT i FROM ideas i WHERE i.user_id = ?1")
 @Table(name = "ideas")
-public class Idea {
+public class Idea implements Comparator<Idea> {
 
 	@Id
 	@GeneratedValue
@@ -35,15 +38,23 @@ public class Idea {
 	private String shortDescription;
 	private String fullDescription;
 	private String pictureList;
-	private String creationDate;
-	private String rate;
+	@Type(type="timestamp")
+	private Date creationDate;
+	private int rate;
 
 	public void print() {
 		System.out.println("id:" + id);
+		System.out.println("creationDate:" + creationDate);
+		System.out.println("rate:" + rate);
 		System.out.println("shortDescription:" + shortDescription);
 		System.out.println("status:" + status);
 		System.out.println("userId:" + userId);
 		System.out.println("---------------------------");
+	}
+
+	@Override
+	public int compare(Idea i1, Idea i2) {
+		return i1.creationDate.compareTo(i2.creationDate);
 	}
 
 //	public String getTags() {

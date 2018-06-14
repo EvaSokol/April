@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Data
 @Getter
 @Setter
@@ -19,8 +21,8 @@ public class IdeaDto {
 	private String shortDescription;
 	private String fullDescription;
 	private String pictureList;
-	private String creationDate;
-	private String rate;
+	private Date creationDate;
+	private int rate;
 
 //	public String getTags() {
 //		return tags;
