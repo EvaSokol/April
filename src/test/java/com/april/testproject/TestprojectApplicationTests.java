@@ -168,8 +168,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("city", "Some City" + random);
 
 
-		String uri = baseUrl + "user";
-		JsonPath response = RestTests.post(uri, requestParams);
+		String uri = baseUrl + "registration";
+		JsonPath response = RestTests.postAsUser(uri, requestParams, "", "");
 		userId = Long.valueOf((response).get("id").toString());
 		User user = userRepository.findOne(Long.valueOf(userId));
 		assertTrue(user.getFirstName().equalsIgnoreCase(String.valueOf(firstName)));
@@ -282,12 +282,12 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("country", country);
 		requestParams.put("city", "Some City" + random);
 
-		String uri = baseUrl + "user";
+		String uri = baseUrl + "registration";
 		JsonPath response = RestTests.post(uri, requestParams);
 		Long newUserId = Long.valueOf((response).get("id").toString());
 
 		//Delete user
-		uri += "/" + newUserId;
+		uri = baseUrl + "user/" + newUserId;
 		String result = RestTests.delete(uri);
 		assertEquals(newUserId, Long.valueOf(result));
 	}

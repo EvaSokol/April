@@ -26,7 +26,7 @@ public class ApiController {
 	private IdeaRepository ideaRepository;
 
 //@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping(value = "user", consumes = "application/json")
+	@PostMapping(value = "registration", consumes = "application/json")
 	public Object createUser(@Valid @RequestBody UserDto userDto) {
 		User user = new User();
 		user.setFirstName(userDto.getFirstName());

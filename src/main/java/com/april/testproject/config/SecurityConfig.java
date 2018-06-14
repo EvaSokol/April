@@ -23,7 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .cors().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/v1/registration").permitAll()
+                .antMatchers("/api/v1/idea").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/v1/**").hasAnyRole("ADMIN")
                 .and().httpBasic().realmName("MY APP REALM")
                 .authenticationEntryPoint(appAuthenticationEntryPoint);
     }
