@@ -46,6 +46,7 @@ public class User implements Serializable {
 		System.out.println("firstName:" + firstName);
 		System.out.println("country:" + country);
 		System.out.println("role:" + role);
+		System.out.println("password:" + password);
 		System.out.println("---------------------------");
 	}
 

@@ -28,6 +28,22 @@ public class RestTests{
         return jsonPathEvaluator;
     }
 
+	static JsonPath postAsUser(String uri, JSONObject jsonObject, String login, String password){
+		RestAssured.baseURI = uri;
+		RequestSpecification request = RestAssured.given();
+		request.body(jsonObject.toString());
+		request.contentType("application/json");
+		request.authentication().basic(login, password);
+		Response response = request.post();
+
+		System.out.println(response.getStatusCode());
+		System.out.println(response.getBody().asString());
+		JsonPath jsonPathEvaluator = response.jsonPath();
+		int id = jsonPathEvaluator.get("id");
+		System.out.println(id);
+		return jsonPathEvaluator;
+	}
+
     static JsonPath put(String uri, JSONObject jsonObject){
         RestAssured.baseURI = uri;
         RequestSpecification request = RestAssured.given();
@@ -65,13 +81,6 @@ public class RestTests{
 
     public static String getFromJson(JsonPath json, String fieldName){
         return json.get(fieldName);
-    }
-
-    public static String encryptPassword(String password) {
-        // Amy:1234
-        // Kim Jon In:test
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.encode("admin@mail.test");
     }
 }
 

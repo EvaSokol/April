@@ -4,20 +4,16 @@ import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.dto.UserDto;
 import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
-import com.april.testproject.utils.*;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
-
-import static com.april.testproject.utils.Formatter.getCurrentTime;
+import static com.april.testproject.utils.ApiUtils.encryptPassword;
 
 @Component
 @RestController
@@ -37,7 +33,7 @@ public class ApiController {
 		user.setEmail(userDto.getEmail());
 		user.setRole(userDto.getRole());
 		user.setCountry(userDto.getCountry());
-		user.setPassword(userDto.getPassword());
+		user.setPassword(encryptPassword(userDto.getPassword()));
 		user.setTags(userDto.getTags());
 		user.setLastName(userDto.getLastName());
 		user.setAvatarPicture(userDto.getAvatarPicture());

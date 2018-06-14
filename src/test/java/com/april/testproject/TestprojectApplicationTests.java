@@ -15,6 +15,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.util.Date;
 import java.util.List;
+import static com.april.testproject.utils.ApiUtils.encryptPassword;
 import static junit.framework.TestCase.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -33,6 +34,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	private int numberOfUsers;
 	private int numberOfIdeas;
 	private String password = "password123";
+	String email = "testmail" + random + "@mail.test";
 	private String baseUrl = "http://localhost:8080/api/v1/";
 
 	@BeforeClass
@@ -46,7 +48,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	public void createUserFast() {
 		User user = new User();
 		user.setEmail("testmail" + random + "@mail.test");
-		user.setPassword(password);
+		user.setPassword(encryptPassword(password));
 		user.setRole(UserRoleEnum.ROLE_USER.toString());
 		user.setTags("tags" + random);
 		user.setFirstName("TestUser" + random);
@@ -134,8 +136,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String uri = baseUrl + "ideas";
 		JsonPath response = RestTests.get(uri);
 
-		List<String> rates = response.get("rate");
-		for (String rate : rates) {
+		List<Integer> rates = response.get("rate");
+		for (Integer rate : rates) {
 			System.out.println(rate);
 		}
 	}
@@ -152,11 +154,10 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	public void createUser() throws Exception {
 		String country = "Some Country" + random;
 		String firstName = "Virender" + random;
-		String email = "testmail" + random + "@mail.test";
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("email", email);
 		requestParams.put("password", password);
-		requestParams.put("role", UserRoleEnum.ROLE_ADMIN);
+		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("tags", random);
 		requestParams.put("firstName", firstName);
 		requestParams.put("lastName", "TestLastName" + random);
@@ -193,6 +194,29 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.post(uri, requestParams).get("id").toString());
+		Idea idea = ideaRepository.findOne(Long.valueOf(ideaId));
+		assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
+		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
+		assertTrue(idea.getUserId().equals(String.valueOf(userId)));
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void createIdeaAsUser() throws JSONException {
+		String shortDescription = "ShortDescription" + random;
+		String status = "new";
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("status", status);
+		requestParams.put("tags", "tag" + random);
+		requestParams.put("userId", userId.toString());
+		requestParams.put("header", "header" + random);
+		requestParams.put("mainPicture", "mainPicture" + random);
+		requestParams.put("shortDescription", shortDescription);
+		requestParams.put("fullDescription", "fullDescription" + random);
+		requestParams.put("pictureList", "pictureList" + random);
+		requestParams.put("rate", random);
+
+		String uri = baseUrl + "idea";
+		ideaId = Long.valueOf(RestTests.postAsUser(uri, requestParams, email, password).get("id").toString());
 		Idea idea = ideaRepository.findOne(Long.valueOf(ideaId));
 		assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
 		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
