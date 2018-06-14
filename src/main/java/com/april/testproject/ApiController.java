@@ -4,6 +4,7 @@ import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.dto.UserDto;
 import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
+import com.april.testproject.utils.*;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
+
+import static com.april.testproject.utils.Formatter.getCurrentTime;
 
 @Component
 @RestController
@@ -56,6 +60,8 @@ public class ApiController {
 		idea.setShortDescription(ideaDto.getShortDescription());
 		idea.setFullDescription(ideaDto.getFullDescription());
 		idea.setPictureList(ideaDto.getPictureList());
+		idea.setRate("0");
+		idea.setCreationDate(getCurrentTime());
 		ideaRepository.save(idea);
 		return idea;
 	}

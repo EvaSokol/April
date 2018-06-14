@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static com.april.testproject.utils.Formatter.getCurrentTime;
 import static junit.framework.TestCase.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -91,6 +92,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setShortDescription("Short Description" + random);
 		idea.setFullDescription("Full Description" + random);
 		idea.setPictureList("Picture List " + random);
+		idea.setRate(String.valueOf(random));
+		idea.setCreationDate(getCurrentTime());
 
 		ideaId = ideaRepository.save(idea).getId();
 		idea.print();
