@@ -275,12 +275,13 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertEquals(newIdeaId, Long.valueOf(result));
 	}
 
+	//TODO: Fix bug: find user which contains expected name as part
 	@Test(dependsOnMethods = "createUser", enabled = true)
 	public void getUserByName() throws JSONException {
 		User user = userRepository.findOne(userId);
 		String userName = user.getFirstName();
-		JSONObject requestParams = new JSONObject();
-		requestParams.put("firstName", userName);
+//		JSONObject requestParams = new JSONObject();
+//		requestParams.put("firstName", userName);
 
 		String uri = baseUrl + "getUserByName/" + user.getFirstName();
 		JsonPath response = RestTests.get(uri);
@@ -289,6 +290,23 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String newName = res.get(0);
 
 		assertEquals(userName, newName);
+
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void getUserByEmail() throws JSONException {
+		User user = userRepository.findOne(userId);
+		String email = user.getEmail();
+//		JSONObject requestParams = new JSONObject();
+//		requestParams.put("email", email);
+
+		String uri = baseUrl + "getUserByEmail/" + user.getEmail();
+		JsonPath response = RestTests.get(uri);
+
+		String res = response.get("email");
+		String newMail = res;
+
+		assertEquals(email, newMail);
 
 	}
 }

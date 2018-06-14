@@ -7,6 +7,8 @@ import com.april.testproject.entity.User;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,7 @@ public class ApiController {
 	@Autowired
 	private IdeaRepository ideaRepository;
 
+//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "user", consumes = "application/json")
 	public Object createUser(@Valid @RequestBody UserDto userDto) {
 		User user = new User();
@@ -125,5 +128,10 @@ public class ApiController {
 	@GetMapping(value = "getUserByName/{name}")
 	public List<User> getUserByName(@PathVariable("name") String name) {
 		return userRepository.findByFirstNameContaining(name);
+	}
+
+	@GetMapping(value = "getUserByEmail/{email}")
+	public User getUserByEmail(@PathVariable("email") String email) {
+		return userRepository.findByEmailContaining(email).get(0);
 	}
 }

@@ -21,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .cors().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/**").hasAnyRole("ADMIN", "USER")
                 .and().httpBasic().realmName("MY APP REALM")
