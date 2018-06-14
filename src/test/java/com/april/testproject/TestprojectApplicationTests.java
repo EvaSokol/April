@@ -178,6 +178,16 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void login(){
+		String uri = baseUrl + "login";
+		JsonPath response = RestTests.getAsUser(uri, email, password);
+
+		userId = Long.valueOf((response).get("id").toString());
+		User user = userRepository.findOne(Long.valueOf(userId));
+		assertTrue(user.getEmail().equalsIgnoreCase(String.valueOf(email)));
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
 	public void createIdea() throws JSONException {
 		String shortDescription = "ShortDescription" + random;
 		String status = "new";

@@ -1,5 +1,6 @@
 package com.april.testproject;
 
+import com.april.testproject.config.AppUserDetailsService;
 import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.dto.UserDto;
 import com.april.testproject.entity.Idea;
@@ -42,6 +43,12 @@ public class ApiController {
 		user.setCountry(userDto.getCountry());
 		user.setCity(userDto.getCity());
 		userRepository.save(user);
+		return user;
+	}
+
+	@GetMapping(value = "login", consumes = "application/json")
+	public Object login() {
+		User user = AppUserDetailsService.getUser();
 		return user;
 	}
 

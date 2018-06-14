@@ -14,6 +14,7 @@ import java.util.Arrays;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
+    protected static com.april.testproject.entity.User user;
 
     @Autowired
     private UserRepository repository;
@@ -23,8 +24,12 @@ public class AppUserDetailsService implements UserDetailsService {
             throws UsernameNotFoundException {
         com.april.testproject.entity.User activeUserInfo = repository.findByEmailContaining(email).get(0);
         GrantedAuthority authority = new SimpleGrantedAuthority(activeUserInfo.getRole());
-        return new User(activeUserInfo.getFirstName(),
+        this.user = repository.findByEmailContaining(email).get(0);
+        return new User(activeUserInfo.getEmail(),
                 activeUserInfo.getPassword(), Arrays.asList(authority));
     }
 
+	public static com.april.testproject.entity.User getUser() {
+		return user;
+	}
 }
