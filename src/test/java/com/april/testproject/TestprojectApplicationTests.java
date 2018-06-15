@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
@@ -95,6 +97,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setPictureList("Picture List " + random);
 		idea.setRate(random);
 		idea.setCreationDate(new Date());
+		idea.setPrice(new BigDecimal("333.0"));
+		idea.setWhoLiked("");
 
 		ideaId = ideaRepository.save(idea).getId();
 		idea.print();
@@ -209,6 +213,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("fullDescription", "fullDescription" + random);
 		requestParams.put("pictureList", "pictureList" + random);
 		requestParams.put("rate", random);
+		requestParams.put("price", new BigDecimal(random));
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.post(uri, requestParams).get("id").toString());
@@ -232,6 +237,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("fullDescription", "fullDescription" + random);
 		requestParams.put("pictureList", "pictureList" + random);
 		requestParams.put("rate", random);
+		requestParams.put("price", new BigDecimal(random));
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.postAsUser(uri, requestParams, email, password).get("id").toString());
@@ -322,6 +328,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setShortDescription("Short Description" + random);
 		idea.setFullDescription("Full Description" + random);
 		idea.setPictureList("Picture List " + random);
+		idea.setCreationDate(new Date());
+		idea.setPrice(new BigDecimal("333.0"));
 
 		Long newIdeaId = ideaRepository.save(idea).getId();
 		// Delete idea

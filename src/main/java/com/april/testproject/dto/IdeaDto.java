@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -23,5 +24,7 @@ public class IdeaDto {
 	private String pictureList;
 	private Date creationDate;
 	private int rate;
+	private BigDecimal price;
+	private String whoLiked;
 
 }

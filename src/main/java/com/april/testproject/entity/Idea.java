@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Comparator;
 
@@ -40,6 +41,8 @@ public class Idea implements Comparator<Idea> {
 	@Type(type="timestamp")
 	private Date creationDate;
 	private int rate;
+	private BigDecimal price;
+	private String whoLiked;
 
 	public void print() {
 		System.out.println("id:" + id);
