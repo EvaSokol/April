@@ -1,5 +1,6 @@
 package com.april.testproject;
 
+import com.april.testproject.config.AppUserDetailsService;
 import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.dto.UserDto;
 import com.april.testproject.entity.Idea;
@@ -7,11 +8,13 @@ import com.april.testproject.entity.User;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
+import static com.april.testproject.utils.ApiUtils.encryptPassword;
 
 @Component
 @RestController
@@ -23,14 +26,15 @@ public class ApiController {
 	@Autowired
 	private IdeaRepository ideaRepository;
 
-	@PostMapping(value = "user", consumes = "application/json")
+//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping(value = "registration", consumes = "application/json")
 	public Object createUser(@Valid @RequestBody UserDto userDto) {
 		User user = new User();
 		user.setFirstName(userDto.getFirstName());
 		user.setEmail(userDto.getEmail());
 		user.setRole(userDto.getRole());
 		user.setCountry(userDto.getCountry());
-		user.setPassword(userDto.getPassword());
+		user.setPassword(encryptPassword(userDto.getPassword()));
 		user.setTags(userDto.getTags());
 		user.setLastName(userDto.getLastName());
 		user.setAvatarPicture(userDto.getAvatarPicture());
@@ -39,6 +43,12 @@ public class ApiController {
 		user.setCountry(userDto.getCountry());
 		user.setCity(userDto.getCity());
 		userRepository.save(user);
+		return user;
+	}
+
+	@GetMapping(value = "login", consumes = "application/json")
+	public Object login() {
+		User user = AppUserDetailsService.getUser();
 		return user;
 	}
 
@@ -53,6 +63,8 @@ public class ApiController {
 		idea.setShortDescription(ideaDto.getShortDescription());
 		idea.setFullDescription(ideaDto.getFullDescription());
 		idea.setPictureList(ideaDto.getPictureList());
+		idea.setRate(0);
+		idea.setCreationDate(new Date());
 		ideaRepository.save(idea);
 		return idea;
 	}
@@ -125,5 +137,10 @@ public class ApiController {
 	@GetMapping(value = "getUserByName/{name}")
 	public List<User> getUserByName(@PathVariable("name") String name) {
 		return userRepository.findByFirstNameContaining(name);
+	}
+
+	@GetMapping(value = "getUserByEmail/{email}")
+	public User getUserByEmail(@PathVariable("email") String email) {
+		return userRepository.findByEmailContaining(email).get(0);
 	}
 }

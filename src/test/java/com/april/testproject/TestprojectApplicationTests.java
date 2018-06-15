@@ -13,9 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
+import java.util.Date;
 import java.util.List;
-
+import static com.april.testproject.utils.ApiUtils.encryptPassword;
 import static junit.framework.TestCase.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -34,20 +34,22 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	private int numberOfUsers;
 	private int numberOfIdeas;
 	private String password = "password123";
+	String email;
 	private String baseUrl = "http://localhost:8080/api/v1/";
 
 	@BeforeClass
 	public void init() {
 		random = (int) (Math.random() * 1000);
+		email = "testmail" + random + "@mail.test";
 		numberOfUsers = userRepository.findAll().size();
-//		numberOfIdeas = ideaRepository.findAll().size();
+		numberOfIdeas = ideaRepository.findAll().size();
 	}
 
 	@Test(enabled = true)
 	public void createUserFast() {
 		User user = new User();
 		user.setEmail("testmail" + random + "@mail.test");
-		user.setPassword(password);
+		user.setPassword(encryptPassword(password));
 		user.setRole(UserRoleEnum.ROLE_USER.toString());
 		user.setTags("tags" + random);
 		user.setFirstName("TestUser" + random);
@@ -91,6 +93,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setShortDescription("Short Description" + random);
 		idea.setFullDescription("Full Description" + random);
 		idea.setPictureList("Picture List " + random);
+		idea.setRate(random);
+		idea.setCreationDate(new Date());
 
 		ideaId = ideaRepository.save(idea).getId();
 		idea.print();
@@ -128,8 +132,26 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertEquals("amy@mail.test", email);
 	}
 
+	@Test(enabled = true)
+	public void getAllIdeas() {
+		String uri = baseUrl + "ideas";
+		JsonPath response = RestTests.get(uri);
+
+		List<Integer> idNumber = response.get("id");
+		assertEquals(numberOfIdeas, idNumber.size());
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void getUserById() {
+		String uri = baseUrl + "user/" + userId;
+		JsonPath response = RestTests.get(uri);
+
+		String currentEmail = response.get("email");
+		assertEquals(email, currentEmail);
+	}
+
 	@Test(dependsOnMethods = "createIdea", enabled = true)
-	public void getIdeaById() {
+	public void getIdeaByIdFast() {
 		Idea idea = ideaRepository.findOne(ideaId);
 		idea.print();
 		assertTrue(idea.getShortDescription().contains(String.valueOf(random)));
@@ -140,11 +162,10 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	public void createUser() throws Exception {
 		String country = "Some Country" + random;
 		String firstName = "Virender" + random;
-		String email = "testmail" + random + "@mail.test";
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("email", email);
 		requestParams.put("password", password);
-		requestParams.put("role", UserRoleEnum.ROLE_ADMIN);
+		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("tags", random);
 		requestParams.put("firstName", firstName);
 		requestParams.put("lastName", "TestLastName" + random);
@@ -155,12 +176,22 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("city", "Some City" + random);
 
 
-		String uri = baseUrl + "user";
-		JsonPath response = RestTests.post(uri, requestParams);
+		String uri = baseUrl + "registration";
+		JsonPath response = RestTests.postAsUser(uri, requestParams, "", "");
 		userId = Long.valueOf((response).get("id").toString());
 		User user = userRepository.findOne(Long.valueOf(userId));
-		assertTrue(user.getFirstName().equalsIgnoreCase(String.valueOf(firstName)));
-		assertTrue(user.getCountry().equalsIgnoreCase(String.valueOf(country)));
+		assertTrue(user.getFirstName().equalsIgnoreCase(firstName));
+		assertTrue(user.getCountry().equalsIgnoreCase(country));
+		assertTrue(user.getEmail().equalsIgnoreCase(email));
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void login(){
+		String uri = baseUrl + "login";
+		JsonPath response = RestTests.getAsUser(uri, email, password);
+
+		userId = Long.valueOf((response).get("id").toString());
+		User user = userRepository.findOne(Long.valueOf(userId));
 		assertTrue(user.getEmail().equalsIgnoreCase(String.valueOf(email)));
 	}
 
@@ -177,9 +208,33 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("shortDescription", shortDescription);
 		requestParams.put("fullDescription", "fullDescription" + random);
 		requestParams.put("pictureList", "pictureList" + random);
+		requestParams.put("rate", random);
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.post(uri, requestParams).get("id").toString());
+		Idea idea = ideaRepository.findOne(Long.valueOf(ideaId));
+		assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
+		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
+		assertTrue(idea.getUserId().equals(String.valueOf(userId)));
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void createIdeaAsUser() throws JSONException {
+		String shortDescription = "ShortDescription" + random;
+		String status = "new";
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("status", status);
+		requestParams.put("tags", "tag" + random);
+		requestParams.put("userId", userId.toString());
+		requestParams.put("header", "header" + random);
+		requestParams.put("mainPicture", "mainPicture" + random);
+		requestParams.put("shortDescription", shortDescription);
+		requestParams.put("fullDescription", "fullDescription" + random);
+		requestParams.put("pictureList", "pictureList" + random);
+		requestParams.put("rate", random);
+
+		String uri = baseUrl + "idea";
+		ideaId = Long.valueOf(RestTests.postAsUser(uri, requestParams, email, password).get("id").toString());
 		Idea idea = ideaRepository.findOne(Long.valueOf(ideaId));
 		assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
 		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
@@ -245,12 +300,12 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("country", country);
 		requestParams.put("city", "Some City" + random);
 
-		String uri = baseUrl + "user";
+		String uri = baseUrl + "registration";
 		JsonPath response = RestTests.post(uri, requestParams);
 		Long newUserId = Long.valueOf((response).get("id").toString());
 
 		//Delete user
-		uri += "/" + newUserId;
+		uri = baseUrl + "user/" + newUserId;
 		String result = RestTests.delete(uri);
 		assertEquals(newUserId, Long.valueOf(result));
 	}
@@ -275,12 +330,11 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertEquals(newIdeaId, Long.valueOf(result));
 	}
 
+	//TODO: Fix bug: find user which contains expected name as part
 	@Test(dependsOnMethods = "createUser", enabled = true)
-	public void getUserByName() throws JSONException {
+	public void getUserByName(){
 		User user = userRepository.findOne(userId);
 		String userName = user.getFirstName();
-		JSONObject requestParams = new JSONObject();
-		requestParams.put("firstName", userName);
 
 		String uri = baseUrl + "getUserByName/" + user.getFirstName();
 		JsonPath response = RestTests.get(uri);
@@ -289,6 +343,21 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String newName = res.get(0);
 
 		assertEquals(userName, newName);
+
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void getUserByEmail(){
+		User user = userRepository.findOne(userId);
+		String email = user.getEmail();
+
+		String uri = baseUrl + "getUserByEmail/" + user.getEmail();
+		JsonPath response = RestTests.get(uri);
+
+		String res = response.get("email");
+		String newMail = res;
+
+		assertEquals(email, newMail);
 
 	}
 }

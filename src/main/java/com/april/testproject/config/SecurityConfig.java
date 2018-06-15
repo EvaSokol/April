@@ -13,23 +13,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private AppUserDetailsService myAppUserDetailsService;
-    @Autowired
-    private AppAuthenticationEntryPoint appAuthenticationEntryPoint;
+	@Autowired
+	private AppUserDetailsService myAppUserDetailsService;
+	@Autowired
+	private AppAuthenticationEntryPoint appAuthenticationEntryPoint;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/v1/**").hasAnyRole("ADMIN", "USER")
-                .and().httpBasic().realmName("MY APP REALM")
-                .authenticationEntryPoint(appAuthenticationEntryPoint);
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable()
+						.cors().disable()
+						.authorizeRequests()
+						.antMatchers("/api/v1/registration").permitAll()
+						.antMatchers("/api/v1/idea").hasAnyRole("USER", "ADMIN")
+						.antMatchers("/api/v1/login").hasAnyRole("USER", "ADMIN")
+						.antMatchers("/api/v1/**").hasAnyRole("ADMIN")
+						.and().httpBasic().realmName("MY APP REALM")
+						.authenticationEntryPoint(appAuthenticationEntryPoint);
+	}
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        auth.userDetailsService(myAppUserDetailsService).passwordEncoder(passwordEncoder);
-    }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		auth.userDetailsService(myAppUserDetailsService).passwordEncoder(passwordEncoder);
+	}
 }
