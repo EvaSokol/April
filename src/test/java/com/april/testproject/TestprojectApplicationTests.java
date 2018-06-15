@@ -34,14 +34,15 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	private int numberOfUsers;
 	private int numberOfIdeas;
 	private String password = "password123";
-	String email = "testmail" + random + "@mail.test";
+	String email;
 	private String baseUrl = "http://localhost:8080/api/v1/";
 
 	@BeforeClass
 	public void init() {
 		random = (int) (Math.random() * 1000);
+		email = "testmail" + random + "@mail.test";
 		numberOfUsers = userRepository.findAll().size();
-//		numberOfIdeas = ideaRepository.findAll().size();
+		numberOfIdeas = ideaRepository.findAll().size();
 	}
 
 	@Test(enabled = true)
@@ -136,14 +137,21 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String uri = baseUrl + "ideas";
 		JsonPath response = RestTests.get(uri);
 
-		List<Integer> rates = response.get("rate");
-		for (Integer rate : rates) {
-			System.out.println(rate);
-		}
+		List<Integer> idNumber = response.get("id");
+		assertEquals(numberOfIdeas, idNumber.size());
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void getUserById() {
+		String uri = baseUrl + "user/" + userId;
+		JsonPath response = RestTests.get(uri);
+
+		String currentEmail = response.get("email");
+		assertEquals(email, currentEmail);
 	}
 
 	@Test(dependsOnMethods = "createIdea", enabled = true)
-	public void getIdeaById() {
+	public void getIdeaByIdFast() {
 		Idea idea = ideaRepository.findOne(ideaId);
 		idea.print();
 		assertTrue(idea.getShortDescription().contains(String.valueOf(random)));
@@ -172,9 +180,9 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JsonPath response = RestTests.postAsUser(uri, requestParams, "", "");
 		userId = Long.valueOf((response).get("id").toString());
 		User user = userRepository.findOne(Long.valueOf(userId));
-		assertTrue(user.getFirstName().equalsIgnoreCase(String.valueOf(firstName)));
-		assertTrue(user.getCountry().equalsIgnoreCase(String.valueOf(country)));
-		assertTrue(user.getEmail().equalsIgnoreCase(String.valueOf(email)));
+		assertTrue(user.getFirstName().equalsIgnoreCase(firstName));
+		assertTrue(user.getCountry().equalsIgnoreCase(country));
+		assertTrue(user.getEmail().equalsIgnoreCase(email));
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
