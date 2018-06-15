@@ -100,7 +100,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertEquals(ideaRepository.findAll().size(), numberOfIdeas + 1);
 	}
 
-	@Test
+	@Test(dependsOnMethods = "createIdeaFast")
 	public void getAllIdeasFast() {
 		List<Idea> ideas = ideaRepository.findAll();
 		for (Idea idea : ideas) {
