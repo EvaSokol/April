@@ -169,7 +169,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("email", email);
 		requestParams.put("password", password);
-		requestParams.put("role", UserRoleEnum.ROLE_USER);
+//		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("tags", random);
 		requestParams.put("firstName", firstName);
 		requestParams.put("lastName", "TestLastName" + random);
@@ -296,7 +296,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("email", email);
 		requestParams.put("password", password);
-		requestParams.put("role", UserRoleEnum.ROLE_USER);
+//		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("tags", random);
 		requestParams.put("firstName", firstName);
 		requestParams.put("lastName", "TestLastName" + random);

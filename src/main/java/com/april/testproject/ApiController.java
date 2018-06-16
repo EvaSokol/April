@@ -5,6 +5,7 @@ import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.dto.UserDto;
 import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
+import com.april.testproject.entity.UserRoleEnum;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ApiController {
 		User user = new User();
 		user.setFirstName(userDto.getFirstName());
 		user.setEmail(userDto.getEmail());
-		user.setRole(userDto.getRole());
+		user.setRole(UserRoleEnum.ROLE_USER.toString());
 		user.setCountry(userDto.getCountry());
 		user.setPassword(encryptPassword(userDto.getPassword()));
 		user.setTags(userDto.getTags());
