@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -23,76 +24,7 @@ public class IdeaDto {
 	private String pictureList;
 	private Date creationDate;
 	private int rate;
+	private BigDecimal price;
+	private String whoLiked;
 
-//	public String getTags() {
-//		return tags;
-//	}
-//
-//	public void setTags(String tags) {
-//		this.tags = tags;
-//	}
-//
-//	public String getHeader() {
-//		return header;
-//	}
-//
-//	public void setHeader(String header) {
-//		this.header = header;
-//	}
-//
-//	public String getMainPicture() {
-//		return mainPicture;
-//	}
-//
-//	public void setMainPicture(String mainPicture) {
-//		this.mainPicture = mainPicture;
-//	}
-//
-//	public String getFullDescription() {
-//		return fullDescription;
-//	}
-//
-//	public void setFullDescription(String fullDescription) {
-//		this.fullDescription = fullDescription;
-//	}
-//
-//	public String getPictureList() {
-//		return pictureList;
-//	}
-//
-//	public void setPictureList(String pictureList) {
-//		this.pictureList = pictureList;
-//	}
-//
-//	public Long getId() {
-//		return id;
-//	}
-//
-//	public void setId(Long id) {
-//		this.id = id;
-//	}
-//
-//	public String getShortDescription() {
-//		return shortDescription;
-//	}
-//
-//	public void setShortDescription(String shortDescription) {
-//		this.shortDescription = shortDescription;
-//	}
-//
-//	public String getStatus() {
-//		return status;
-//	}
-//
-//	public void setStatus(String status) {
-//		this.status = status;
-//	}
-//
-//	public String getUserId() {
-//		return userId;
-//	}
-//
-//	public void setUserId(String userId) {
-//		this.userId = userId;
-//	}
 }

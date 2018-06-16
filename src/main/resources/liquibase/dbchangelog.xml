@@ -19,7 +19,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="tags" type="varchar(60)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="first_name" type="varchar(50)">
                 <constraints nullable="false"/>
@@ -28,19 +28,19 @@
                 <constraints nullable="false"/>
             </column>
             <column name="avatar_picture" type="varchar(200)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="about_user" type="varchar(200)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="about_company" type="varchar(200)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="country" type="varchar(50)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="city" type="varchar(30)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
 
         </createTable>
@@ -73,5 +73,84 @@
         </sql>
     </changeSet>
 
-
+    <changeSet id="20180615-1" author="AlexRazumenko">
+        <validCheckSum>8:3e2422e688175650122443372dc7a2da</validCheckSum>
+        <createTable tableName="ideas">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tags" type="varchar(128)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="user_id" type="varchar(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="header" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="main_picture" type="varchar(128)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="short_description" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="full_description" type="varchar(512)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="picture_list" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="creation_date" type="timestamp" valueDate="CURRENT_TIMESTAMP">
+                <!--  valueDate="CURRENT_TIMESTAMP" -->
+                <constraints nullable="false"/>
+            </column>
+            <column name="rate" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="who_liked" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="AlexRazumenko" id="20180615-2">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.ideas
+            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('1', 'accepted', 'tag1', '2', 'new Power plant', 'picture2', 'new Power plant to be built in Odessa','new 1000 MWt 330 kV wind Power plant to be built in Odessa', 'pictureList2', '2018-06-15 22:34:58.034', '0', '999', '1,2,3')
+        </sql>
+    </changeSet>
+    <changeSet author="AlexRazumenko" id="20180615-3">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.ideas
+            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('2', 'accepted', 'tag2', '3', 'приложения для родителей', 'picture3', 'Идея по созданию нового приложения для молодых родителей', 'В нашем приложении Вы найдете только проверенную информацию от педиатров и экспертов и сможете сделать выводы для себя самостоятельно. Помимо раздела с советами молодым родителям мы предлагаем Вам функцию "Режим не нарушал?" - приложение будет подсказывать Вам, когда какие продукты питания можно вводить малышу и составлять план на день.', 'pictureList2', '2018-06-15 22:34:58.034', '1', '999', '1,2,3')
+        </sql>
+    </changeSet>
+    <changeSet author="AlexRazumenko" id="20180615-4">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.ideas
+            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('3', 'accepted', 'tag2', '3', 'Иду в президенты Украины!', 'picture3', 'Не могу с равнодушием смотреть на то, что происходит вокруг, поэтому я решил действовать.', 'я вижу своей целью создать приток инвестиций, который заведет мотор нашей экономики и создаст новые рабочие места. Давайте вместе сдвинем все с мертвой точки! Поддержите меня!', 'pictureList3', '2018-06-15 22:34:58.034', '2', '999', '1,2,3')
+        </sql>
+    </changeSet>
+    <changeSet author="AlexRazumenko" id="20180615-5">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.ideas
+            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('4', 'accepted', 'tag2', '5', 'shelter for homeless animals in Russia', 'picture5', 'Give a chance for animals that can`t take care of themselves!', 'Our project consists of several parts: a. construction of shelter; b. construction of veterinary clinic; c. construction of the hotel for animals. We are planning to become self-sufficiency and in future we won`t need the donations, but right now we need a support for quick start', 'pictureList5', '2018-06-15 22:34:58.034', '3', '999', '1,2,3')
+        </sql>
+    </changeSet>
+    <changeSet author="AlexRazumenko" id="20180615-6">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.ideas
+            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('5', 'accepted', 'tag2', '7', 'Создание фильма "Вы не поверите, но раньше..."', 'picture7', 'Давайте вместе создадим фильм-ностальгию о 80-ых, 90-ых гг., когда проходило наше детство!', 'создать мемуарный фильм, который рассказал бы современным детям о нашем детстве: кассеты, перематывающиеся карандашом, запись песен с радио, дисковые телефоны, научные библиотеки, куда приходил и заказывал литературу - и только через 2 дня!!!', 'pictureList7', '2018-06-15 22:34:58.034', '4', '999', '1,2,3')
+        </sql>
+    </changeSet>
 </databaseChangeLog>

@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Data
@@ -50,97 +48,7 @@ public class User implements Serializable {
 		System.out.println("---------------------------");
 	}
 
-//	public String getLastName() {
-//		return lastName;
-//	}
-//
-//	public void setLastName(String lastName) {
-//		this.lastName = lastName;
-//	}
 
-//	public String getAvatarPicture() {
-//		return avatarPicture;
-//	}
-//
-//	public void setAvatarPicture(String avaterPicture) {
-//		this.avatarPicture = avaterPicture;
-//	}
-//
-//	public String getAboutUser() {
-//		return aboutUser;
-//	}
-//
-//	public void setAboutUser(String aboutUser) {
-//		this.aboutUser = aboutUser;
-//	}
-//
-//	public String getAboutCompany() {
-//		return aboutCompany;
-//	}
-//
-//	public void setAboutCompany(String aboutCompany) {
-//		this.aboutCompany = aboutCompany;
-//	}
-//
-//	public String getCity() {
-//		return city;
-//	}
-//
-//	public void setCity(String city) {
-//		this.city = city;
-//	}
-//
-//	public String getTags() {
-//		return tags;
-//	}
-//
-//	public void setTags(String tags) {
-//		this.tags = tags;
-//	}
-//
-//	public String getPassword() {
-//		return password;
-//	}
-//
-//	public void setPassword(String password) {
-//		this.password = password;
-//	}
-//
-//	public Long getId() {
-//		return id;
-//	}
-//
-//	public String getFirstName() {
-//		return firstName;
-//	}
-//
-//	public void setFirstName(String firstName) {
-//		this.firstName = firstName;
-//	}
-//
-//	public String getCountry() {
-//		return country;
-//	}
-//
-//	public void setCountry(String country) {
-//		this.country = country;
-//	}
-//
-//	public String getRole() {
-//		return role;
-//	}
-//
-//	public void setRole(String role) {
-//		this.role = role;
-//	}
-//
-//	public String getEmail() {
-//		return email;
-//	}
-//
-//	public void setEmail(String email) {
-//		this.email = email;
-//	}
 }
 
 

@@ -59,12 +59,16 @@ public class ApiController {
 		idea.setTags(ideaDto.getTags());
 		idea.setUserId(ideaDto.getUserId());
 		idea.setHeader(ideaDto.getHeader());
-		idea.setMainPicture(ideaDto.getMainPicture());
+		if (ideaDto.getMainPicture() != null) idea.setMainPicture(ideaDto.getMainPicture());
+			else idea.setMainPicture("");
 		idea.setShortDescription(ideaDto.getShortDescription());
 		idea.setFullDescription(ideaDto.getFullDescription());
-		idea.setPictureList(ideaDto.getPictureList());
+		if (ideaDto.getPictureList() != null) idea.setPictureList(ideaDto.getPictureList());
+			else idea.setPictureList("");
 		idea.setRate(0);
 		idea.setCreationDate(new Date());
+		idea.setPrice(ideaDto.getPrice());
+		idea.setWhoLiked("");
 		ideaRepository.save(idea);
 		return idea;
 	}
@@ -118,6 +122,8 @@ public class ApiController {
 		if (ideaDto.getShortDescription() != null) idea.setShortDescription(ideaDto.getShortDescription());
 		if (ideaDto.getFullDescription() != null) idea.setFullDescription(ideaDto.getFullDescription());
 		if (ideaDto.getPictureList() != null) idea.setPictureList(ideaDto.getPictureList());
+		if (ideaDto.getPrice() != null) idea.setPrice(ideaDto.getPrice());
+		if (ideaDto.getWhoLiked() != null) idea.setWhoLiked(ideaDto.getWhoLiked());
 		ideaRepository.save(idea);
 		return idea;
 	}
