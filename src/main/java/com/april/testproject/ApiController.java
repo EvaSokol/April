@@ -4,17 +4,19 @@ import com.april.testproject.config.AppUserDetailsService;
 import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.dto.UserDto;
 import com.april.testproject.entity.Idea;
+import com.april.testproject.entity.Tag;
 import com.april.testproject.entity.User;
 import com.april.testproject.entity.UserRoleEnum;
 import com.april.testproject.repository.IdeaRepository;
+import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
 
 @Component
@@ -26,6 +28,9 @@ public class ApiController {
 
 	@Autowired
 	private IdeaRepository ideaRepository;
+
+	@Autowired
+	private TagRepository tagRepository;
 
 //@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "registration", consumes = "application/json")
@@ -57,7 +62,6 @@ public class ApiController {
 	public Object createIdea(@RequestBody IdeaDto ideaDto) {
 		Idea idea = new Idea();
 		idea.setStatus(ideaDto.getStatus());
-		idea.setTags(ideaDto.getTags());
 		idea.setUserId(ideaDto.getUserId());
 		idea.setHeader(ideaDto.getHeader());
 		if (ideaDto.getMainPicture() != null) idea.setMainPicture(ideaDto.getMainPicture());
@@ -70,7 +74,9 @@ public class ApiController {
 		idea.setCreationDate(new Date());
 		idea.setPrice(ideaDto.getPrice());
 		idea.setWhoLiked("");
-		ideaRepository.save(idea);
+		Set<Tag> tags = getTags(ideaDto.getTags());
+		idea.setTags(tags);
+		ideaRepository.save(idea).getId();
 		return idea;
 	}
 
@@ -116,7 +122,7 @@ public class ApiController {
 		Long id = ideaDto.getId();
 		Idea idea = ideaRepository.findOne(id);
 		if (ideaDto.getStatus() != null) idea.setStatus(ideaDto.getStatus());
-		if (ideaDto.getTags() != null) idea.setTags(ideaDto.getTags());
+//		if (ideaDto.getTags() != null) idea.setTags(ideaDto.getTags());
 		if (ideaDto.getUserId() != null) idea.setUserId(ideaDto.getUserId());
 		if (ideaDto.getHeader() != null) idea.setHeader(ideaDto.getHeader());
 		if (ideaDto.getMainPicture() != null) idea.setMainPicture(ideaDto.getMainPicture());
@@ -149,5 +155,17 @@ public class ApiController {
 	@GetMapping(value = "getUserByEmail/{email}")
 	public User getUserByEmail(@PathVariable("email") String email) {
 		return userRepository.findByEmailContaining(email).get(0);
+	}
+
+	private Set<Tag> getTags(String tagString) {
+		if (tagString == null) return null;
+		List strings = Arrays.asList(tagString.split(","));
+		Set<String> tagNameSet = new HashSet<>();
+		if (strings.size() != 0) tagNameSet.addAll(strings);
+		Set<Tag> tags = new HashSet<>();
+		for (String tagName : tagNameSet){
+			tags.add(tagRepository.findByTagName(tagName).get(0));
+		}
+		return tags;
 	}
 }

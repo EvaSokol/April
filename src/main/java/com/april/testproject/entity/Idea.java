@@ -8,8 +8,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Comparator;
+import java.util.*;
 
 @Entity
 @Data
@@ -25,7 +24,18 @@ public class Idea implements Comparator<Idea> {
 	private Long id;
 
 	private String status;
-	private String tags;
+
+	@ManyToMany(fetch = FetchType.LAZY
+					, cascade = {
+									CascadeType.PERSIST
+									, CascadeType.MERGE
+								}
+					)
+	@JoinTable(name = "ideas_tags",
+					joinColumns = @JoinColumn(name = "idea_id") ,
+					inverseJoinColumns = @JoinColumn(name = "tag_id"),
+					uniqueConstraints = @UniqueConstraint(columnNames={"idea_id", "tag_id"}))
+	private Set<Tag> tags = new HashSet<>();
 
 	@NotEmpty
 	@Column(name = "user_id")
@@ -51,6 +61,7 @@ public class Idea implements Comparator<Idea> {
 		System.out.println("shortDescription:" + shortDescription);
 		System.out.println("status:" + status);
 		System.out.println("userId:" + userId);
+//		System.out.println("tags:" + tagIds);
 		System.out.println("---------------------------");
 	}
 
