@@ -42,29 +42,33 @@
             <column name="city" type="varchar(30)">
                 <constraints nullable="true"/>
             </column>
+            <column name="reg_date" type="timestamp" valueDate="CURRENT_TIMESTAMP">
+                <!--  valueDate="CURRENT_TIMESTAMP" -->
+                <constraints nullable="false"/>
+            </column>
 
         </createTable>
     </changeSet>
     <changeSet author="EvaSokolyanskaya" id="20180529-0">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.users
-            (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city) values
-            ('1', 'amy@mail.test', '$2a$10$MHEjf46YXYz7MiXQweGByuGrCs6OU3w1OyrwkDi.cs8bjAry7M2Pa', 'ROLE_ADMIN', 'tag1,tag2,tag3', 'Amy', 'LastAmy', 'avatar', 'About User', 'About Company', 'Italy', 'Rome')
+            (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city ,reg_date) values
+            ('1', 'amy@mail.test', '$2a$10$MHEjf46YXYz7MiXQweGByuGrCs6OU3w1OyrwkDi.cs8bjAry7M2Pa', 'ROLE_ADMIN', 'tag1,tag2,tag3', 'Amy', 'LastAmy', 'avatar', 'About User', 'About Company', 'Italy', 'Rome', '2018-06-15 22:34:58.034')
             <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
         </sql>
     </changeSet>
     <changeSet author="EvaSokolyanskaya" id="20180529-2">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.users
-            (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city) values
-            ('2', 'kim@mail.test', '$2a$10$FwFJEreSyUeo0Ri5PZ.MF.ZzXoxOO84xdXSdRVeB4f5UlBYrbrYRq', 'ROLE_ADMIN', 'Kim', 'tag1,tag2,tag3', 'Jon In', 'avatar', 'About User', 'About Company', 'Italy', 'Rome')
+            (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city ,reg_date) values
+            ('2', 'kim@mail.test', '$2a$10$FwFJEreSyUeo0Ri5PZ.MF.ZzXoxOO84xdXSdRVeB4f5UlBYrbrYRq', 'ROLE_ADMIN', 'Kim', 'tag1,tag2,tag3', 'Jon In', 'avatar', 'About User', 'About Company', 'Italy', 'Rome', '2018-06-15 22:34:58.034')
         </sql>
     </changeSet>
     <changeSet author="EvaSokolyanskaya" id="20180529-3">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.users
-            (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city) values
-            ('3', 'admin@mail.test', '$2a$10$UINtn7n5MhfSuYIamN36s./oKDJC/2dkyLI.0xEdIVpeHmA.Fx246', 'ROLE_ADMIN', 'tag1,tag2,tag3', 'admin', 'LastAdminName', 'Admin Avatar', 'About Admin', 'About Company', 'Admin Country', 'Admin City')
+            (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city ,reg_date) values
+            ('3', 'admin@mail.test', '$2a$10$UINtn7n5MhfSuYIamN36s./oKDJC/2dkyLI.0xEdIVpeHmA.Fx246', 'ROLE_ADMIN', 'tag1,tag2,tag3', 'admin', 'LastAdminName', 'Admin Avatar', 'About Admin', 'About Company', 'Admin Country', 'Admin City', '2018-06-15 22:34:58.034')
         </sql>
     </changeSet>
 

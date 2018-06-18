@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Data
@@ -37,6 +38,7 @@ public class User implements Serializable {
 	private String aboutCompany;
 	private String country;
 	private String city;
+	private Date regDate;
 
 	public void print() {
 		System.out.println("id:" + id);

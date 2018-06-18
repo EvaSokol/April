@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Data
 @Getter
 @Setter
@@ -22,6 +24,6 @@ public class UserDto {
 	private String aboutCompany;
 	private String country;
 	private String city;
-
+	private Date regDate;
 
 }

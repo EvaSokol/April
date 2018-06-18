@@ -65,6 +65,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		user.setAboutCompany("About Company " + random);
 		user.setCountry("Some Country" + random);
 		user.setCity("Some City" + random);
+		user.setRegDate(new Date());
 		userId = userRepository.save(user).getId();
 		user.print();
 		assertEquals("Amy", userRepository.findAll().get(0).getFirstName());

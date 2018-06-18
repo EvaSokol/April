@@ -47,6 +47,7 @@ public class ApiController {
 		user.setAboutCompany(userDto.getAboutCompany());
 		user.setCountry(userDto.getCountry());
 		user.setCity(userDto.getCity());
+		user.setRegDate(new Date());
 		userRepository.save(user);
 		return user;
 	}
