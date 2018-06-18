@@ -5,11 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Eva Sokolyanskaya on 17/06/2018.
@@ -29,11 +26,4 @@ public class Tag {
 	@NaturalId
 	private String name;
 
-//	@ManyToMany(fetch = FetchType.LAZY,
-//					cascade = {
-//									CascadeType.PERSIST,
-//									CascadeType.MERGE
-//					},
-//					mappedBy = "tags")
-//	private Set<Idea> ideas;
 }

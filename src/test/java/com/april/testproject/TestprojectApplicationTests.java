@@ -15,10 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.math.BigDecimal;
 import java.util.*;
-
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
 import static junit.framework.TestCase.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
@@ -176,7 +174,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("email", email);
 		requestParams.put("password", password);
-//		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("tags", random);
 		requestParams.put("firstName", firstName);
 		requestParams.put("lastName", "TestLastName" + random);
@@ -185,7 +182,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("aboutCompany", "About Company " + random);
 		requestParams.put("country", country);
 		requestParams.put("city", "Some City" + random);
-
 
 		String uri = baseUrl + "registration";
 		JsonPath response = RestTests.postAsUser(uri, requestParams, "", "");
@@ -236,7 +232,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String status = "new";
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("status", status);
-//		requestParams.put("tags", "tag" + random);
 		requestParams.put("userId", userId.toString());
 		requestParams.put("header", "header" + random);
 		requestParams.put("mainPicture", "mainPicture" + random);
@@ -304,7 +299,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("email", email);
 		requestParams.put("password", password);
-//		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("tags", random);
 		requestParams.put("firstName", firstName);
 		requestParams.put("lastName", "TestLastName" + random);
@@ -329,7 +323,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		// Create idea to delete
 		Idea idea = new Idea();
 		idea.setStatus("new");
-//		idea.setTags("tags" + random);
 		idea.setUserId(userId.toString());
 		idea.setHeader("Header" + random);
 		idea.setMainPicture("Main Picture " + random);

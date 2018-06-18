@@ -15,7 +15,6 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
-//@NamedQuery(name = "IdeaRepository.findByUserId", query = "SELECT i FROM ideas i WHERE i.user_id = ?1")
 @Table(name = "ideas")
 public class Idea implements Comparator<Idea> {
 

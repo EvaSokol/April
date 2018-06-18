@@ -10,14 +10,9 @@ import com.april.testproject.entity.UserRoleEnum;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
-import com.april.testproject.utils.ApiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.*;
 
@@ -141,7 +136,6 @@ public class ApiController {
 		Long id = ideaDto.getId();
 		Idea idea = ideaRepository.findOne(id);
 		if (ideaDto.getStatus() != null) idea.setStatus(ideaDto.getStatus());
-//		if (ideaDto.getTags() != null) idea.setTags(ideaDto.getTags());
 		if (ideaDto.getUserId() != null) idea.setUserId(ideaDto.getUserId());
 		if (ideaDto.getHeader() != null) idea.setHeader(ideaDto.getHeader());
 		if (ideaDto.getMainPicture() != null) idea.setMainPicture(ideaDto.getMainPicture());

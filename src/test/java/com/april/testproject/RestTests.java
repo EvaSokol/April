@@ -5,7 +5,6 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Created by Eva Sokolyanskaya on 05/05/2018.
@@ -45,16 +44,6 @@ public class RestTests {
 //		return method("delete", uri, null, login, password);
 //	}
 
-//	public static JsonPath get(String uri) {
-//		RestAssured.baseURI = uri;
-//		RequestSpecification request = RestAssured.given();
-//		request.contentType("application/json");
-//		request.authentication().basic("admin@mail.test", "admin");
-//		Response response = request.get();
-//		JsonPath jsonPathEvaluator = response.jsonPath();
-//		return jsonPathEvaluator;
-//	}
-
 	static JsonPath get(String uri) {
 		return method("get", uri, null,"admin@mail.test", "admin");
 	}
@@ -62,16 +51,6 @@ public class RestTests {
 	static JsonPath getAsUser(String uri, String login, String password) {
 		return method("get", uri, null, login, password);
 	}
-
-//	public static JsonPath getAsUser(String uri, String login, String password) {
-//		RestAssured.baseURI = uri;
-//		RequestSpecification request = RestAssured.given();
-//		request.contentType("application/json");
-//		request.authentication().basic(login, password);
-//		Response response = request.get();
-//		JsonPath jsonPathEvaluator = response.jsonPath();
-//		return jsonPathEvaluator;
-//	}
 
 	static JsonPath method(String method, String uri, JSONObject jsonObject, String login, String password) {
 		RestAssured.baseURI = uri;
