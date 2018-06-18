@@ -106,7 +106,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setWhoLiked("");
 //		Set<Tag> tags = getTags("innovations");
 //		idea.getTags().addAll(tags);
-		ideaId = ideaRepository.save(idea).getId();
+		ideaRepository.save(idea).getId();
 		idea.print();
 		assertEquals(ideaRepository.findAll().size(), numberOfIdeas + 1);
 	}
@@ -413,6 +413,17 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		String res = response.get("name");
 		assertEquals("it", res);
+	}
+
+	@Test(dependsOnMethods = "createIdea", enabled = true)
+	public void getTagsByIdeaId() {
+		String uri = baseUrl + "getTagsByIdeaId/" + ideaId;
+		JsonPath response = RestTests.get(uri);
+
+		List<String> res = response.get();
+		assertTrue(res.contains("charity"));
+		assertTrue(res.contains("it"));
+		assertEquals(2, res.size());
 	}
 
 	private Set<Tag> getTags(String tagString) {

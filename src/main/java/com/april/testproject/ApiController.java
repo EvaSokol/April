@@ -10,10 +10,14 @@ import com.april.testproject.entity.UserRoleEnum;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
+import com.april.testproject.utils.ApiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.*;
 
@@ -115,6 +119,11 @@ public class ApiController {
 		return ideaRepository.findByUserId(userId);
 	}
 
+	@GetMapping(value = "getTagsByIdeaId/{ideaId}", consumes = "application/json")
+	public List<String> getTagsByIdeaId(@PathVariable("ideaId") String ideaId) {
+		return ideaRepository.getOne(Long.valueOf(ideaId)).getTags();
+	}
+
 	@PutMapping(value = "user", consumes = "application/json")
 	public Object updateUser(@Valid @RequestBody UserDto userDto) {
 		Long id = userDto.getId();
@@ -178,4 +187,5 @@ public class ApiController {
 		}
 		return tags;
 	}
+
 }
