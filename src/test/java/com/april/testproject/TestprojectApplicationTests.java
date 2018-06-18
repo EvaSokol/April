@@ -41,6 +41,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	private String password = "password123";
 	String email;
 	private String baseUrl = "http://localhost:8080/api/v1/";
+	private String header = "Some test header";
 
 	@BeforeClass
 	public void init() {
@@ -93,7 +94,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setStatus("new");
 
 		idea.setUserId(userId.toString());
-		idea.setHeader("Header" + random);
+		idea.setHeader(header + random);
 		idea.setMainPicture("Main Picture " + random);
 		idea.setShortDescription("Short Description" + random);
 		idea.setFullDescription("Full Description" + random);
@@ -160,6 +161,15 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	@Test(dependsOnMethods = "createIdea", enabled = true)
+	public void getIdeasByHeader() {
+		String uri = baseUrl + "getIdeasByHeader/" + random;
+		JsonPath response = RestTests.get(uri);
+
+		List<Long> foundIdeaIds = response.get("id");
+		assertTrue((foundIdeaIds.toString()).contains(ideaId.toString()));
+	}
+
+	@Test(dependsOnMethods = "createIdea", enabled = true)
 	public void getIdeaByIdFast() {
 		Idea idea = ideaRepository.findOne(ideaId);
 		idea.print();
@@ -209,7 +219,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("status", status);
 		requestParams.put("userId", userId.toString());
-		requestParams.put("header", "header" + random);
+		requestParams.put("header", header + random);
 		requestParams.put("mainPicture", "mainPicture" + random);
 		requestParams.put("shortDescription", shortDescription);
 		requestParams.put("fullDescription", "fullDescription" + random);
@@ -233,7 +243,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("status", status);
 		requestParams.put("userId", userId.toString());
-		requestParams.put("header", "header" + random);
+		requestParams.put("header", header + random);
 		requestParams.put("mainPicture", "mainPicture" + random);
 		requestParams.put("shortDescription", shortDescription);
 		requestParams.put("fullDescription", "fullDescription" + random);
@@ -326,7 +336,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		Idea idea = new Idea();
 		idea.setStatus("new");
 		idea.setUserId(userId.toString());
-		idea.setHeader("Header" + random);
+		idea.setHeader(header + random);
 		idea.setMainPicture("Main Picture " + random);
 		idea.setShortDescription("Short Description" + random);
 		idea.setFullDescription("Full Description" + random);

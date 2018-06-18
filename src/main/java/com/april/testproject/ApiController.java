@@ -112,6 +112,11 @@ public class ApiController {
 		return ideaRepository.findByUserId(userId);
 	}
 
+	@GetMapping(value = "getIdeasByHeader/{word}", consumes = "application/json")
+	public List<Idea> getIdeasByHeader(@PathVariable("word") String word) {
+		return ideaRepository.findInHeader(word);
+	}
+
 	@GetMapping(value = "getTagsByIdeaId/{ideaId}", consumes = "application/json")
 	public List<String> getTagsByIdeaId(@PathVariable("ideaId") String ideaId) {
 		return ideaRepository.getOne(Long.valueOf(ideaId)).getTags();
