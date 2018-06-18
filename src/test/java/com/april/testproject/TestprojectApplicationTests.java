@@ -264,12 +264,14 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	@Test(dependsOnMethods = "createUser", enabled = true)
 	public void updateUser() throws JSONException {
 		String country = "Some Another Country" + random;
+		String city = "Paris";
 		String firstName = "Virender Second" + random;
 		String email = "newtestmail" + random + "@mail.test";
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("firstName", firstName);
 		requestParams.put("email", email);
 		requestParams.put("country", country);
+		requestParams.put("city", city);
 		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("password", password);
 		requestParams.put("id", userId);
@@ -281,6 +283,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertTrue(user.getFirstName().equalsIgnoreCase(String.valueOf(firstName)));
 		assertTrue(user.getCountry().equalsIgnoreCase(String.valueOf(country)));
 		assertTrue(user.getEmail().equalsIgnoreCase(String.valueOf(email)));
+		assertTrue(user.getCity().equalsIgnoreCase(String.valueOf(city)));
 	}
 
 	@Test(dependsOnMethods = "createIdea", enabled = true)

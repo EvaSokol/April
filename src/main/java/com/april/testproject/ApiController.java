@@ -127,10 +127,21 @@ public class ApiController {
 	public Object updateUser(@Valid @RequestBody UserDto userDto) {
 		Long id = userDto.getId();
 		User user = userRepository.findOne(id);
-		if (userDto.getCountry() != null) user.setCountry(userDto.getCountry());
 		if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
-		if (userDto.getFirstName() != null) user.setFirstName(userDto.getFirstName());
+		if (userDto.getPassword() != null) user.setPassword(userDto.getPassword());
 		if (userDto.getRole() != null) user.setRole(userDto.getRole());
+		if (userDto.getTags() != null) user.setTags(userDto.getTags());
+		if (userDto.getFirstName() != null) user.setFirstName(userDto.getFirstName());
+		if (userDto.getLastName() != null) user.setLastName(userDto.getLastName());
+		if (userDto.getAvatarPicture() != null) user.setAvatarPicture(userDto.getAvatarPicture());
+		if (userDto.getAboutUser() != null) user.setAboutUser(userDto.getAboutUser());
+		if (userDto.getAboutCompany() != null) user.setAboutCompany(userDto.getAboutCompany());
+		if (userDto.getCountry() != null) user.setCountry(userDto.getCountry());
+		if (userDto.getCity() != null) user.setCity(userDto.getCity());
+		if (userDto.getRegDate() != null) user.setRegDate(userDto.getRegDate());
+
+
+
 		userRepository.save(user);
 		return user;
 	}
