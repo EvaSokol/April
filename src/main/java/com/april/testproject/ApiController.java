@@ -4,16 +4,18 @@ import com.april.testproject.config.AppUserDetailsService;
 import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.dto.UserDto;
 import com.april.testproject.entity.Idea;
+import com.april.testproject.entity.Tag;
 import com.april.testproject.entity.User;
+import com.april.testproject.entity.UserRoleEnum;
 import com.april.testproject.repository.IdeaRepository;
+import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
 
 @Component
@@ -26,13 +28,16 @@ public class ApiController {
 	@Autowired
 	private IdeaRepository ideaRepository;
 
+	@Autowired
+	private TagRepository tagRepository;
+
 //@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "registration", consumes = "application/json")
 	public Object createUser(@Valid @RequestBody UserDto userDto) {
 		User user = new User();
 		user.setFirstName(userDto.getFirstName());
 		user.setEmail(userDto.getEmail());
-		user.setRole(userDto.getRole());
+		user.setRole(UserRoleEnum.ROLE_USER.toString());
 		user.setCountry(userDto.getCountry());
 		user.setPassword(encryptPassword(userDto.getPassword()));
 		user.setTags(userDto.getTags());
@@ -56,7 +61,6 @@ public class ApiController {
 	public Object createIdea(@RequestBody IdeaDto ideaDto) {
 		Idea idea = new Idea();
 		idea.setStatus(ideaDto.getStatus());
-		idea.setTags(ideaDto.getTags());
 		idea.setUserId(ideaDto.getUserId());
 		idea.setHeader(ideaDto.getHeader());
 		if (ideaDto.getMainPicture() != null) idea.setMainPicture(ideaDto.getMainPicture());
@@ -69,7 +73,9 @@ public class ApiController {
 		idea.setCreationDate(new Date());
 		idea.setPrice(ideaDto.getPrice());
 		idea.setWhoLiked("");
-		ideaRepository.save(idea);
+		Set<Tag> tags = getTags(ideaDto.getTags());
+		idea.setTags(tags);
+		ideaRepository.save(idea).getId();
 		return idea;
 	}
 
@@ -83,9 +89,19 @@ public class ApiController {
 		return userRepository.findAll();
 	}
 
+	@GetMapping(value = "tags", consumes = "application/json")
+	public Object getTags() {
+		return tagRepository.findAll();
+	}
+
 	@GetMapping(value = "idea/{id}", consumes = "application/json")
 	public Object getIdeaById(@PathVariable(value = "id") Long ideaId) {
 		return ideaRepository.findOne(ideaId);
+	}
+
+	@GetMapping(value = "tag/{id}", consumes = "application/json")
+	public Object getTagById(@PathVariable(value = "id") Long id) {
+		return tagRepository.findOne(id);
 	}
 
 	@GetMapping(value = "ideas", consumes = "application/json")
@@ -96,6 +112,11 @@ public class ApiController {
 	@GetMapping(value = "getIdeasByUserId/{userId}", consumes = "application/json")
 	public List<Idea> getIdeasByUserId(@PathVariable("userId") String userId) {
 		return ideaRepository.findByUserId(userId);
+	}
+
+	@GetMapping(value = "getTagsByIdeaId/{ideaId}", consumes = "application/json")
+	public List<String> getTagsByIdeaId(@PathVariable("ideaId") String ideaId) {
+		return ideaRepository.getOne(Long.valueOf(ideaId)).getTags();
 	}
 
 	@PutMapping(value = "user", consumes = "application/json")
@@ -115,7 +136,6 @@ public class ApiController {
 		Long id = ideaDto.getId();
 		Idea idea = ideaRepository.findOne(id);
 		if (ideaDto.getStatus() != null) idea.setStatus(ideaDto.getStatus());
-		if (ideaDto.getTags() != null) idea.setTags(ideaDto.getTags());
 		if (ideaDto.getUserId() != null) idea.setUserId(ideaDto.getUserId());
 		if (ideaDto.getHeader() != null) idea.setHeader(ideaDto.getHeader());
 		if (ideaDto.getMainPicture() != null) idea.setMainPicture(ideaDto.getMainPicture());
@@ -149,4 +169,17 @@ public class ApiController {
 	public User getUserByEmail(@PathVariable("email") String email) {
 		return userRepository.findByEmailContaining(email).get(0);
 	}
+
+	private Set<Tag> getTags(String tagString) {
+		if (tagString == null) return null;
+		List strings = Arrays.asList(tagString.split(","));
+		Set<String> tagNameSet = new HashSet<>();
+		if (strings.size() != 0) tagNameSet.addAll(strings);
+		Set<Tag> tags = new HashSet<>();
+		for (String tagName : tagNameSet){
+			tags.add(tagRepository.findByTagName(tagName).get(0));
+		}
+		return tags;
+	}
+
 }

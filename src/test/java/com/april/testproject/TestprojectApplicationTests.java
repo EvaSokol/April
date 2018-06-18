@@ -1,9 +1,11 @@
 package com.april.testproject;
 
 import com.april.testproject.entity.Idea;
+import com.april.testproject.entity.Tag;
 import com.april.testproject.entity.User;
 import com.april.testproject.entity.UserRoleEnum;
 import com.april.testproject.repository.IdeaRepository;
+import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
 import com.jayway.restassured.path.json.JsonPath;
 import org.json.JSONException;
@@ -13,10 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
 import static junit.framework.TestCase.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
@@ -29,6 +29,9 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 	@Autowired
 	IdeaRepository ideaRepository;
+
+	@Autowired
+	private TagRepository tagRepository;
 
 	private int random;
 	private Long userId;
@@ -88,7 +91,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		numberOfIdeas = ideaRepository.findAll().size();
 		Idea idea = new Idea();
 		idea.setStatus("new");
-		idea.setTags("tags" + random);
+
 		idea.setUserId(userId.toString());
 		idea.setHeader("Header" + random);
 		idea.setMainPicture("Main Picture " + random);
@@ -99,8 +102,9 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setCreationDate(new Date());
 		idea.setPrice(new BigDecimal("333.0"));
 		idea.setWhoLiked("");
-
-		ideaId = ideaRepository.save(idea).getId();
+//		Set<Tag> tags = getTags("innovations");
+//		idea.getTags().addAll(tags);
+		ideaRepository.save(idea).getId();
 		idea.print();
 		assertEquals(ideaRepository.findAll().size(), numberOfIdeas + 1);
 	}
@@ -136,8 +140,9 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertEquals("amy@mail.test", email);
 	}
 
-	@Test(enabled = true)
+	@Test(dependsOnMethods = "createIdea", enabled = true)
 	public void getAllIdeas() {
+		numberOfIdeas = ideaRepository.findAll().size();
 		String uri = baseUrl + "ideas";
 		JsonPath response = RestTests.get(uri);
 
@@ -169,16 +174,14 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("email", email);
 		requestParams.put("password", password);
-		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("tags", random);
 		requestParams.put("firstName", firstName);
 		requestParams.put("lastName", "TestLastName" + random);
-		requestParams.put("avatarPicture","TestAva" + random);
+		requestParams.put("avatarPicture", "TestAva" + random);
 		requestParams.put("aboutUser", "About User " + random);
 		requestParams.put("aboutCompany", "About Company " + random);
 		requestParams.put("country", country);
 		requestParams.put("city", "Some City" + random);
-
 
 		String uri = baseUrl + "registration";
 		JsonPath response = RestTests.postAsUser(uri, requestParams, "", "");
@@ -190,7 +193,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
-	public void login(){
+	public void login() {
 		String uri = baseUrl + "login";
 		JsonPath response = RestTests.getAsUser(uri, email, password);
 
@@ -205,7 +208,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String status = "new";
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("status", status);
-		requestParams.put("tags", "tag" + random);
 		requestParams.put("userId", userId.toString());
 		requestParams.put("header", "header" + random);
 		requestParams.put("mainPicture", "mainPicture" + random);
@@ -214,6 +216,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("pictureList", "pictureList" + random);
 		requestParams.put("rate", random);
 		requestParams.put("price", new BigDecimal(random));
+		requestParams.put("tags", "charity,it");
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.post(uri, requestParams).get("id").toString());
@@ -229,7 +232,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String status = "new";
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("status", status);
-		requestParams.put("tags", "tag" + random);
 		requestParams.put("userId", userId.toString());
 		requestParams.put("header", "header" + random);
 		requestParams.put("mainPicture", "mainPicture" + random);
@@ -238,6 +240,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("pictureList", "pictureList" + random);
 		requestParams.put("rate", random);
 		requestParams.put("price", new BigDecimal(random));
+		requestParams.put("tags", "charity,it");
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.postAsUser(uri, requestParams, email, password).get("id").toString());
@@ -296,11 +299,10 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("email", email);
 		requestParams.put("password", password);
-		requestParams.put("role", UserRoleEnum.ROLE_USER);
 		requestParams.put("tags", random);
 		requestParams.put("firstName", firstName);
 		requestParams.put("lastName", "TestLastName" + random);
-		requestParams.put("avatarPicture","TestAva" + random);
+		requestParams.put("avatarPicture", "TestAva" + random);
 		requestParams.put("aboutUser", "About User " + random);
 		requestParams.put("aboutCompany", "About Company " + random);
 		requestParams.put("country", country);
@@ -321,7 +323,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		// Create idea to delete
 		Idea idea = new Idea();
 		idea.setStatus("new");
-		idea.setTags("tags" + random);
 		idea.setUserId(userId.toString());
 		idea.setHeader("Header" + random);
 		idea.setMainPicture("Main Picture " + random);
@@ -340,7 +341,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 	//TODO: Fix bug: find user which contains expected name as part
 	@Test(dependsOnMethods = "createUser", enabled = true)
-	public void getUserByName(){
+	public void getUserByName() {
 		User user = userRepository.findOne(userId);
 		String userName = user.getFirstName();
 
@@ -355,7 +356,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
-	public void getUserByEmail(){
+	public void getUserByEmail() {
 		User user = userRepository.findOne(userId);
 		String email = user.getEmail();
 
@@ -366,6 +367,67 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String newMail = res;
 
 		assertEquals(email, newMail);
+	}
 
+	@Test
+	public void getAllTagsFast() {
+		String name = "it";
+		Long id;
+		if (tagRepository.findByTagName(name).size() == 0){
+			Tag t1 = new Tag();
+			t1.setName(name);
+			id = tagRepository.save(t1).getId();
+	}
+		else id = tagRepository.findByTagName(name).get(0).getId();
+	assertEquals(name, tagRepository.findOne(id).getName());
+
+		List<Tag> tags = tagRepository.findAll();
+		for (Tag tag : tags) {
+			System.out.println(tag.getId());
+			System.out.println(tag.getName());
+			System.out.println("=============");
+		}
+	}
+
+	@Test(enabled = true)
+	public void getAllTags() {
+		String uri = baseUrl + "tags";
+		JsonPath response = RestTests.get(uri);
+
+		List<String> res = response.get("name");
+		assertTrue(res.contains("charity"));
+		assertEquals(10, res.size());
+	}
+
+	@Test(enabled = true)
+	public void getTagById() {
+		String uri = baseUrl + "tag/7";
+		JsonPath response = RestTests.get(uri);
+
+		String res = response.get("name");
+		assertEquals("it", res);
+	}
+
+	@Test(dependsOnMethods = "createIdea", enabled = true)
+	public void getTagsByIdeaId() {
+		String uri = baseUrl + "getTagsByIdeaId/" + ideaId;
+		JsonPath response = RestTests.get(uri);
+
+		List<String> res = response.get();
+		assertTrue(res.contains("charity"));
+		assertTrue(res.contains("it"));
+		assertEquals(2, res.size());
+	}
+
+	private Set<Tag> getTags(String tagString) {
+		if (tagString == null) return null;
+		List strings = Arrays.asList(tagString.split(","));
+		Set<String> tagNameSet = new HashSet<>();
+		if (strings.size() != 0) tagNameSet.addAll(strings);
+		Set<Tag> tags = new HashSet<>();
+		for (String tagName : tagNameSet){
+			tags.add(tagRepository.findByTagName(tagName).get(0));
+		}
+		return tags;
 	}
 }

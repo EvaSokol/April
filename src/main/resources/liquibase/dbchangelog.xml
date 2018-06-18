@@ -45,35 +45,157 @@
 
         </createTable>
     </changeSet>
-
     <changeSet author="EvaSokolyanskaya" id="20180529-0">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.users
             (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city) values
-            ('2', 'amy@mail.test', '$2a$10$MHEjf46YXYz7MiXQweGByuGrCs6OU3w1OyrwkDi.cs8bjAry7M2Pa', 'ROLE_ADMIN', 'tag1,tag2,tag3', 'Amy', 'LastAmy', 'avatar', 'About User', 'About Company', 'Italy', 'Rome')
+            ('1', 'amy@mail.test', '$2a$10$MHEjf46YXYz7MiXQweGByuGrCs6OU3w1OyrwkDi.cs8bjAry7M2Pa', 'ROLE_ADMIN', 'tag1,tag2,tag3', 'Amy', 'LastAmy', 'avatar', 'About User', 'About Company', 'Italy', 'Rome')
             <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
         </sql>
     </changeSet>
-
     <changeSet author="EvaSokolyanskaya" id="20180529-2">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.users
             (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city) values
-            ('3', 'kim@mail.test', '$2a$10$FwFJEreSyUeo0Ri5PZ.MF.ZzXoxOO84xdXSdRVeB4f5UlBYrbrYRq', 'ROLE_ADMIN', 'Kim', 'tag1,tag2,tag3', 'Jon In', 'avatar', 'About User', 'About Company', 'Italy', 'Rome')
-            <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
+            ('2', 'kim@mail.test', '$2a$10$FwFJEreSyUeo0Ri5PZ.MF.ZzXoxOO84xdXSdRVeB4f5UlBYrbrYRq', 'ROLE_ADMIN', 'Kim', 'tag1,tag2,tag3', 'Jon In', 'avatar', 'About User', 'About Company', 'Italy', 'Rome')
         </sql>
     </changeSet>
-
     <changeSet author="EvaSokolyanskaya" id="20180529-3">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.users
             (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city) values
-            ('5', 'admin@mail.test', '$2a$10$UINtn7n5MhfSuYIamN36s./oKDJC/2dkyLI.0xEdIVpeHmA.Fx246', 'ROLE_ADMIN', 'tag1,tag2,tag3', 'admin', 'LastAdminName', 'Admin Avatar', 'About Admin', 'About Company', 'Admin Country', 'Admin City')
-            <comment>Of course we could use 'insert' tag instead of direct sql query</comment>
+            ('3', 'admin@mail.test', '$2a$10$UINtn7n5MhfSuYIamN36s./oKDJC/2dkyLI.0xEdIVpeHmA.Fx246', 'ROLE_ADMIN', 'tag1,tag2,tag3', 'admin', 'LastAdminName', 'Admin Avatar', 'About Admin', 'About Company', 'Admin Country', 'Admin City')
         </sql>
     </changeSet>
 
-    <changeSet id="20180615-1" author="AlexRazumenko">
+    <changeSet id="20180617-00" author="EvaSokolyanskaya">
+    <createTable tableName="tag">
+        <column name="id" type="bigint">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="name" type="varchar(50)">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+</changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-01">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('4', 'innovations')
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-02">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('5', 'production')
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-03">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('6', 'entertainment')
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-04">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('7', 'it')
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-05">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('8', 'finance')
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-06">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('9', 'agriculture')
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-07">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('10', 'politics')
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-08">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('11', 'charity')
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-09">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('12', 'ecology')
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180617-10">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into public.tag
+            (id, name) values
+            ('13', 'other')
+        </sql>
+    </changeSet>
+
+    <changeSet id="20180618-00" author="EvaSokolyanskaya">
+        <createTable tableName="ideas_tags">
+            <column name="idea_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tag_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180618-01">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into ideas_tags
+            (idea_id, tag_id) values
+            ('21', 4)
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180618-02">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into ideas_tags
+            (idea_id, tag_id) values
+            ('22', 5)
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180618-03">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into ideas_tags
+            (idea_id, tag_id) values
+            ('23', 6)
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180618-04">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into ideas_tags
+            (idea_id, tag_id) values
+            ('24', 7)
+        </sql>
+    </changeSet>
+    <changeSet author="EvaSokolyanskaya" id="20180618-05">
+        <sql dbms="postgresql" splitStatements="true" stripComments="true">
+            insert into ideas_tags
+            (idea_id, tag_id) values
+            ('25', 8)
+        </sql>
+    </changeSet>
+
+    <changeSet id="20180619-0" author="AlexRazumenko">
         <validCheckSum>8:3e2422e688175650122443372dc7a2da</validCheckSum>
         <createTable tableName="ideas">
             <column name="id" type="bigint">
@@ -81,9 +203,6 @@
             </column>
             <column name="status" type="varchar(32)">
                 <constraints nullable="false"/>
-            </column>
-            <column name="tags" type="varchar(128)">
-                <constraints nullable="true"/>
             </column>
             <column name="user_id" type="varchar(8)">
                 <constraints nullable="false"/>
@@ -118,39 +237,39 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="AlexRazumenko" id="20180615-2">
+    <changeSet author="AlexRazumenko" id="20180619-1">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.ideas
-            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
-            ('1', 'accepted', 'tag1', '2', 'new Power plant', 'picture2', 'new Power plant to be built in Odessa','new 1000 MWt 330 kV wind Power plant to be built in Odessa', 'pictureList2', '2018-06-15 22:34:58.034', '0', '999', '1,2,3')
+            (id, status, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('21', 'accepted', '2', 'new Power plant', 'picture2', 'new Power plant to be built in Odessa','new 1000 MWt 330 kV wind Power plant to be built in Odessa', 'pictureList2', '2018-06-15 22:34:58.034', '0', '999', '1,2,3')
         </sql>
     </changeSet>
-    <changeSet author="AlexRazumenko" id="20180615-3">
+    <changeSet author="AlexRazumenko" id="20180619-2">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.ideas
-            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
-            ('2', 'accepted', 'tag2', '3', 'приложения для родителей', 'picture3', 'Идея по созданию нового приложения для молодых родителей', 'В нашем приложении Вы найдете только проверенную информацию от педиатров и экспертов и сможете сделать выводы для себя самостоятельно. Помимо раздела с советами молодым родителям мы предлагаем Вам функцию "Режим не нарушал?" - приложение будет подсказывать Вам, когда какие продукты питания можно вводить малышу и составлять план на день.', 'pictureList2', '2018-06-15 22:34:58.034', '1', '999', '1,2,3')
+            (id, status, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('22', 'accepted', '3', 'приложения для родителей', 'picture3', 'Идея по созданию нового приложения для молодых родителей', 'В нашем приложении Вы найдете только проверенную информацию от педиатров и экспертов и сможете сделать выводы для себя самостоятельно. Помимо раздела с советами молодым родителям мы предлагаем Вам функцию "Режим не нарушал?" - приложение будет подсказывать Вам, когда какие продукты питания можно вводить малышу и составлять план на день.', 'pictureList2', '2018-06-15 22:34:58.034', '1', '999', '1,2,3')
         </sql>
     </changeSet>
-    <changeSet author="AlexRazumenko" id="20180615-4">
+    <changeSet author="AlexRazumenko" id="20180619-3">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.ideas
-            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
-            ('3', 'accepted', 'tag2', '3', 'Иду в президенты Украины!', 'picture3', 'Не могу с равнодушием смотреть на то, что происходит вокруг, поэтому я решил действовать.', 'я вижу своей целью создать приток инвестиций, который заведет мотор нашей экономики и создаст новые рабочие места. Давайте вместе сдвинем все с мертвой точки! Поддержите меня!', 'pictureList3', '2018-06-15 22:34:58.034', '2', '999', '1,2,3')
+            (id, status, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('23', 'accepted', '2', 'Иду в президенты Украины!', 'picture3', 'Не могу с равнодушием смотреть на то, что происходит вокруг, поэтому я решил действовать.', 'я вижу своей целью создать приток инвестиций, который заведет мотор нашей экономики и создаст новые рабочие места. Давайте вместе сдвинем все с мертвой точки! Поддержите меня!', 'pictureList3', '2018-06-15 22:34:58.034', '2', '999', '1,2,3')
         </sql>
     </changeSet>
-    <changeSet author="AlexRazumenko" id="20180615-5">
+    <changeSet author="AlexRazumenko" id="20180619-4">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.ideas
-            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
-            ('4', 'accepted', 'tag2', '5', 'shelter for homeless animals in Russia', 'picture5', 'Give a chance for animals that can`t take care of themselves!', 'Our project consists of several parts: a. construction of shelter; b. construction of veterinary clinic; c. construction of the hotel for animals. We are planning to become self-sufficiency and in future we won`t need the donations, but right now we need a support for quick start', 'pictureList5', '2018-06-15 22:34:58.034', '3', '999', '1,2,3')
+            (id, status, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('24', 'accepted', '3', 'shelter for homeless animals in Russia', 'picture5', 'Give a chance for animals that can`t take care of themselves!', 'Our project consists of several parts: a. construction of shelter; b. construction of veterinary clinic; c. construction of the hotel for animals. We are planning to become self-sufficiency and in future we won`t need the donations, but right now we need a support for quick start', 'pictureList5', '2018-06-15 22:34:58.034', '3', '999', '1,2,3')
         </sql>
     </changeSet>
-    <changeSet author="AlexRazumenko" id="20180615-6">
+    <changeSet author="AlexRazumenko" id="20180619-5">
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.ideas
-            (id, status, tags, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
-            ('5', 'accepted', 'tag2', '7', 'Создание фильма "Вы не поверите, но раньше..."', 'picture7', 'Давайте вместе создадим фильм-ностальгию о 80-ых, 90-ых гг., когда проходило наше детство!', 'создать мемуарный фильм, который рассказал бы современным детям о нашем детстве: кассеты, перематывающиеся карандашом, запись песен с радио, дисковые телефоны, научные библиотеки, куда приходил и заказывал литературу - и только через 2 дня!!!', 'pictureList7', '2018-06-15 22:34:58.034', '4', '999', '1,2,3')
+            (id, status, user_id, header, main_picture, short_description, full_description, picture_list, creation_date, rate, price, who_liked) values
+            ('25', 'accepted', '2', 'Создание фильма "Вы не поверите, но раньше..."', 'picture7', 'Давайте вместе создадим фильм-ностальгию о 80-ых, 90-ых гг., когда проходило наше детство!', 'создать мемуарный фильм, который рассказал бы современным детям о нашем детстве: кассеты, перематывающиеся карандашом, запись песен с радио, дисковые телефоны, научные библиотеки, куда приходил и заказывал литературу - и только через 2 дня!!!', 'pictureList7', '2018-06-15 22:34:58.034', '4', '999', '1,2,3')
         </sql>
     </changeSet>
 </databaseChangeLog>

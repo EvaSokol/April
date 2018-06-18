@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
-//@Component
 public interface IdeaRepository extends JpaRepository<Idea, Long> {
 
 	@Query(value = "SELECT i FROM Idea i WHERE i.userId = ?1")
@@ -14,5 +13,6 @@ public interface IdeaRepository extends JpaRepository<Idea, Long> {
 
 	@Query(name = "findAll", value = "SELECT i FROM Idea i ORDER BY i.rate DESC")
 	List<Idea> findAll();
+
 
 }

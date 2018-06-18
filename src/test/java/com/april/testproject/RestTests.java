@@ -5,7 +5,6 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Created by Eva Sokolyanskaya on 05/05/2018.
@@ -13,51 +12,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class RestTests {
 
 	static JsonPath post(String uri, JSONObject jsonObject) {
-		RestAssured.baseURI = uri;
-		RequestSpecification request = RestAssured.given();
-		request.body(jsonObject.toString());
-		request.contentType("application/json");
-		request.authentication().basic("admin@mail.test", "admin");
-		Response response = request.post();
-
-		System.out.println(response.getStatusCode());
-		System.out.println(response.getBody().asString());
-		JsonPath jsonPathEvaluator = response.jsonPath();
-		int id = jsonPathEvaluator.get("id");
-		System.out.println(id);
-		return jsonPathEvaluator;
+		return method("post", uri,jsonObject,"admin@mail.test", "admin");
 	}
 
 	static JsonPath postAsUser(String uri, JSONObject jsonObject, String login, String password) {
-		RestAssured.baseURI = uri;
-		RequestSpecification request = RestAssured.given();
-		request.body(jsonObject.toString());
-		request.contentType("application/json");
-		request.authentication().basic(login, password);
-		Response response = request.post();
-
-		System.out.println(response.getStatusCode());
-		System.out.println(response.getBody().asString());
-		JsonPath jsonPathEvaluator = response.jsonPath();
-		int id = jsonPathEvaluator.get("id");
-		System.out.println(id);
-		return jsonPathEvaluator;
+		return method("post", uri,jsonObject,login, password);
 	}
 
 	static JsonPath put(String uri, JSONObject jsonObject) {
-		RestAssured.baseURI = uri;
-		RequestSpecification request = RestAssured.given();
-		request.body(jsonObject.toString());
-		request.contentType("application/json");
-		request.authentication().basic("admin@mail.test", "admin");
-		Response response = request.put();
+		return method("put", uri,jsonObject,"admin@mail.test", "admin");
+	}
 
-		System.out.println(response.getStatusCode());
-		System.out.println(response.getBody().asString());
-		JsonPath jsonPathEvaluator = response.jsonPath();
-		int id = jsonPathEvaluator.get("id");
-		System.out.println(id);
-		return jsonPathEvaluator;
+	static JsonPath putAsUser(String uri, JSONObject jsonObject, String login, String password) {
+		return method("put", uri,jsonObject, login, password);
 	}
 
 	static String delete(String uri) {
@@ -69,23 +36,60 @@ public class RestTests {
 		return response.asString();
 	}
 
-	public static JsonPath get(String uri) {
-		RestAssured.baseURI = uri;
-		RequestSpecification request = RestAssured.given();
-		request.contentType("application/json");
-		request.authentication().basic("admin@mail.test", "admin");
-		Response response = request.get();
-		JsonPath jsonPathEvaluator = response.jsonPath();
-		return jsonPathEvaluator;
+//	static JsonPath delete(String uri) {
+//		return method("delete", uri, null,"admin@mail.test", "admin");
+//	}
+//
+//	static JsonPath deleteAsUser(String uri, String login, String password) {
+//		return method("delete", uri, null, login, password);
+//	}
+
+	static JsonPath get(String uri) {
+		return method("get", uri, null,"admin@mail.test", "admin");
 	}
 
-	public static JsonPath getAsUser(String uri, String login, String password) {
+	static JsonPath getAsUser(String uri, String login, String password) {
+		return method("get", uri, null, login, password);
+	}
+
+	static JsonPath method(String method, String uri, JSONObject jsonObject, String login, String password) {
 		RestAssured.baseURI = uri;
 		RequestSpecification request = RestAssured.given();
 		request.contentType("application/json");
 		request.authentication().basic(login, password);
-		Response response = request.get();
-		JsonPath jsonPathEvaluator = response.jsonPath();
+		Response response;
+		JsonPath jsonPathEvaluator;
+		int id = 0;
+		switch (method) {
+			case "post":
+				request.body(jsonObject.toString());
+				response = request.post();
+				jsonPathEvaluator = response.jsonPath();
+				id = jsonPathEvaluator.get("id");
+				break;
+			case "delete":
+				response = request.delete();
+				jsonPathEvaluator = new JsonPath(response.asString());
+				break;
+			case "put":
+				request.body(jsonObject.toString());
+				response = request.put();
+				jsonPathEvaluator = response.jsonPath();
+				id = jsonPathEvaluator.get("id");
+				break;
+			case "get":
+				response = request.get();
+				jsonPathEvaluator = response.jsonPath();
+				break;
+			default:
+				response = request.get();
+				jsonPathEvaluator = response.jsonPath();
+				break;
+		}
+		System.out.println("uri: " + uri);
+		System.out.println(response.getStatusCode());
+		System.out.println(response.getBody().asString());
+		if (id != 0) System.out.println(id);
 		return jsonPathEvaluator;
 	}
 
