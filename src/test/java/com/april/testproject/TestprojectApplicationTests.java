@@ -281,6 +281,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("status", status);
 		requestParams.put("userId", userId.toString());
 		requestParams.put("id", ideaId.toString());
+		requestParams.put("tags", "ecology,politics");
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.put(uri, requestParams).get("id").toString());
@@ -288,6 +289,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
 		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
 		assertTrue(idea.getUserId().equals(String.valueOf(userId)));
+		assertTrue(idea.getTags().contains("ecology"));
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
