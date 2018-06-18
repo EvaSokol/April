@@ -104,11 +104,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setCreationDate(new Date());
 		idea.setPrice(new BigDecimal("333.0"));
 		idea.setWhoLiked("");
-		Set<Tag> tags = getTags("innovations");
-		idea.getTags().addAll(tags);
-//		idea.setTags(tagRepository.findByTagName("innovations"));
-
-//		idea.setTags(tags);
+//		Set<Tag> tags = getTags("innovations");
+//		idea.getTags().addAll(tags);
 		ideaId = ideaRepository.save(idea).getId();
 		idea.print();
 		assertEquals(ideaRepository.findAll().size(), numberOfIdeas + 1);
@@ -248,6 +245,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("pictureList", "pictureList" + random);
 		requestParams.put("rate", random);
 		requestParams.put("price", new BigDecimal(random));
+		requestParams.put("tags", "charity,it");
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.postAsUser(uri, requestParams, email, password).get("id").toString());
@@ -379,7 +377,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	@Test
-	public void getAllTags() {
+	public void getAllTagsFast() {
 		String name = "it";
 		Long id;
 		if (tagRepository.findByTagName(name).size() == 0){
@@ -394,9 +392,27 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		for (Tag tag : tags) {
 			System.out.println(tag.getId());
 			System.out.println(tag.getName());
-//			System.out.println(tag.getIdeas());
 			System.out.println("=============");
 		}
+	}
+
+	@Test(enabled = true)
+	public void getAllTags() {
+		String uri = baseUrl + "tags";
+		JsonPath response = RestTests.get(uri);
+
+		List<String> res = response.get("name");
+		assertTrue(res.contains("charity"));
+		assertEquals(10, res.size());
+	}
+
+	@Test(enabled = true)
+	public void getTagById() {
+		String uri = baseUrl + "tag/7";
+		JsonPath response = RestTests.get(uri);
+
+		String res = response.get("name");
+		assertEquals("it", res);
 	}
 
 	private Set<Tag> getTags(String tagString) {

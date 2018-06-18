@@ -90,9 +90,19 @@ public class ApiController {
 		return userRepository.findAll();
 	}
 
+	@GetMapping(value = "tags", consumes = "application/json")
+	public Object getTags() {
+		return tagRepository.findAll();
+	}
+
 	@GetMapping(value = "idea/{id}", consumes = "application/json")
 	public Object getIdeaById(@PathVariable(value = "id") Long ideaId) {
 		return ideaRepository.findOne(ideaId);
+	}
+
+	@GetMapping(value = "tag/{id}", consumes = "application/json")
+	public Object getTagById(@PathVariable(value = "id") Long id) {
+		return tagRepository.findOne(id);
 	}
 
 	@GetMapping(value = "ideas", consumes = "application/json")

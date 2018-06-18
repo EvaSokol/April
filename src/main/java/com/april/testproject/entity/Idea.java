@@ -25,7 +25,7 @@ public class Idea implements Comparator<Idea> {
 
 	private String status;
 
-	@ManyToMany(fetch = FetchType.LAZY
+	@ManyToMany(fetch = FetchType.EAGER
 					, cascade = {
 									CascadeType.PERSIST
 									, CascadeType.MERGE
@@ -54,6 +54,12 @@ public class Idea implements Comparator<Idea> {
 	private BigDecimal price;
 	private String whoLiked;
 
+	public List<String> getTags(){
+		List<String> list = new ArrayList<>();
+		for (Tag tag : tags) list.add(tag.getName());
+		return list;
+	}
+
 	public void print() {
 		System.out.println("id:" + id);
 		System.out.println("creationDate:" + creationDate);
@@ -61,7 +67,7 @@ public class Idea implements Comparator<Idea> {
 		System.out.println("shortDescription:" + shortDescription);
 		System.out.println("status:" + status);
 		System.out.println("userId:" + userId);
-//		System.out.println("tags:" + tagIds);
+		System.out.println("tags:" + getTags());
 		System.out.println("---------------------------");
 	}
 
