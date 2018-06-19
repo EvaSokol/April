@@ -11,48 +11,73 @@ import org.json.JSONObject;
  */
 public class RestTests {
 
-	static JsonPath post(String uri, JSONObject jsonObject) {
-		return method("post", uri,jsonObject,"admin@mail.test", "admin");
+
+	static JsonPath postToJson(String uri, JSONObject jsonObject, String login, String password) {
+		return methodToJson("post", uri,jsonObject,login, password);
 	}
 
-	static JsonPath postAsUser(String uri, JSONObject jsonObject, String login, String password) {
-		return method("post", uri,jsonObject,login, password);
+	static String postToValue(String uri, JSONObject jsonObject, String login, String password) {
+		return methodToValue("post", uri, jsonObject, login, password);
 	}
 
-	static JsonPath put(String uri, JSONObject jsonObject) {
-		return method("put", uri,jsonObject,"admin@mail.test", "admin");
+	static JsonPath putToJson(String uri, JSONObject jsonObject, String login, String password) {
+		return methodToJson("put", uri,jsonObject, login, password);
 	}
 
-	static JsonPath putAsUser(String uri, JSONObject jsonObject, String login, String password) {
-		return method("put", uri,jsonObject, login, password);
+	static String putToValue(String uri, JSONObject jsonObject, String login, String password) {
+		return methodToValue("put", uri, jsonObject, login, password);
 	}
 
-	static String delete(String uri) {
+	static JsonPath getToJson(String uri, String login, String password) {
+		return methodToJson("get", uri, null, login, password);
+	}
+
+	static String getToValue(String uri, String login, String password) {
+		return methodToValue("get", uri, null, login, password);
+	}
+
+	static JsonPath deleteToJson(String uri, String login, String password) {
+		return methodToJson("delete", uri, null, login, password);
+	}
+
+	static String deleteToValue(String uri, String login, String password) {
+		return methodToValue("delete", uri, null, login, password);
+	}
+
+	static String methodToValue(String method, String uri, JSONObject jsonObject, String login, String password) {
 		RestAssured.baseURI = uri;
 		RequestSpecification request = RestAssured.given();
 		request.contentType("application/json");
-		request.authentication().basic("admin@mail.test", "admin");
-		Response response = request.delete();
+		request.authentication().basic(login, password);
+		Response response;
+		int id = 0;
+		switch (method) {
+			case "post":
+				request.body(jsonObject.toString());
+				response = request.post();
+				break;
+			case "delete":
+				response = request.delete();
+				break;
+			case "put":
+				request.body(jsonObject.toString());
+				response = request.put();
+				break;
+			case "get":
+				response = request.get();
+				break;
+			default:
+				response = request.get();
+				break;
+		}
+		System.out.println("uri: " + uri);
+		System.out.println(response.getStatusCode());
+		System.out.println(response.getBody().asString());
+		if (id != 0) System.out.println(id);
 		return response.asString();
 	}
 
-//	static JsonPath delete(String uri) {
-//		return method("delete", uri, null,"admin@mail.test", "admin");
-//	}
-//
-//	static JsonPath deleteAsUser(String uri, String login, String password) {
-//		return method("delete", uri, null, login, password);
-//	}
-
-	static JsonPath get(String uri) {
-		return method("get", uri, null,"admin@mail.test", "admin");
-	}
-
-	static JsonPath getAsUser(String uri, String login, String password) {
-		return method("get", uri, null, login, password);
-	}
-
-	static JsonPath method(String method, String uri, JSONObject jsonObject, String login, String password) {
+	static JsonPath methodToJson(String method, String uri, JSONObject jsonObject, String login, String password) {
 		RestAssured.baseURI = uri;
 		RequestSpecification request = RestAssured.given();
 		request.contentType("application/json");
@@ -64,38 +89,39 @@ public class RestTests {
 			case "post":
 				request.body(jsonObject.toString());
 				response = request.post();
-				jsonPathEvaluator = response.jsonPath();
-				id = jsonPathEvaluator.get("id");
 				break;
 			case "delete":
 				response = request.delete();
-				jsonPathEvaluator = new JsonPath(response.asString());
 				break;
 			case "put":
 				request.body(jsonObject.toString());
 				response = request.put();
-				jsonPathEvaluator = response.jsonPath();
-				id = jsonPathEvaluator.get("id");
 				break;
 			case "get":
 				response = request.get();
-				jsonPathEvaluator = response.jsonPath();
 				break;
 			default:
 				response = request.get();
-				jsonPathEvaluator = response.jsonPath();
 				break;
+		}
+		jsonPathEvaluator = response.jsonPath();
+		try {
+			id = jsonPathEvaluator.get("id");
+			if (id != 0) System.out.println(id);
+		}
+		catch (ClassCastException e1){}
+		catch(IllegalArgumentException e2){
 		}
 		System.out.println("uri: " + uri);
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getBody().asString());
-		if (id != 0) System.out.println(id);
+
 		return jsonPathEvaluator;
 	}
 
-	public static String getFromJson(JsonPath json, String fieldName) {
-		return json.get(fieldName);
-	}
+//	public static String getFromJson(JsonPath json, String fieldName) {
+//		return json.get(fieldName);
+//	}
 }
 
 

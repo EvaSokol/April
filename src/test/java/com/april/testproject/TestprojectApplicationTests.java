@@ -43,6 +43,8 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	String email;
 	private String baseUrl = "http://localhost:8080/api/v1/";
 	private String header = "Some test header";
+	private String adminLogin = "admin@mail.test";
+	private String adminPassword = "admin";
 
 	@BeforeClass
 	public void init() {
@@ -132,7 +134,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	@Test(enabled = true)
 	public void getAllUsers() {
 		String uri = baseUrl + "users";
-		JsonPath response = RestTests.get(uri);
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
 		List<String> res = response.get("firstName");
 		String newName = res.get(0);
@@ -147,16 +149,26 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	public void getAllIdeas() {
 		numberOfIdeas = ideaRepository.findAll().size();
 		String uri = baseUrl + "ideas";
-		JsonPath response = RestTests.get(uri);
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
 		List<Integer> idNumber = response.get("id");
 		assertEquals(numberOfIdeas, idNumber.size());
 	}
 
+	@Test(dependsOnMethods = "createIdeaAsUser", enabled = true)
+	public void getAllIdeasNumber() {
+		numberOfIdeas = ideaRepository.findAll().size();
+		String uri = baseUrl + "getNumberAllIdeas";
+		String response = RestTests.getToValue(uri, adminLogin, adminPassword);
+
+		int count = Integer.parseInt(response);
+		assertEquals(numberOfIdeas, count);
+	}
+
 	@Test(dependsOnMethods = "createUser", enabled = true)
 	public void getUserById() {
 		String uri = baseUrl + "user/" + userId;
-		JsonPath response = RestTests.get(uri);
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
 		String currentEmail = response.get("email");
 		assertEquals(email, currentEmail);
@@ -165,7 +177,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	@Test(dependsOnMethods = "createIdeaAsUser", enabled = true)
 	public void getIdeasByHeader() {
 		String uri = baseUrl + "getIdeasByHeader/" + random;
-		JsonPath response = RestTests.get(uri);
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
 		List<Long> foundIdeaIds = response.get("id");
 		assertTrue((foundIdeaIds.toString()).contains(ideaId.toString()));
@@ -196,7 +208,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("city", "Some City" + random);
 
 		String uri = baseUrl + "registration";
-		JsonPath response = RestTests.postAsUser(uri, requestParams, "", "");
+		JsonPath response = RestTests.postToJson(uri, requestParams, "", "");
 		userId = Long.valueOf((response).get("id").toString());
 		User user = userRepository.findOne(Long.valueOf(userId));
 		assertTrue(user.getFirstName().equalsIgnoreCase(firstName));
@@ -207,7 +219,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	@Test(dependsOnMethods = "createUser", enabled = true)
 	public void login() {
 		String uri = baseUrl + "login";
-		JsonPath response = RestTests.getAsUser(uri, email, password);
+		JsonPath response = RestTests.getToJson(uri, email, password);
 
 		userId = Long.valueOf((response).get("id").toString());
 		User user = userRepository.findOne(Long.valueOf(userId));
@@ -231,7 +243,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("tags", "charity,it");
 
 		String uri = baseUrl + "idea";
-		try {RestTests.post(uri, requestParams);}
+		try {RestTests.postToJson(uri, requestParams, adminLogin, adminPassword);}
 		catch (NullPointerException e) {
 			assertTrue(1==1);
 		}
@@ -255,7 +267,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("tags", "charity,it");
 
 		String uri = baseUrl + "idea";
-		ideaId = Long.valueOf(RestTests.postAsUser(uri, requestParams, email, password).get("id").toString());
+		ideaId = Long.valueOf(RestTests.postToJson(uri, requestParams, email, password).get("id").toString());
 		Idea idea = ideaRepository.findOne(Long.valueOf(ideaId));
 		assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
 		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
@@ -278,7 +290,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("id", userId);
 
 		String uri = baseUrl + "user";
-		JsonPath response = RestTests.put(uri, requestParams);
+		JsonPath response = RestTests.putToJson(uri, requestParams, adminLogin, adminPassword);
 		userId = Long.valueOf((response).get("id").toString());
 		User user = userRepository.findOne(Long.valueOf(userId));
 		assertTrue(user.getFirstName().equalsIgnoreCase(String.valueOf(firstName)));
@@ -288,7 +300,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	}
 
 	@Test(dependsOnMethods = "createIdeaAsUser", enabled = true)
-	public void updateIdea() throws JSONException {
+	public void updateIdeaAsAdmin() throws JSONException {
 		String shortDescription = "New ShortDescription" + random;
 		String status = "approved";
 		JSONObject requestParams = new JSONObject();
@@ -299,7 +311,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("tags", "ecology,politics");
 
 		String uri = baseUrl + "idea";
-		ideaId = Long.valueOf(RestTests.put(uri, requestParams).get("id").toString());
+		ideaId = Long.valueOf(RestTests.putToJson(uri, requestParams, adminLogin, adminPassword).get("id").toString());
 		Idea idea = ideaRepository.findOne(Long.valueOf(ideaId));
 		assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
 		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
@@ -326,12 +338,12 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("city", "Some City" + random);
 
 		String uri = baseUrl + "registration";
-		JsonPath response = RestTests.post(uri, requestParams);
+		JsonPath response = RestTests.postToJson(uri, requestParams, adminLogin, adminPassword);
 		Long newUserId = Long.valueOf((response).get("id").toString());
 
 		//Delete user
 		uri = baseUrl + "user/" + newUserId;
-		String result = RestTests.delete(uri);
+		String result = RestTests.deleteToValue(uri, adminLogin, adminPassword);
 		assertEquals(newUserId, Long.valueOf(result));
 	}
 
@@ -352,7 +364,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		Long newIdeaId = ideaRepository.save(idea).getId();
 		// Delete idea
 		String uri = baseUrl + "idea/" + newIdeaId;
-		String result = RestTests.delete(uri);
+		String result = RestTests.deleteToValue(uri, adminLogin, adminPassword);
 		assertEquals(newIdeaId, Long.valueOf(result));
 	}
 
@@ -363,7 +375,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String userName = user.getFirstName();
 
 		String uri = baseUrl + "getUserByName/" + user.getFirstName();
-		JsonPath response = RestTests.get(uri);
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
 		List<String> res = response.get("firstName");
 		String newName = res.get(0);
@@ -378,7 +390,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String email = user.getEmail();
 
 		String uri = baseUrl + "getUserByEmail/" + user.getEmail();
-		JsonPath response = RestTests.get(uri);
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
 		String res = response.get("email");
 		String newMail = res;
@@ -409,7 +421,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	@Test(enabled = true)
 	public void getAllTags() {
 		String uri = baseUrl + "tags";
-		JsonPath response = RestTests.get(uri);
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
 		List<String> res = response.get("name");
 		assertTrue(res.contains("charity"));
@@ -419,7 +431,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	@Test(enabled = true)
 	public void getTagById() {
 		String uri = baseUrl + "tag/7";
-		JsonPath response = RestTests.get(uri);
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
 		String res = response.get("name");
 		assertEquals("it", res);
@@ -428,7 +440,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	@Test(dependsOnMethods = "createIdeaAsUser", enabled = true)
 	public void getTagsByIdeaId() {
 		String uri = baseUrl + "getTagsByIdeaId/" + ideaId;
-		JsonPath response = RestTests.get(uri);
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
 		List<String> res = response.get();
 		assertTrue(res.contains("charity"));
