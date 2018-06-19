@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						.antMatchers("/api/v1/registration").permitAll()
 						.antMatchers("/api/v1/idea").hasAnyRole("USER", "ADMIN")
 						.antMatchers("/api/v1/login").hasAnyRole("USER", "ADMIN")
-						.antMatchers("/api/v1/like").hasAnyRole("USER", "ADMIN")
+						.antMatchers("/api/v1/like/**").hasAnyRole("USER", "ADMIN")
 						.antMatchers("/api/v1/**").hasAnyRole("ADMIN")
 						.and().httpBasic().realmName("MY APP REALM")
 						.authenticationEntryPoint(appAuthenticationEntryPoint);

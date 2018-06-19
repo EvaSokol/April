@@ -55,9 +55,7 @@ public class Idea implements Comparator<Idea> {
 	private String pictureList;
 	@Type(type="timestamp")
 	private Date creationDate;
-//	private int rate;
 	private BigDecimal price;
-//	private String whoLiked;
 
 	public List<String> getTags(){
 		List<String> list = new ArrayList<>();
@@ -68,7 +66,6 @@ public class Idea implements Comparator<Idea> {
 	public void print() {
 		System.out.println("id:" + id);
 		System.out.println("creationDate:" + creationDate);
-//		System.out.println("rate:" + rate);
 		System.out.println("shortDescription:" + shortDescription);
 		System.out.println("status:" + status);
 		System.out.println("userId:" + userId);

@@ -182,6 +182,23 @@ Authentication="Basic YWRtaW46YWRtaW4="
 url: http://localhost:8080/api/v1/getNumberAllIdeas
 example: http://localhost:8080/api/v1/getNumberAllIdeas
 
+20. Like:
+HTTP Method: POST
+Headers:
+Content-Type=application/json
+Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
+url: http://localhost:8080/api/v1/like
+Body type=raw:
+{"ideaId": 27}
+
+21. Get Likes Number for Idea:
+HTTP Method: GET
+Headers:
+Content-Type=application/json
+Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
+url: http://localhost:8080/api/v1/like/{ideaId}
+example: http://localhost:8080/api/v1/like/27
+output example: 5
 
 How to get Base64 Authentication header:
 1. Go to: https://www.base64encode.org/

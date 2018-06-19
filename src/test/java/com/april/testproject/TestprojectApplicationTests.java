@@ -443,6 +443,22 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertEquals(2, res.size());
 	}
 
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void likeIdea() throws JSONException {
+		String ideaId = "27";
+		String uri = baseUrl + "like/" + ideaId;
+		int likesBefore = Integer.parseInt(RestTests.getToValue(uri, adminLogin, adminPassword));
+
+		uri = baseUrl + "like";
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("ideaId", ideaId);
+		JsonPath response = RestTests.postToJson(uri, requestParams, email, password);
+
+		uri = baseUrl + "like/" + ideaId;
+		int likesAfter = Integer.parseInt(RestTests.getToValue(uri, adminLogin, adminPassword));
+		assertEquals(likesBefore + 1, likesAfter);
+	}
+
 	private Set<Tag> getTags(String tagString) {
 		if (tagString == null) return null;
 		List strings = Arrays.asList(tagString.split(","));

@@ -64,7 +64,7 @@ public class ApiController {
 		return user;
 	}
 
-	@Secured("ROLE_USER")
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@PostMapping(value = "idea", consumes = "application/json")
 	public Object createIdea(@RequestBody IdeaDto ideaDto) {
 		Idea idea = new Idea();
@@ -88,14 +88,18 @@ public class ApiController {
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@PostMapping(value = "like", consumes = "application/json")
 	public Object like(@RequestBody LikeDto likeDto) {
-//		Idea idea = ideaRepository.getOne(likeDto.getIdeaId());
 		User user = AppUserDetailsService.getUser();
 		Like like = new Like();
 		like.setIdeaId(likeDto.getIdeaId());
-//		like.setUserId(likeDto.getUserId());
 		like.setUserId(user.getId());
 		likeRepository.save(like);
 		return like;
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "like/{id}", consumes = "application/json")
+	public Object getLikesOfIdea(@PathVariable(value = "id") Long ideaId) {
+		return likeRepository.getLikesOfIdea(ideaId);
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
