@@ -1,0 +1,384 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Basic Authentication",
+		"_postman_id": "7412053a-309a-dc8a-91e1-5499a9f6a7ba",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all Users",
+			"request": {
+				"url": "http://localhost:8080/api/v1/users",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User Registration",
+			"request": {
+				"url": "http://localhost:8080/api/v1/registration",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":323,\n\"email\":\"testmail388@mail.test\",\n\"password\":\"password123\",\n\"role\":\"ROLE_ADMIN\",\n\"tags\":\"charity,politics\",\n\"firstName\":\"Virender388\",\n\"lastName\":\"TestLastName388\",\n\"aboutUser\":\"About User 388\",\n\"aboutCompany\":\"About Company 388\",\n\"country\":\"About Company 388\",\n\"city\":\"Some City388\",\n\"avatarPicture\":\"TestAva388\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"url": "http://localhost:8080/api/v1/user",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic bmV3dGVzdG1haWwzMDVAbWFpbC50ZXN0OnBhc3N3b3JkMTIz",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"testmail388@mail.test\",\n\"password\":\"password123\",\n\"role\":\"ROLE_ADMIN\",\n\"tags\":\"388\",\n\"firstName\":\"Virender388\",\n\"lastName\":\"TestLastName388\",\n\"aboutUser\":\"About User 388\",\n\"aboutCompany\":\"About Company 388\",\n\"country\":\"About Company 388\",\n\"city\":\"Some City388\",\n\"avatarPicture\":\"TestAva388\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"request": {
+				"url": "localhost:8080/api/v1/users",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"pop\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all tags",
+			"request": {
+				"url": "localhost:8080/api/v1/tags",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"pop\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by Id",
+			"request": {
+				"url": "localhost:8080/api/v1/user/3",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"pop\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get tag by Id",
+			"request": {
+				"url": "localhost:8080/api/v1/tagById/7",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"pop\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all ideas",
+			"request": {
+				"url": "http://localhost:8080/api/v1/ideas",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get tag by Id",
+			"request": {
+				"url": "localhost:8080/api/v1/tag/7",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"pop\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get tags by Idea Id",
+			"request": {
+				"url": "localhost:8080/api/v1/getTagsByIdeaId/25",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"pop\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Ideas by search in header",
+			"request": {
+				"url": "localhost:8080/api/v1/getIdeasByHeader/header",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"pop\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Idea by User",
+			"request": {
+				"url": "http://localhost:8080/api/v1/idea",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic a2ltQG1haWwudGVzdDp0ZXN0",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":2057,\"status\":\"new\",\"tags\":\"it,charity\",\"userId\":\"2056\",\"header\":\"Some test header667\",\"mainPicture\":\"mainPicture667\",\"shortDescription\":\"ShortDescription667\",\"fullDescription\":\"fullDescription667\",\"pictureList\":\"pictureList667\",\"creationDate\":1529381076008,\"rate\":0,\"price\":667,\"whoLiked\":\"\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get ideas page",
+			"request": {
+				"url": "http://localhost:8080/api/v1/getIdeasPage/10",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":2057,\"status\":\"new\",\"tags\":\"it,charity\",\"userId\":\"2056\",\"header\":\"Some test header667\",\"mainPicture\":\"mainPicture667\",\"shortDescription\":\"ShortDescription667\",\"fullDescription\":\"fullDescription667\",\"pictureList\":\"pictureList667\",\"creationDate\":1529381076008,\"rate\":0,\"price\":667,\"whoLiked\":\"\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Number All Ideas",
+			"request": {
+				"url": "http://localhost:8080/api/v1/getNumberAllIdeas",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":2057,\"status\":\"new\",\"tags\":\"it,charity\",\"userId\":\"2056\",\"header\":\"Some test header667\",\"mainPicture\":\"mainPicture667\",\"shortDescription\":\"ShortDescription667\",\"fullDescription\":\"fullDescription667\",\"pictureList\":\"pictureList667\",\"creationDate\":1529381076008,\"rate\":0,\"price\":667,\"whoLiked\":\"\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
