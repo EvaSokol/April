@@ -22,8 +22,8 @@ public class IdeaDto {
 	private String fullDescription;
 	private String pictureList;
 	private Date creationDate;
-	private int rate;
+//	private int rate;
 	private BigDecimal price;
-	private String whoLiked;
+//	private String whoLiked;
 
 }

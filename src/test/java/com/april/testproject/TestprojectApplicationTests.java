@@ -103,10 +103,10 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setShortDescription("Short Description" + random);
 		idea.setFullDescription("Full Description" + random);
 		idea.setPictureList("Picture List " + random);
-		idea.setRate(random);
+//		idea.setRate(random);
 		idea.setCreationDate(new Date());
 		idea.setPrice(new BigDecimal("333.0"));
-		idea.setWhoLiked("");
+//		idea.setWhoLiked("");
 //		Set<Tag> tags = getTags("innovations");
 //		idea.getTags().addAll(tags);
 		ideaRepository.save(idea).getId();

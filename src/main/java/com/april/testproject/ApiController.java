@@ -75,10 +75,10 @@ public class ApiController {
 		idea.setShortDescription(ideaDto.getShortDescription());
 		idea.setFullDescription(ideaDto.getFullDescription());
 		idea.setPictureList(ideaDto.getPictureList());
-		idea.setRate(0);
+//		idea.setRate(0);
 		idea.setCreationDate(new Date());
 		idea.setPrice(ideaDto.getPrice());
-		idea.setWhoLiked("");
+//		idea.setWhoLiked("");
 		Set<Tag> tags = getTags(ideaDto.getTags());
 		idea.setTags(tags);
 		ideaRepository.save(idea).getId();
@@ -199,7 +199,7 @@ public class ApiController {
 		if (ideaDto.getFullDescription() != null) idea.setFullDescription(ideaDto.getFullDescription());
 		if (ideaDto.getPictureList() != null) idea.setPictureList(ideaDto.getPictureList());
 		if (ideaDto.getPrice() != null) idea.setPrice(ideaDto.getPrice());
-		if (ideaDto.getWhoLiked() != null) idea.setWhoLiked(ideaDto.getWhoLiked());
+//		if (ideaDto.getWhoLiked() != null) idea.setWhoLiked(ideaDto.getWhoLiked());
 		if (ideaDto.getTags() != null) {
 			Set<Tag> tags = getTags(ideaDto.getTags());
 			idea.setTags(tags);

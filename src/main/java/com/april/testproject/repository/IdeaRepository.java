@@ -11,7 +11,7 @@ public interface IdeaRepository extends JpaRepository<Idea, Long> {
 	@Query(value = "SELECT i FROM Idea i WHERE i.userId = ?1")
 	List<Idea> findByUserId(String userId);
 
-	@Query(name = "findAll", value = "SELECT i FROM Idea i ORDER BY i.rate DESC")
+	@Query(name = "findAll", value = "SELECT i FROM Idea i ORDER BY i.creationDate DESC")
 	List<Idea> findAll();
 
 	@Query(value = "SELECT i FROM Idea i WHERE i.header like %?1%")
