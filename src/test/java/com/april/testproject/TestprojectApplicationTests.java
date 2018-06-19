@@ -245,9 +245,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String uri = baseUrl + "idea";
 		try {RestTests.postToJson(uri, requestParams, adminLogin, adminPassword);}
 		catch (NullPointerException e) {
-			assertTrue(1==1);
-		}
-
+			assertTrue(1==1);		}
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
@@ -379,9 +377,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		List<String> res = response.get("firstName");
 		String newName = res.get(0);
-
 		assertEquals(userName, newName);
-
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
@@ -394,7 +390,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		String res = response.get("email");
 		String newMail = res;
-
 		assertEquals(email, newMail);
 	}
 

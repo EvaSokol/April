@@ -2,12 +2,11 @@ package com.april.testproject;
 
 import com.april.testproject.config.AppUserDetailsService;
 import com.april.testproject.dto.IdeaDto;
+import com.april.testproject.dto.LikeDto;
 import com.april.testproject.dto.UserDto;
-import com.april.testproject.entity.Idea;
-import com.april.testproject.entity.Tag;
-import com.april.testproject.entity.User;
-import com.april.testproject.entity.UserRoleEnum;
+import com.april.testproject.entity.*;
 import com.april.testproject.repository.IdeaRepository;
+import com.april.testproject.repository.LikeRepository;
 import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,9 @@ public class ApiController {
 
 	@Autowired
 	private TagRepository tagRepository;
+
+	@Autowired
+	private LikeRepository likeRepository;
 
 //@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "registration", consumes = "application/json")
@@ -81,6 +83,19 @@ public class ApiController {
 		idea.setTags(tags);
 		ideaRepository.save(idea).getId();
 		return idea;
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@PostMapping(value = "like", consumes = "application/json")
+	public Object like(@RequestBody LikeDto likeDto) {
+//		Idea idea = ideaRepository.getOne(likeDto.getIdeaId());
+		User user = AppUserDetailsService.getUser();
+		Like like = new Like();
+		like.setIdeaId(likeDto.getIdeaId());
+//		like.setUserId(likeDto.getUserId());
+		like.setUserId(user.getId());
+		likeRepository.save(like);
+		return like;
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })

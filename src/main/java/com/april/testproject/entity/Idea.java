@@ -24,17 +24,23 @@ public class Idea implements Comparator<Idea> {
 
 	private String status;
 
-	@ManyToMany(fetch = FetchType.EAGER
-					, cascade = {
-									CascadeType.PERSIST
-									, CascadeType.MERGE
-								}
-					)
+	@ManyToMany(fetch = FetchType.EAGER,
+					cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "ideas_tags",
 					joinColumns = @JoinColumn(name = "idea_id") ,
 					inverseJoinColumns = @JoinColumn(name = "tag_id"),
 					uniqueConstraints = @UniqueConstraint(columnNames={"idea_id", "tag_id"}))
 	private Set<Tag> tags = new HashSet<>();
+
+
+//	@ManyToMany(fetch = FetchType.EAGER,
+//					cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//	@JoinTable(name = "ideas_users",
+//					joinColumns = @JoinColumn(name = "idea_id") ,
+//					inverseJoinColumns = @JoinColumn(name = "user_id"),
+//					uniqueConstraints = @UniqueConstraint(columnNames={"idea_id", "user_id"}))
+//	private Set<User> users = new HashSet<>();
+
 
 	@NotEmpty
 	@Column(name = "user_id")
@@ -58,6 +64,18 @@ public class Idea implements Comparator<Idea> {
 		for (Tag tag : tags) list.add(tag.getName());
 		return list;
 	}
+
+//	public List<String> getLikes(){
+//		List<String> list = new ArrayList<>();
+//		for (User user : users) list.add(user.getId().toString());
+//		return list;
+//	}
+//
+//	public void addLike(User user){
+//		Set<User> users = getUsers();
+//		users.add(user);
+//		this.users = users;
+//	}
 
 	public void print() {
 		System.out.println("id:" + id);
