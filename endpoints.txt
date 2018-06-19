@@ -4,17 +4,17 @@ url: http://localhost:8080/api/v1/registration
 Headers:
 Content-Type=application/json
 Body type=raw:
-{"email":"testmail388@mail.test",
+{"email":"testmail377@mail.test",
 "password":"password123",
-"role":"ROLE_ADMIN",
-"tags":"388",
-"firstName":"Virender388",
-"lastName":"TestLastName388",
-"aboutUser":"About User 388",
-"aboutCompany":"About Company 388",
-"country":"About Company 388",
-"city":"Some City388",
-"avatarPicture":"TestAva388"}
+"tags":"377",
+"firstName":"Virender377",
+"lastName":"TestLastName377",
+"aboutUser":"About User 377",
+"aboutCompany":"About Company 377",
+"country":"About Company 377",
+"city":"Some City377",
+"avatarPicture":"TestAva377",
+"regDate":"2018-06-17 14:01:20.467" }
 
 2. Create Idea:
 HTTP Method: POST
@@ -23,7 +23,18 @@ Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/idea
 Body type=raw:
-{"rate":631,"header":"header631","mainPicture":"mainPicture631","shortDescription":"ShortDescription631","fullDescription":"fullDescription631","userId":"588","pictureList":"pictureList631","status":"new","tags":"tag631"}
+{"rate":555,
+ "header":"header555",
+ "mainPicture":"mainPicture555",
+ "shortDescription":"ShortDescription555",
+ "fullDescription":"fullDescription555",
+ "userId":"555",
+ "price":"20000"
+ "pictureList":"pictureList555",
+ "creationDate":"2018-06-18 14:01:20.467"} ,
+ "status":"new",
+ "tags":["tag631", "tag632"],
+ "whoLiked":"user1"}
 
 3. Update user:
 HTTP Method: PUT
@@ -32,7 +43,13 @@ Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/user
 Body type=raw:
-{"firstName":"Virender Second631","country":"Some Another Country631","password":"password123","role":"ROLE_USER","id":535,"email":"newtestmail631@mail.test"}
+{"firstName":"Virender Second522",
+"country":"Some Another  Country522",
+"password":"password522",
+"city":"Zhmerinka",
+"role":"ROLE_ADMIN",
+"id":535",
+"email":"newtestmail631@mail.test"}
 
 4. Update idea:
 HTTP Method: PUT
@@ -41,23 +58,26 @@ Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/idea
 Body type=raw:
-{"shortDescription":"New ShortDescription631","id":"591","userId":"535","status":"approved"}
+{"shortDescription":"New ShortDescription631",
+"id":"77",
+"userId":"535",
+"status":"approved"}
 
 5. Delete user:
 HTTP Method: DELETE
 Headers:
 Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
-url: http://localhost:8080/api/v1/user/{userID}
-example: http://localhost:8080/api/v1/user/327
+url: http://localhost:8080/api/v1/user/{id}
+example: http://localhost:8080/api/v1/user/535
 
 6. Delete idea:
 HTTP Method: DELETE
 Headers:
 Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
-url: http://localhost:8080/api/v1/idea/{ideaID}
-example: http://localhost:8080/api/v1/idea/328
+url: http://localhost:8080/api/v1/idea/{id}
+example: http://localhost:8080/api/v1/idea/77
 
 7. Get all ideas:
 HTTP Method: GET
@@ -73,15 +93,22 @@ Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/users
 
-9. Get user by ID:
+9. Get all tags:
+HTTP Method: GET
+Headers:
+Content-Type=application/json
+Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
+url: http://localhost:8080/api/v1/tags
+
+10. Get user by ID:
 HTTP Method: GET
 Headers:
 Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/user/{id}
-example: http://localhost:8080/api/v1/user/327
+example: http://localhost:8080/api/v1/user/19
 
-9. Get idea by ID:
+11. Get idea by ID:
 HTTP Method: GET
 Headers:
 Content-Type=application/json
@@ -89,7 +116,15 @@ Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/idea/{id}
 example: http://localhost:8080/api/v1/idea/328
 
-10. Get all ideas for user ID:
+12. Get tag by ID:
+HTTP Method: GET
+Headers:
+Content-Type=application/json
+Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
+url: http://localhost:8080/api/v1/tag/{id}
+example: http://localhost:8080/api/v1/tag/2
+
+13. Get all ideas by user ID:
 HTTP Method: GET
 Headers:
 Content-Type=application/json
@@ -97,21 +132,38 @@ Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/getIdeasByUserId/{userId}
 example: http://localhost:8080/api/v1/getIdeasByUserId/327
 
-11. Get user by name:
+14. Get user by name:
 HTTP Method: GET
 Headers:
 Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
-url: http://localhost:8080/api/v1/getUserByName/{FirstName}
+url: http://localhost:8080/api/v1/getUserByName/{name}
 example: http://localhost:8080/api/v1/getUserByName/admin
 
-12. Get user by email:
+15. Get user by email:
 HTTP Method: GET
 Headers:
 Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/getUserByEmail/{email}
 example: http://localhost:8080/api/v1/getUserByEmail/admin@mail.test
+
+16. Get ideas by header:
+HTTP Method: GET
+Headers:
+Content-Type=application/json
+Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
+url: http://localhost:8080/api/v1/getIdeasByHeader/{word}
+example: http://localhost:8080/api/v1/getIdeasByHeader/header374
+
+17. Get tags by idea id:
+HTTP Method: GET
+Headers:
+Content-Type=application/json
+Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
+url: http://localhost:8080/api/v1/getTagsByIdeaId/{ideaId}
+example: http://localhost:8080/api/v1/getTagsByIdeaId/29
+
 
 How to get Base64 Authentication header:
 1. Go to: https://www.base64encode.org/

@@ -7,6 +7,7 @@ import com.april.testproject.entity.UserRoleEnum;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
+import com.april.testproject.utils.ApiUtils;
 import com.jayway.restassured.path.json.JsonPath;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -273,7 +274,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		requestParams.put("country", country);
 		requestParams.put("city", city);
 		requestParams.put("role", UserRoleEnum.ROLE_USER);
-		requestParams.put("password", password);
+		requestParams.put("password", ApiUtils.encryptPassword(password));
 		requestParams.put("id", userId);
 
 		String uri = baseUrl + "user";
