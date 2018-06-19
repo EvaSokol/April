@@ -11,6 +11,7 @@ import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -47,9 +48,11 @@ public class ApiController {
 		user.setAboutCompany(userDto.getAboutCompany());
 		user.setCountry(userDto.getCountry());
 		user.setCity(userDto.getCity());
+		user.setRegDate(new Date());
 		userRepository.save(user);
 		return user;
 	}
+
 
 	@GetMapping(value = "login", consumes = "application/json")
 	public Object login() {
@@ -57,18 +60,17 @@ public class ApiController {
 		return user;
 	}
 
+	@Secured("ROLE_USER")
 	@PostMapping(value = "idea", consumes = "application/json")
 	public Object createIdea(@RequestBody IdeaDto ideaDto) {
 		Idea idea = new Idea();
 		idea.setStatus(ideaDto.getStatus());
 		idea.setUserId(ideaDto.getUserId());
 		idea.setHeader(ideaDto.getHeader());
-		if (ideaDto.getMainPicture() != null) idea.setMainPicture(ideaDto.getMainPicture());
-			else idea.setMainPicture("");
+		idea.setMainPicture(ideaDto.getMainPicture());
 		idea.setShortDescription(ideaDto.getShortDescription());
 		idea.setFullDescription(ideaDto.getFullDescription());
-		if (ideaDto.getPictureList() != null) idea.setPictureList(ideaDto.getPictureList());
-			else idea.setPictureList("");
+		idea.setPictureList(ideaDto.getPictureList());
 		idea.setRate(0);
 		idea.setCreationDate(new Date());
 		idea.setPrice(ideaDto.getPrice());
@@ -79,58 +81,82 @@ public class ApiController {
 		return idea;
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "user/{id}", consumes = "application/json")
 	public Object getUserById(@PathVariable(value = "id") Long userId) {
 		return userRepository.findOne(userId);
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping(value = "users", consumes = "application/json")
 	public Object getUsers() {
 		return userRepository.findAll();
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "tags", consumes = "application/json")
 	public Object getTags() {
 		return tagRepository.findAll();
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "idea/{id}", consumes = "application/json")
 	public Object getIdeaById(@PathVariable(value = "id") Long ideaId) {
 		return ideaRepository.findOne(ideaId);
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "tag/{id}", consumes = "application/json")
 	public Object getTagById(@PathVariable(value = "id") Long id) {
 		return tagRepository.findOne(id);
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "ideas", consumes = "application/json")
 	public Object getIdeas() {
 		return ideaRepository.findAll();
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "getIdeasByUserId/{userId}", consumes = "application/json")
 	public List<Idea> getIdeasByUserId(@PathVariable("userId") String userId) {
 		return ideaRepository.findByUserId(userId);
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getIdeasByHeader/{word}", consumes = "application/json")
+	public List<Idea> getIdeasByHeader(@PathVariable("word") String word) {
+		return ideaRepository.findInHeader(word);
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "getTagsByIdeaId/{ideaId}", consumes = "application/json")
 	public List<String> getTagsByIdeaId(@PathVariable("ideaId") String ideaId) {
 		return ideaRepository.getOne(Long.valueOf(ideaId)).getTags();
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@PutMapping(value = "user", consumes = "application/json")
 	public Object updateUser(@Valid @RequestBody UserDto userDto) {
 		Long id = userDto.getId();
 		User user = userRepository.findOne(id);
-		if (userDto.getCountry() != null) user.setCountry(userDto.getCountry());
 		if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
-		if (userDto.getFirstName() != null) user.setFirstName(userDto.getFirstName());
+		if (userDto.getPassword() != null) user.setPassword(userDto.getPassword());
 		if (userDto.getRole() != null) user.setRole(userDto.getRole());
+		if (userDto.getTags() != null) user.setTags(userDto.getTags());
+		if (userDto.getFirstName() != null) user.setFirstName(userDto.getFirstName());
+		if (userDto.getLastName() != null) user.setLastName(userDto.getLastName());
+		if (userDto.getAvatarPicture() != null) user.setAvatarPicture(userDto.getAvatarPicture());
+		if (userDto.getAboutUser() != null) user.setAboutUser(userDto.getAboutUser());
+		if (userDto.getAboutCompany() != null) user.setAboutCompany(userDto.getAboutCompany());
+		if (userDto.getCountry() != null) user.setCountry(userDto.getCountry());
+		if (userDto.getCity() != null) user.setCity(userDto.getCity());
+		if (userDto.getRegDate() != null) user.setRegDate(userDto.getRegDate());
 		userRepository.save(user);
 		return user;
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@PutMapping(value = "idea", consumes = "application/json")
 	public Object updateIdea(@Valid @RequestBody IdeaDto ideaDto) {
 		Long id = ideaDto.getId();
@@ -144,27 +170,35 @@ public class ApiController {
 		if (ideaDto.getPictureList() != null) idea.setPictureList(ideaDto.getPictureList());
 		if (ideaDto.getPrice() != null) idea.setPrice(ideaDto.getPrice());
 		if (ideaDto.getWhoLiked() != null) idea.setWhoLiked(ideaDto.getWhoLiked());
+		if (ideaDto.getTags() != null) {
+			Set<Tag> tags = getTags(ideaDto.getTags());
+			idea.setTags(tags);
+		}
 		ideaRepository.save(idea);
 		return idea;
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@DeleteMapping(value = "user/{id}")
 	public Object deleteUser(@PathVariable("id") Long id) {
 		userRepository.delete(id);
 		return id;
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@DeleteMapping(value = "idea/{id}")
 	public Object deleteIdea(@PathVariable("id") Long id) {
 		ideaRepository.delete(id);
 		return id;
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "getUserByName/{name}")
 	public List<User> getUserByName(@PathVariable("name") String name) {
 		return userRepository.findByFirstNameContaining(name);
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping(value = "getUserByEmail/{email}")
 	public User getUserByEmail(@PathVariable("email") String email) {
 		return userRepository.findByEmailContaining(email).get(0);
