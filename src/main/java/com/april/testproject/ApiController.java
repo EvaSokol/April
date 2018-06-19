@@ -11,6 +11,8 @@ import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -103,6 +105,13 @@ public class ApiController {
 	@GetMapping(value = "idea/{id}", consumes = "application/json")
 	public Object getIdeaById(@PathVariable(value = "id") Long ideaId) {
 		return ideaRepository.findOne(ideaId);
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getIdeasPage/{pageNumber}", consumes = "application/json")
+	public Object getIdeasPage(@PathVariable(value = "pageNumber") int pageNumber) {
+		Pageable topTen = new PageRequest(pageNumber, 10);
+		return ideaRepository.getIdeasPage(topTen);
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
