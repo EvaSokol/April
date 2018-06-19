@@ -115,6 +115,12 @@ public class ApiController {
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getNumberAllIdeas", consumes = "application/json")
+	public Object getNumberAllIdeas() {
+		return ideaRepository.getNumberAllIdeas();
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "tag/{id}", consumes = "application/json")
 	public Object getTagById(@PathVariable(value = "id") Long id) {
 		return tagRepository.findOne(id);
