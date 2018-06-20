@@ -60,6 +60,7 @@ public class Idea implements Comparator<Idea> {
 		System.out.println("status:" + status);
 		System.out.println("userId:" + userId);
 		System.out.println("tags:" + getTags());
+		System.out.println("header:" + header);
 		System.out.println("---------------------------");
 	}
 

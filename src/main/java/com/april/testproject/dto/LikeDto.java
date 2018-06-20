@@ -14,6 +14,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LikeDto {
 	Long id;
-//	Long userId;
 	Long ideaId;
 }
