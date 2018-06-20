@@ -109,7 +109,7 @@ public class ApiController {
 		return userRepository.findOne(userId);
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "users", consumes = "application/json")
 	public Object getUsers() {
 		return userRepository.findAll();
@@ -219,14 +219,14 @@ public class ApiController {
 		return idea;
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@DeleteMapping(value = "user/{id}")
 	public Object deleteUser(@PathVariable("id") Long id) {
 		userRepository.delete(id);
 		return id;
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@DeleteMapping(value = "idea/{id}")
 	public Object deleteIdea(@PathVariable("id") Long id) {
 		ideaRepository.delete(id);
@@ -239,7 +239,7 @@ public class ApiController {
 		return userRepository.findByFirstNameContaining(name);
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "getUserByEmail/{email}")
 	public User getUserByEmail(@PathVariable("email") String email) {
 		return userRepository.findByEmailContaining(email).get(0);
