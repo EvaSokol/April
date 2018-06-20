@@ -203,9 +203,17 @@ HTTP Method: GET
 Headers:
 Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
-url: http://localhost:8080/api/v1getIdeasByTag/{tagId}
+url: http://localhost:8080/api/v1/getIdeasByTag/{tagId}
 example: http://localhost:8080/api/v1/getIdeasByTag/12
 output example: [33,37,27,2212,2219,2226,2235,2243,2251]
+
+23. Get Ideas sorted by number of Likes:
+HTTP Method: GET
+Headers:
+Content-Type=application/json
+Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
+url: http://localhost:8080/api/v1/getIdeasSortedByLikes
+output example: [27,28,39]
 
 How to get Base64 Authentication header:
 1. Go to: https://www.base64encode.org/
