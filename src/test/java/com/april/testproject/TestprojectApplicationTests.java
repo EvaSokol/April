@@ -17,7 +17,6 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.*;
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
 import static junit.framework.TestCase.assertTrue;
@@ -27,10 +26,10 @@ import static org.testng.AssertJUnit.assertEquals;
 public class TestprojectApplicationTests extends AbstractTestNGSpringContextTests {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	IdeaRepository ideaRepository;
+	private IdeaRepository ideaRepository;
 
 	@Autowired
 	private TagRepository tagRepository;
@@ -41,7 +40,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	private int numberOfUsers;
 	private int numberOfIdeas;
 	private String password = "password123";
-	String email;
+	private String email;
 	private String baseUrl = "http://localhost:8080/api/v1/";
 	private String header = "Some test header";
 	private String adminLogin = "admin@mail.test";
@@ -104,13 +103,9 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setShortDescription("Short Description" + random);
 		idea.setFullDescription("Full Description" + random);
 		idea.setPictureList("Picture List " + random);
-//		idea.setRate(random);
 		idea.setCreationDate(new Date());
 		idea.setPrice(new BigDecimal("333.0"));
-//		idea.setWhoLiked("");
-//		Set<Tag> tags = getTags("innovations");
-//		idea.getTags().addAll(tags);
-		ideaRepository.save(idea).getId();
+		ideaRepository.save(idea);
 		idea.print();
 		assertEquals(ideaRepository.findAll().size(), numberOfIdeas + 1);
 	}
@@ -211,7 +206,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String uri = baseUrl + "registration";
 		JsonPath response = RestTests.postToJson(uri, requestParams, "", "");
 		userId = Long.valueOf((response).get("id").toString());
-		User user = userRepository.findOne(Long.valueOf(userId));
+		User user = userRepository.findOne(userId);
 		assertTrue(user.getFirstName().equalsIgnoreCase(firstName));
 		assertTrue(user.getCountry().equalsIgnoreCase(country));
 		assertTrue(user.getEmail().equalsIgnoreCase(email));
@@ -223,7 +218,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		JsonPath response = RestTests.getToJson(uri, email, password);
 
 		userId = Long.valueOf((response).get("id").toString());
-		User user = userRepository.findOne(Long.valueOf(userId));
+		User user = userRepository.findOne(userId);
 		assertTrue(user.getEmail().equalsIgnoreCase(String.valueOf(email)));
 	}
 
@@ -246,7 +241,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String uri = baseUrl + "idea";
 		try {RestTests.postToJson(uri, requestParams, adminLogin, adminPassword);}
 		catch (NullPointerException e) {
-			assertTrue(1==1);		}
+			assertTrue(true);		}
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
@@ -267,10 +262,10 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.postToJson(uri, requestParams, email, password).get("id").toString());
-		Idea idea = ideaRepository.findOne(Long.valueOf(ideaId));
+		Idea idea = ideaRepository.findOne(ideaId);
 		assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
 		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
-		assertTrue(idea.getUserId().equals(String.valueOf(userId)));
+		assertEquals(idea.getUserId(),String.valueOf(userId));
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
@@ -291,7 +286,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String uri = baseUrl + "user";
 		JsonPath response = RestTests.putToJson(uri, requestParams, adminLogin, adminPassword);
 		userId = Long.valueOf((response).get("id").toString());
-		User user = userRepository.findOne(Long.valueOf(userId));
+		User user = userRepository.findOne(userId);
 		assertTrue(user.getFirstName().equalsIgnoreCase(String.valueOf(firstName)));
 		assertTrue(user.getCountry().equalsIgnoreCase(String.valueOf(country)));
 		assertTrue(user.getEmail().equalsIgnoreCase(String.valueOf(email)));
@@ -311,10 +306,10 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		String uri = baseUrl + "idea";
 		ideaId = Long.valueOf(RestTests.putToJson(uri, requestParams, adminLogin, adminPassword).get("id").toString());
-		Idea idea = ideaRepository.findOne(Long.valueOf(ideaId));
+		Idea idea = ideaRepository.findOne(ideaId);
 		assertTrue(idea.getShortDescription().equalsIgnoreCase(String.valueOf(shortDescription)));
 		assertTrue(idea.getStatus().equalsIgnoreCase(String.valueOf(status)));
-		assertTrue(idea.getUserId().equals(String.valueOf(userId)));
+		assertEquals(idea.getUserId(), (String.valueOf(userId)));
 		assertTrue(idea.getTags().contains("ecology"));
 	}
 
@@ -389,8 +384,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String uri = baseUrl + "getUserByEmail/" + user.getEmail();
 		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
 
-		String res = response.get("email");
-		String newMail = res;
+		String newMail =response.get("email");
 		assertEquals(email, newMail);
 	}
 
@@ -408,9 +402,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		List<Tag> tags = tagRepository.findAll();
 		for (Tag tag : tags) {
-			System.out.println(tag.getId());
-			System.out.println(tag.getName());
-			System.out.println("=============");
+			System.out.println(tag.getId() + " : " + tag.getName());
 		}
 	}
 
@@ -487,15 +479,4 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertTrue(result.contains(newIdeaId.toString()));
 	}
 
-	private Set<Tag> getTags(String tagString) {
-		if (tagString == null) return null;
-		List strings = Arrays.asList(tagString.split(","));
-		Set<String> tagNameSet = new HashSet<>();
-		if (strings.size() != 0) tagNameSet.addAll(strings);
-		Set<Tag> tags = new HashSet<>();
-		for (String tagName : tagNameSet){
-			tags.add(tagRepository.findByTagName(tagName).get(0));
-		}
-		return tags;
-	}
 }
