@@ -16,6 +16,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.math.BigInteger;
 import java.util.*;
 
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
@@ -167,6 +168,12 @@ public class ApiController {
 	@GetMapping(value = "getTagsByIdeaId/{ideaId}", consumes = "application/json")
 	public List<String> getTagsByIdeaId(@PathVariable("ideaId") String ideaId) {
 		return ideaRepository.getOne(Long.valueOf(ideaId)).getTags();
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getIdeasByTag/{tagId}", consumes = "application/json")
+	public List<BigInteger> getIdeasByTag(@PathVariable("tagId") Long tagId) {
+		return ideaRepository.getIdeasByTag(tagId);
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })

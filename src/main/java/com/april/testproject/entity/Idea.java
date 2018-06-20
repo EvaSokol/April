@@ -32,16 +32,6 @@ public class Idea implements Comparator<Idea> {
 					uniqueConstraints = @UniqueConstraint(columnNames={"idea_id", "tag_id"}))
 	private Set<Tag> tags = new HashSet<>();
 
-
-//	@ManyToMany(fetch = FetchType.EAGER,
-//					cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//	@JoinTable(name = "ideas_users",
-//					joinColumns = @JoinColumn(name = "idea_id") ,
-//					inverseJoinColumns = @JoinColumn(name = "user_id"),
-//					uniqueConstraints = @UniqueConstraint(columnNames={"idea_id", "user_id"}))
-//	private Set<User> users = new HashSet<>();
-
-
 	@NotEmpty
 	@Column(name = "user_id")
 	private String userId;

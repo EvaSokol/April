@@ -17,6 +17,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
 import static junit.framework.TestCase.assertTrue;
@@ -457,6 +458,33 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		uri = baseUrl + "like/" + ideaId;
 		int likesAfter = Integer.parseInt(RestTests.getToValue(uri, adminLogin, adminPassword));
 		assertEquals(likesBefore + 1, likesAfter);
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void getIdeasByTag() throws JSONException {
+		//Create Idea:
+		String tag = "charity";
+		String shortDescription = "ShortDescription" + random;
+		String status = "new";
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("status", status);
+		requestParams.put("userId", userId.toString());
+		requestParams.put("header", header + random);
+		requestParams.put("mainPicture", "mainPicture" + random);
+		requestParams.put("shortDescription", shortDescription);
+		requestParams.put("fullDescription", "fullDescription" + random);
+		requestParams.put("pictureList", "pictureList" + random);
+		requestParams.put("rate", random);
+		requestParams.put("price", new BigDecimal(random));
+		requestParams.put("tags", tag);
+		String uri = baseUrl + "idea";
+		Long newIdeaId = Long.valueOf(RestTests.postToJson(uri, requestParams, email, password).get("id").toString());
+
+		// Get ideas by tag:
+		Long tagId = tagRepository.findByTagName(tag).get(0).getId();
+		uri = baseUrl + "getIdeasByTag/" + tagId;
+		String result = RestTests.getToValue(uri, adminLogin, adminPassword);
+		assertTrue(result.contains(newIdeaId.toString()));
 	}
 
 	private Set<Tag> getTags(String tagString) {
