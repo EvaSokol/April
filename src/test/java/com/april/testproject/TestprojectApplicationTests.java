@@ -17,6 +17,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
 import static junit.framework.TestCase.assertTrue;
@@ -103,10 +104,10 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		idea.setShortDescription("Short Description" + random);
 		idea.setFullDescription("Full Description" + random);
 		idea.setPictureList("Picture List " + random);
-		idea.setRate(random);
+//		idea.setRate(random);
 		idea.setCreationDate(new Date());
 		idea.setPrice(new BigDecimal("333.0"));
-		idea.setWhoLiked("");
+//		idea.setWhoLiked("");
 //		Set<Tag> tags = getTags("innovations");
 //		idea.getTags().addAll(tags);
 		ideaRepository.save(idea).getId();
@@ -245,9 +246,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String uri = baseUrl + "idea";
 		try {RestTests.postToJson(uri, requestParams, adminLogin, adminPassword);}
 		catch (NullPointerException e) {
-			assertTrue(1==1);
-		}
-
+			assertTrue(1==1);		}
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
@@ -379,9 +378,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		List<String> res = response.get("firstName");
 		String newName = res.get(0);
-
 		assertEquals(userName, newName);
-
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
@@ -394,7 +391,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		String res = response.get("email");
 		String newMail = res;
-
 		assertEquals(email, newMail);
 	}
 
@@ -446,6 +442,49 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		assertTrue(res.contains("charity"));
 		assertTrue(res.contains("it"));
 		assertEquals(2, res.size());
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void likeIdea() throws JSONException {
+		String ideaId = "27";
+		String uri = baseUrl + "like/" + ideaId;
+		int likesBefore = Integer.parseInt(RestTests.getToValue(uri, adminLogin, adminPassword));
+
+		uri = baseUrl + "like";
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("ideaId", ideaId);
+		JsonPath response = RestTests.postToJson(uri, requestParams, email, password);
+
+		uri = baseUrl + "like/" + ideaId;
+		int likesAfter = Integer.parseInt(RestTests.getToValue(uri, adminLogin, adminPassword));
+		assertEquals(likesBefore + 1, likesAfter);
+	}
+
+	@Test(dependsOnMethods = "createUser", enabled = true)
+	public void getIdeasByTag() throws JSONException {
+		//Create Idea:
+		String tag = "charity";
+		String shortDescription = "ShortDescription" + random;
+		String status = "new";
+		JSONObject requestParams = new JSONObject();
+		requestParams.put("status", status);
+		requestParams.put("userId", userId.toString());
+		requestParams.put("header", header + random);
+		requestParams.put("mainPicture", "mainPicture" + random);
+		requestParams.put("shortDescription", shortDescription);
+		requestParams.put("fullDescription", "fullDescription" + random);
+		requestParams.put("pictureList", "pictureList" + random);
+		requestParams.put("rate", random);
+		requestParams.put("price", new BigDecimal(random));
+		requestParams.put("tags", tag);
+		String uri = baseUrl + "idea";
+		Long newIdeaId = Long.valueOf(RestTests.postToJson(uri, requestParams, email, password).get("id").toString());
+
+		// Get ideas by tag:
+		Long tagId = tagRepository.findByTagName(tag).get(0).getId();
+		uri = baseUrl + "getIdeasByTag/" + tagId;
+		String result = RestTests.getToValue(uri, adminLogin, adminPassword);
+		assertTrue(result.contains(newIdeaId.toString()));
 	}
 
 	private Set<Tag> getTags(String tagString) {

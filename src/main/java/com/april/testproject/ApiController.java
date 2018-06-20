@@ -2,12 +2,11 @@ package com.april.testproject;
 
 import com.april.testproject.config.AppUserDetailsService;
 import com.april.testproject.dto.IdeaDto;
+import com.april.testproject.dto.LikeDto;
 import com.april.testproject.dto.UserDto;
-import com.april.testproject.entity.Idea;
-import com.april.testproject.entity.Tag;
-import com.april.testproject.entity.User;
-import com.april.testproject.entity.UserRoleEnum;
+import com.april.testproject.entity.*;
 import com.april.testproject.repository.IdeaRepository;
+import com.april.testproject.repository.LikeRepository;
 import com.april.testproject.repository.TagRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.math.BigInteger;
 import java.util.*;
 
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
@@ -33,6 +33,9 @@ public class ApiController {
 
 	@Autowired
 	private TagRepository tagRepository;
+
+	@Autowired
+	private LikeRepository likeRepository;
 
 //@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "registration", consumes = "application/json")
@@ -62,7 +65,7 @@ public class ApiController {
 		return user;
 	}
 
-	@Secured("ROLE_USER")
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@PostMapping(value = "idea", consumes = "application/json")
 	public Object createIdea(@RequestBody IdeaDto ideaDto) {
 		Idea idea = new Idea();
@@ -73,14 +76,31 @@ public class ApiController {
 		idea.setShortDescription(ideaDto.getShortDescription());
 		idea.setFullDescription(ideaDto.getFullDescription());
 		idea.setPictureList(ideaDto.getPictureList());
-		idea.setRate(0);
+//		idea.setRate(0);
 		idea.setCreationDate(new Date());
 		idea.setPrice(ideaDto.getPrice());
-		idea.setWhoLiked("");
+//		idea.setWhoLiked("");
 		Set<Tag> tags = getTags(ideaDto.getTags());
 		idea.setTags(tags);
 		ideaRepository.save(idea).getId();
 		return idea;
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@PostMapping(value = "like", consumes = "application/json")
+	public Object like(@RequestBody LikeDto likeDto) {
+		User user = AppUserDetailsService.getUser();
+		Like like = new Like();
+		like.setIdeaId(likeDto.getIdeaId());
+		like.setUserId(user.getId());
+		likeRepository.save(like);
+		return like;
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "like/{id}", consumes = "application/json")
+	public Object getLikesOfIdea(@PathVariable(value = "id") Long ideaId) {
+		return likeRepository.getLikesOfIdea(ideaId);
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
@@ -89,7 +109,7 @@ public class ApiController {
 		return userRepository.findOne(userId);
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "users", consumes = "application/json")
 	public Object getUsers() {
 		return userRepository.findAll();
@@ -151,6 +171,12 @@ public class ApiController {
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getIdeasByTag/{tagId}", consumes = "application/json")
+	public List<BigInteger> getIdeasByTag(@PathVariable("tagId") Long tagId) {
+		return ideaRepository.getIdeasByTag(tagId);
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@PutMapping(value = "user", consumes = "application/json")
 	public Object updateUser(@Valid @RequestBody UserDto userDto) {
 		Long id = userDto.getId();
@@ -184,7 +210,7 @@ public class ApiController {
 		if (ideaDto.getFullDescription() != null) idea.setFullDescription(ideaDto.getFullDescription());
 		if (ideaDto.getPictureList() != null) idea.setPictureList(ideaDto.getPictureList());
 		if (ideaDto.getPrice() != null) idea.setPrice(ideaDto.getPrice());
-		if (ideaDto.getWhoLiked() != null) idea.setWhoLiked(ideaDto.getWhoLiked());
+//		if (ideaDto.getWhoLiked() != null) idea.setWhoLiked(ideaDto.getWhoLiked());
 		if (ideaDto.getTags() != null) {
 			Set<Tag> tags = getTags(ideaDto.getTags());
 			idea.setTags(tags);
@@ -193,14 +219,14 @@ public class ApiController {
 		return idea;
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@DeleteMapping(value = "user/{id}")
 	public Object deleteUser(@PathVariable("id") Long id) {
 		userRepository.delete(id);
 		return id;
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@DeleteMapping(value = "idea/{id}")
 	public Object deleteIdea(@PathVariable("id") Long id) {
 		ideaRepository.delete(id);
@@ -213,7 +239,7 @@ public class ApiController {
 		return userRepository.findByFirstNameContaining(name);
 	}
 
-	@Secured({ "ROLE_ADMIN" })
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "getUserByEmail/{email}")
 	public User getUserByEmail(@PathVariable("email") String email) {
 		return userRepository.findByEmailContaining(email).get(0);

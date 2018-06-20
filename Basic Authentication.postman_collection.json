@@ -379,6 +379,142 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "Create idea as user",
+			"request": {
+				"url": "localhost:8080/api/v1/idea",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YW15QG1haWwudGVzdDoxMjM0",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"rate\":693,\"price\":693,\"header\":\"Some test header693\",\"mainPicture\":\"mainPicture693\",\"shortDescription\":\"ShortDescription693\",\"fullDescription\":\"fullDescription693\",\"userId\":\"2182\",\"pictureList\":\"pictureList693\",\"status\":\"new\",\"tags\":\"charity,it\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update idea as user",
+			"request": {
+				"url": "localhost:8080/api/v1/idea",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic dGVzdG1haWwzMDJAbWFpbC50ZXN0OnBhc3N3b3JkMTIz",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":2187,\n\t\"rate\":693,\n\"price\":693,\n\"header\":\"Some test header693\",\n\"mainPicture\":\"mainPicture693\",\n\"shortDescription\":\"aaaaShortDescription693\",\n\"fullDescription\":\"fullDescription693\",\n\"userId\":\"2182\",\n\"pictureList\":\"pictureList693\",\n\"status\":\"new\",\n\"tags\":\"charity,it\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Like Idea",
+			"request": {
+				"url": "localhost:8080/api/v1/like",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic a2ltQG1haWwudGVzdDp0ZXN0",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"ideaId\": 27\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Likes Of Idea",
+			"request": {
+				"url": "localhost:8080/api/v1/like/27",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic a2ltQG1haWwudGVzdDp0ZXN0",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n    \"ideaId\": 27\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Ideas by tag",
+			"request": {
+				"url": "localhost:8080/api/v1/getIdeasByTag/12",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"pop\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
