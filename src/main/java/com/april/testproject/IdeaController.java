@@ -3,10 +3,11 @@ package com.april.testproject;
 import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.Tag;
+import com.april.testproject.entity.User;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.LikeRepository;
 import com.april.testproject.repository.TagRepository;
-import org.hibernate.type.OrderedMapType;
+import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,9 @@ public class IdeaController {
 
 	@Autowired
 	private LikeRepository likeRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@PostMapping(value = "idea", consumes = "application/json")
@@ -111,6 +115,13 @@ public class IdeaController {
 	@GetMapping(value = "getIdeasByUserId/{userId}", consumes = "application/json")
 	public List<Idea> getIdeasByUserId(@PathVariable("userId") String userId) {
 		return ideaRepository.findByUserId(userId);
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getUserByIdeaId/{ideaId}", consumes = "application/json")
+	public User getUserByIdeaId(@PathVariable("ideaId") Long ideaId) {
+		Long userId = Long.parseLong(ideaRepository.findOne(ideaId).getUserId());
+		return userRepository.findOne(userId);
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
