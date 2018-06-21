@@ -230,6 +230,17 @@ Body type=raw:
 output example (id of deleted like):
 2368
 
+25. Is Idea Liked by current User:
+HTTP Method: POST
+Headers:
+Content-Type=application/json
+Authentication="Basic a2ltQG1haWwudGVzdDp0ZXN0"
+url: http://localhost:8080/api/v1/isLiked
+Body type=raw:
+{"ideaId": 27}
+output example:
+false
+
 How to get Base64 Authentication header:
 1. Go to: https://www.base64encode.org/
 2. To the first field input login and password like next example:
