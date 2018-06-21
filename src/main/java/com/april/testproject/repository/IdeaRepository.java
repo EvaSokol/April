@@ -19,7 +19,7 @@ public interface IdeaRepository extends JpaRepository<Idea, Long> {
 	List<Idea> findInHeader(String world);
 
 	@Query(value = "SELECT i FROM Idea i ORDER BY i.creationDate DESC")
-	List<Idea> getIdeasPage(Pageable pageable);
+	List<Idea> getIdeasPageByDate(Pageable pageable);
 
 	@Query(value = "SELECT COUNT(i) FROM Idea i")
 	int getNumberAllIdeas();

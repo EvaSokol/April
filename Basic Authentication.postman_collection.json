@@ -319,9 +319,9 @@
 			"response": []
 		},
 		{
-			"name": "Get ideas page",
+			"name": "Get ideas page by Date",
 			"request": {
-				"url": "http://localhost:8080/api/v1/getIdeasPage/10",
+				"url": "http://localhost:8080/api/v1/getIdeasPageByDate/1",
 				"method": "GET",
 				"header": [
 					{

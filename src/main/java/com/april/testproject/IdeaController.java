@@ -2,7 +2,6 @@ package com.april.testproject;
 
 import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.entity.Idea;
-import com.april.testproject.entity.Like;
 import com.april.testproject.entity.Tag;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.LikeRepository;
@@ -89,10 +88,10 @@ public class IdeaController {
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
-	@GetMapping(value = "getIdeasPage/{pageNumber}", consumes = "application/json")
-	public Object getIdeasPage(@PathVariable(value = "pageNumber") int pageNumber) {
+	@GetMapping(value = "getIdeasPageByDate/{pageNumber}", consumes = "application/json")
+	public Object getIdeasPageByDate(@PathVariable(value = "pageNumber") int pageNumber) {
 		Pageable topTen = new PageRequest(pageNumber, 10);
-		return ideaRepository.getIdeasPage(topTen);
+		return ideaRepository.getIdeasPageByDate(topTen);
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
