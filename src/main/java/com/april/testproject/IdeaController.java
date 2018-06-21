@@ -6,6 +6,7 @@ import com.april.testproject.entity.Tag;
 import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.LikeRepository;
 import com.april.testproject.repository.TagRepository;
+import org.hibernate.type.OrderedMapType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -126,9 +127,14 @@ public class IdeaController {
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "getIdeasSortedByLikes", consumes = "application/json")
-	public List getIdeasSortedByLikes() {
-//		return likeRepository.getIdeasSortedByLikes();
-		return getIdeasSortedByLikesMethod();
+	public List<Map<Integer, Long>> getIdeasSortedByLikes() {
+		return likeRepository.getIdeasSortedByLikes();
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getFiveIdeasSortedByLikes", consumes = "application/json")
+	public List getFiveIdeasSortedByLikes() {
+		return likeRepository.getIdeasSortedByLikes().subList(0,4);
 	}
 
 	private Set<Tag> getTags(String tagString) {
@@ -155,5 +161,18 @@ public class IdeaController {
 		}
 		return sortedIdeasList;
 	}
+
+	// Doesn't work:
+//	Map<Long, Integer> newMap = new TreeMap<>();
+//	List<Map<Integer, Long>> list =likeRepository.getIdeasSortedByLikes();
+//for (Map<Integer, Long> oneMap : list){
+//		Integer rate = 0;
+//		Long ideaId = null;
+//		for (Map.Entry entry : oneMap.entrySet()) {
+//			rate = Integer.parseInt(entry.getKey().toString());
+//			ideaId = Long.parseLong(entry.getValue().toString());
+//		}
+//		newMap.put(ideaId, rate);
+//	}
 
 }
