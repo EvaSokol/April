@@ -2,8 +2,10 @@ package com.april.testproject;
 
 import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.entity.Idea;
+import com.april.testproject.entity.Like;
 import com.april.testproject.entity.Tag;
 import com.april.testproject.repository.IdeaRepository;
+import com.april.testproject.repository.LikeRepository;
 import com.april.testproject.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +31,9 @@ public class IdeaController {
 
 	@Autowired
 	private TagRepository tagRepository;
+
+	@Autowired
+	private LikeRepository likeRepository;
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@PostMapping(value = "idea", consumes = "application/json")
@@ -120,6 +125,13 @@ public class IdeaController {
 		return ideaRepository.getIdeasByTag(tagId);
 	}
 
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getIdeasSortedByLikes", consumes = "application/json")
+	public List getIdeasSortedByLikes() {
+//		return likeRepository.getIdeasSortedByLikes();
+		return getIdeasSortedByLikesMethod();
+	}
+
 	private Set<Tag> getTags(String tagString) {
 		if (tagString == null) return null;
 		List strings = Arrays.asList(tagString.split(","));
@@ -131,4 +143,18 @@ public class IdeaController {
 		}
 		return tags;
 	}
+
+	List<Long> getIdeasSortedByLikesMethod(){
+		List<Long> likes = likeRepository.getLikedIdeas();
+		Map<Long, Integer> sortedIdeasMap = new TreeMap<>();
+		for (Long ideaId : likes){
+			sortedIdeasMap.putIfAbsent(ideaId, likeRepository.getLikesOfIdea(ideaId));
+		}
+		List<Long> sortedIdeasList = new ArrayList<>();
+		for (Map.Entry<Long,Integer> entry : sortedIdeasMap.entrySet()) {
+			sortedIdeasList.add(entry.getKey());
+		}
+		return sortedIdeasList;
+	}
+
 }

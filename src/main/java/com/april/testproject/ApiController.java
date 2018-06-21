@@ -39,11 +39,23 @@ public class ApiController {
 	@PostMapping(value = "like", consumes = "application/json")
 	public Object like(@RequestBody LikeDto likeDto) {
 		User user = AppUserDetailsService.getUser();
+		List<Like> likes = likeRepository.findLike(user.getId(), likeDto.getIdeaId());
+		if (likes.size() != 0) return null;
 		Like like = new Like();
 		like.setIdeaId(likeDto.getIdeaId());
 		like.setUserId(user.getId());
 		likeRepository.save(like);
 		return like;
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@PostMapping(value = "disLike", consumes = "application/json")
+	public Object disLike(@RequestBody LikeDto likeDto) {
+		User user = AppUserDetailsService.getUser();
+		Like like = likeRepository.findLike(user.getId(), likeDto.getIdeaId()).get(0);
+		Long likeId = like.getId();
+		likeRepository.delete(like);
+		return likeId;
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
