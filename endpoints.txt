@@ -188,6 +188,10 @@ Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/like
 Body type=raw:
 {"ideaId": 27}
+output example 1:
+{"id": 2368, "userId": 2, "ideaId": 27}
+output example 2 if this user already liked this Idea:
+null
 
 21. Get Likes Number for Idea:
 HTTP Method: GET
@@ -214,6 +218,17 @@ Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/getIdeasSortedByLikes
 output example: [27,28,39]
+
+24. DisLike:
+HTTP Method: POST
+Headers:
+Content-Type=application/json
+Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
+url: http://localhost:8080/api/v1/disLike
+Body type=raw:
+{"ideaId": 27}
+output example (id of deleted like):
+2368
 
 How to get Base64 Authentication header:
 1. Go to: https://www.base64encode.org/

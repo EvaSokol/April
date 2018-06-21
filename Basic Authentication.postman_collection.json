@@ -546,6 +546,36 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "DisLike Idea",
+			"request": {
+				"url": "localhost:8080/api/v1/disLike",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic a2ltQG1haWwudGVzdDp0ZXN0",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ideaId\": 27\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
