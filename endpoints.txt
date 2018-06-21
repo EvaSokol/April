@@ -164,13 +164,13 @@ Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/getTagsByIdeaId/{ideaId}
 example: http://localhost:8080/api/v1/getTagsByIdeaId/29
 
-18. Get ideas page:
+18. Get ideas page by Date:
 HTTP Method: GET
 Headers:
 Content-Type=application/json
 Authentication="Basic YWRtaW46YWRtaW4="
-url: http://localhost:8080/api/v1/getIdeasPage/{pageNumber}
-example: http://localhost:8080/api/v1/getIdeasPage/0
+url: http://localhost:8080/api/v1/getIdeasPageByDate/{pageNumber}
+example: http://localhost:8080/api/v1/getIdeasPageByDate/0
 
 19. Get number of ideas:
 HTTP Method: GET
@@ -217,7 +217,8 @@ Headers:
 Content-Type=application/json
 Authentication="Basic bXlAdGVzdC5tYWlsOnBhc3N3b3Jk"
 url: http://localhost:8080/api/v1/getIdeasSortedByLikes
-output example: [27,28,39]
+output example:
+[{"rate": 18, "ideaId": 27}, {"rate": 1, "ideaId": 22}, {"rate": 1, "ideaId": 28}, {"rate": 1, "ideaId": 39}, {"rate": 1, "ideaId": 24}]
 
 24. DisLike:
 HTTP Method: POST
@@ -229,6 +230,17 @@ Body type=raw:
 {"ideaId": 27}
 output example (id of deleted like):
 2368
+
+25. Is Idea Liked by current User:
+HTTP Method: POST
+Headers:
+Content-Type=application/json
+Authentication="Basic a2ltQG1haWwudGVzdDp0ZXN0"
+url: http://localhost:8080/api/v1/isLiked
+Body type=raw:
+{"ideaId": 27}
+output example:
+false
 
 How to get Base64 Authentication header:
 1. Go to: https://www.base64encode.org/

@@ -59,6 +59,13 @@ public class ApiController {
 	}
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@PostMapping(value = "isLiked", consumes = "application/json")
+	public Boolean isLiked(@RequestBody LikeDto likeDto) {
+		User user = AppUserDetailsService.getUser();
+		return likeRepository.findLike(user.getId(), likeDto.getIdeaId()).size() != 0;
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "like/{id}", consumes = "application/json")
 	public Object getLikesOfIdea(@PathVariable(value = "id") Long ideaId) {
 		return likeRepository.getLikesOfIdea(ideaId);

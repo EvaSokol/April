@@ -19,8 +19,9 @@ import org.testng.annotations.Test;
 import java.math.BigDecimal;
 import java.util.*;
 import static com.april.testproject.utils.ApiUtils.encryptPassword;
-import static junit.framework.TestCase.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 @SpringBootTest
 public class TestprojectApplicationTests extends AbstractTestNGSpringContextTests {
@@ -439,17 +440,34 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 	@Test(dependsOnMethods = "createUser", enabled = true)
 	public void likeIdea() throws JSONException {
 		String ideaId = "27";
-		String uri = baseUrl + "like/" + ideaId;
-		int likesBefore = Integer.parseInt(RestTests.getToValue(uri, adminLogin, adminPassword));
-
-		uri = baseUrl + "like";
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("ideaId", ideaId);
-		JsonPath response = RestTests.postToJson(uri, requestParams, email, password);
+
+		String uri = baseUrl + "like/" + ideaId;
+		int likeNumberBefore = Integer.parseInt(RestTests.getToValue(uri, email, password));
+
+		uri = baseUrl + "isLiked";
+		assertEquals("false", RestTests.postToValue(uri, requestParams, email, password));
+
+		uri = baseUrl + "like";
+		RestTests.postToJson(uri, requestParams, email, password);
 
 		uri = baseUrl + "like/" + ideaId;
-		int likesAfter = Integer.parseInt(RestTests.getToValue(uri, adminLogin, adminPassword));
-		assertEquals(likesBefore + 1, likesAfter);
+		int likeNumberAfter = Integer.parseInt(RestTests.getToValue(uri, adminLogin, adminPassword));
+		assertEquals(likeNumberBefore + 1, likeNumberAfter);
+
+		uri = baseUrl + "isLiked";
+		assertEquals("true", RestTests.postToValue(uri, requestParams, email, password));
+
+		uri = baseUrl + "disLike";
+		RestTests.postToJson(uri, requestParams, email, password);
+
+		uri = baseUrl + "isLiked";
+		assertEquals("false", RestTests.postToValue(uri, requestParams, email, password));
+
+		uri = baseUrl + "like/" + ideaId;
+		int likeNumberAgain = Integer.parseInt(RestTests.getToValue(uri, adminLogin, adminPassword));
+		assertEquals(likeNumberBefore, likeNumberAgain);
 	}
 
 	@Test(dependsOnMethods = "createUser", enabled = true)
