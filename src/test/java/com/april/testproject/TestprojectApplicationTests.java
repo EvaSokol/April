@@ -70,7 +70,7 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		user.setCountry("Some Country" + random);
 		user.setCity("Some City" + random);
 		user.setRegDate(new Date());
-		userId = userRepository.save(user).getId();
+//		userId = userRepository.save(user).getId();
 		user.print();
 		assertEquals("Amy", userRepository.findAll().get(0).getFirstName());
 	}
@@ -387,6 +387,14 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 
 		String newMail =response.get("email");
 		assertEquals(email, newMail);
+	}
+
+	@Test(dependsOnMethods = "createIdeaAsUser", enabled = true)
+	public void getUserByIdeaId() {
+		String uri = baseUrl + "getUserByIdeaId/" + ideaId;
+		JsonPath response = RestTests.getToJson(uri, adminLogin, adminPassword);
+
+		assertEquals(userId.toString(), response.get("id").toString());
 	}
 
 	@Test
