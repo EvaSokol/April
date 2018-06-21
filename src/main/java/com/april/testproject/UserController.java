@@ -3,6 +3,7 @@ package com.april.testproject;
 import com.april.testproject.dto.UserDto;
 import com.april.testproject.entity.User;
 import com.april.testproject.entity.UserRoleEnum;
+import com.april.testproject.repository.IdeaRepository;
 import com.april.testproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +28,11 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Autowired
+    private IdeaRepository ideaRepository;
+
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "registration", consumes = "application/json")
 	public Object createUser(@Valid @RequestBody UserDto userDto) {
 		User user = new User();
@@ -97,5 +103,12 @@ public class UserController {
 	@GetMapping(value = "users", consumes = "application/json")
 	public Object getUsers() {
 		return userRepository.findAll();
+	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getUserByIdeaId/{ideaId}", consumes = "application/json")
+	public User getUserByIdeaId(@PathVariable("ideaId") Long ideaId) {
+	    Long userId = Long.parseLong(ideaRepository.findOne(ideaId).getUserId());
+		return userRepository.findOne(userId);
 	}
 }
