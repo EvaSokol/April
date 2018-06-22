@@ -27,7 +27,6 @@ Body type=raw:
  "mainPicture":"mainPicture555",
  "shortDescription":"ShortDescription555",
  "fullDescription":"fullDescription555",
- "userId":"555",
  "price":"20000"
  "pictureList":"pictureList555",
  "creationDate":"2018-06-18 14:01:20.467"} ,

@@ -1,5 +1,6 @@
 package com.april.testproject;
 
+import com.april.testproject.config.AppUserDetailsService;
 import com.april.testproject.dto.IdeaDto;
 import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.Tag;
@@ -44,7 +45,7 @@ public class IdeaController {
 	public Object createIdea(@RequestBody IdeaDto ideaDto) {
 		Idea idea = new Idea();
 		idea.setStatus(ideaDto.getStatus());
-		idea.setUserId(ideaDto.getUserId());
+		idea.setUserId(AppUserDetailsService.getUser().getId().toString());
 		idea.setHeader(ideaDto.getHeader());
 		idea.setMainPicture(ideaDto.getMainPicture());
 		idea.setShortDescription(ideaDto.getShortDescription());
