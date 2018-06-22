@@ -251,7 +251,6 @@ public class TestprojectApplicationTests extends AbstractTestNGSpringContextTest
 		String status = "new";
 		JSONObject requestParams = new JSONObject();
 		requestParams.put("status", status);
-		requestParams.put("userId", userId.toString());
 		requestParams.put("header", header + random);
 		requestParams.put("mainPicture", "mainPicture" + random);
 		requestParams.put("shortDescription", shortDescription);

@@ -31,6 +31,7 @@ public class UserController {
 	public Object createUser(@Valid @RequestBody UserDto userDto) {
 		User user = new User();
 		user.setFirstName(userDto.getFirstName());
+		if (userRepository.findByEmailContaining(userDto.getEmail()).size() != 0) return "User already exists";
 		user.setEmail(userDto.getEmail());
 		user.setRole(UserRoleEnum.ROLE_USER.toString());
 		user.setCountry(userDto.getCountry());
