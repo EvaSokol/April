@@ -6,17 +6,16 @@ import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.User;
 import com.april.testproject.repository.IdeasRepository;
 import com.april.testproject.repository.UserRepository;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import javax.validation.Valid;
+import java.util.List;
 
 @Component
 @RestController
 @RequestMapping("/api/1")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ApiController {
     @Autowired
     private UserRepository userRepository;
@@ -24,13 +23,13 @@ public class ApiController {
     @Autowired
     private IdeasRepository ideasRepository;
 
-    @GetMapping("test")
-    public Object test(){
-        return new HashMap<>();
-    }
+//    @GetMapping("test")
+//    public Object test(){
+//        return new HashMap<>();
+//    }
 
     @PostMapping(value = "createUser", consumes = "application/json")
-    public Object createUser(@RequestBody UserDto userDto){
+    public Object createUser(@Valid @RequestBody UserDto userDto){
 
         User user = new User();
         user.setName(userDto.getName());
@@ -50,10 +49,9 @@ public class ApiController {
         return idea;
     }
 
-//TODO: Does not work for now - to repare
-    @GetMapping(value = "getUser/{id}")
+    @GetMapping(value = "getUser/{id}", consumes = "application/json")
     public Object getUserById(@PathVariable(value = "id") Long userId){
-        User user = userRepository.getOne(userId);
+        User user = userRepository.findOne(userId);
         return user;
     }
 
@@ -62,4 +60,30 @@ public class ApiController {
         return userRepository.findAll();
     }
 
+    @GetMapping(value = "getIdea/{id}", consumes = "application/json")
+    public Object getIdeaById(@PathVariable(value = "id") Long ideaId){
+        Idea idea = ideasRepository.findOne(ideaId);
+        return idea;
+    }
+
+    @GetMapping(value = "getIdeas", consumes = "application/json")
+    public Object getIdeas(){
+        return ideasRepository.findAll();
+    }
+
+    @GetMapping(value = "getIdeasByUserId/{userId}", consumes = "application/json")
+    public List<Idea> getIdeasByUserId(@PathVariable("userId") String userId){
+        return ideasRepository.findByUserId(userId);
+    }
+
+    @PutMapping(value = "updateUser", consumes = "application/json")
+    public Object updateUser(@Valid @RequestBody UserDto userDto){
+        Long id = Long.valueOf(userDto.getId());
+        User user = userRepository.findOne(id);
+        if (userDto.getCountry() != null) user.setCountry(userDto.getCountry());
+        if (userDto.getName() != null) user.setName(userDto.getName());
+        if (userDto.getRole() != null) user.setRole(userDto.getRole());
+        userRepository.save(user);
+        return user;
+    }
 }

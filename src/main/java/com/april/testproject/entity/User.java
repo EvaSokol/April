@@ -1,34 +1,44 @@
 package com.april.testproject.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 //@Data
+//@Getter
+//@Setter
 //@NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @NotEmpty
     private String name;
 
     private String country;
 
     private String role;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    public Set<Idea> ideaSet;
 
-//    public User(String name) {
-//        this.name = name;
-//    }
+    public Set<Idea> getIdeaSet() {
+        return ideaSet;
+    }
 
+    public void setIdeaSet(Set<Idea> ideaSet) {
+        this.ideaSet = ideaSet;
+    }
 
     public Long getId() {
         return id;
@@ -60,5 +70,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void print(){
+        System.out.println("id:" + id);
+        System.out.println("name:" + name);
+        System.out.println("country:" + country);
+        System.out.println("role:" + role);
+        System.out.println("---------------------------");
     }
 }

@@ -1,11 +1,12 @@
 package com.april.testproject.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
+@Data
+//@NamedQuery(name = "IdeasRepository.findByUserId", query = "SELECT i FROM ideas i WHERE i.user_id = ?1")
 @Table(name = "ideas")
 public class Idea {
 
@@ -17,6 +18,7 @@ public class Idea {
 
     private String status;
 
+    @Column(name = "user_id")
     private String userId;
 
     public Long getId() {
@@ -49,5 +51,13 @@ public class Idea {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void print(){
+        System.out.println("id:" + id);
+        System.out.println("short_description:" + short_description);
+        System.out.println("status:" + status);
+        System.out.println("userId:" + userId);
+        System.out.println("---------------------------");
     }
 }
