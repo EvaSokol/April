@@ -231,6 +231,9 @@
             <column name="price" type="numeric(19,2)">
                 <constraints nullable="false"/>
             </column>
+            <column name="rate" type="integer">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet author="AlexRazumenko" id="20180619-1">

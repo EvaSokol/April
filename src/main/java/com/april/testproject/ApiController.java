@@ -39,12 +39,17 @@ public class ApiController {
 	@PostMapping(value = "like", consumes = "application/json")
 	public Object like(@RequestBody LikeDto likeDto) {
 		User user = AppUserDetailsService.getUser();
-		List<Like> likes = likeRepository.findLike(user.getId(), likeDto.getIdeaId());
+		Long ideaId = likeDto.getIdeaId();
+		Idea idea = ideaRepository.findOne(ideaId);
+		List<Like> likes = likeRepository.findLike(user.getId(), ideaId);
 		if (likes.size() != 0) return null;
 		Like like = new Like();
-		like.setIdeaId(likeDto.getIdeaId());
+		like.setIdeaId(ideaId);
 		like.setUserId(user.getId());
 		likeRepository.save(like);
+		int rate = likeRepository.getLikesOfIdea(ideaId);
+		idea.setRate(rate);
+		ideaRepository.save(idea);
 		return like;
 	}
 
@@ -52,9 +57,14 @@ public class ApiController {
 	@PostMapping(value = "disLike", consumes = "application/json")
 	public Object disLike(@RequestBody LikeDto likeDto) {
 		User user = AppUserDetailsService.getUser();
-		Like like = likeRepository.findLike(user.getId(), likeDto.getIdeaId()).get(0);
+		Long ideaId = likeDto.getIdeaId();
+		Idea idea = ideaRepository.findOne(ideaId);
+		Like like = likeRepository.findLike(user.getId(), ideaId).get(0);
 		Long likeId = like.getId();
 		likeRepository.delete(like);
+		int rate = likeRepository.getLikesOfIdea(ideaId);
+		idea.setRate(rate);
+		ideaRepository.save(idea);
 		return likeId;
 	}
 
