@@ -23,5 +23,6 @@ public class IdeaDto {
 	private String pictureList;
 	private Date creationDate;
 	private BigDecimal price;
+	private Integer rate;
 
 }

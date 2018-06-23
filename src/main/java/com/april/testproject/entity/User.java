@@ -28,7 +28,7 @@ public class User implements Serializable {
 	private String password;
 
 	private String role;
-	private String tags;
+//	private String tags;
 
 	@NotEmpty
 	private String firstName;

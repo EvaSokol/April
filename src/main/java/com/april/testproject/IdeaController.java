@@ -53,6 +53,7 @@ public class IdeaController {
 		idea.setPictureList(ideaDto.getPictureList());
 		idea.setCreationDate(new Date());
 		idea.setPrice(ideaDto.getPrice());
+		idea.setRate(0);
 		Set<Tag> tags = getTags(ideaDto.getTags());
 		idea.setTags(tags);
 		ideaRepository.save(idea);
@@ -76,6 +77,8 @@ public class IdeaController {
 			Set<Tag> tags = getTags(ideaDto.getTags());
 			idea.setTags(tags);
 		}
+		int rate = likeRepository.getLikesOfIdea(id);
+		idea.setRate(rate);
 		ideaRepository.save(idea);
 		return idea;
 	}
@@ -161,18 +164,18 @@ public class IdeaController {
 		return tags;
 	}
 
-	List<Long> getIdeasSortedByLikesMethod(){
-		List<Long> likes = likeRepository.getLikedIdeas();
-		Map<Long, Integer> sortedIdeasMap = new TreeMap<>();
-		for (Long ideaId : likes){
-			sortedIdeasMap.putIfAbsent(ideaId, likeRepository.getLikesOfIdea(ideaId));
-		}
-		List<Long> sortedIdeasList = new ArrayList<>();
-		for (Map.Entry<Long,Integer> entry : sortedIdeasMap.entrySet()) {
-			sortedIdeasList.add(entry.getKey());
-		}
-		return sortedIdeasList;
-	}
+//	List<Long> getIdeasSortedByLikesMethod(){
+//		List<Long> likes = likeRepository.getLikedIdeas();
+//		Map<Long, Integer> sortedIdeasMap = new TreeMap<>();
+//		for (Long ideaId : likes){
+//			sortedIdeasMap.putIfAbsent(ideaId, likeRepository.getLikesOfIdea(ideaId));
+//		}
+//		List<Long> sortedIdeasList = new ArrayList<>();
+//		for (Map.Entry<Long,Integer> entry : sortedIdeasMap.entrySet()) {
+//			sortedIdeasList.add(entry.getKey());
+//		}
+//		return sortedIdeasList;
+//	}
 
 	// Doesn't work:
 //	Map<Long, Integer> newMap = new TreeMap<>();

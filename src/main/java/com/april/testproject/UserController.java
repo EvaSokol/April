@@ -30,13 +30,11 @@ public class UserController {
 	@PostMapping(value = "registration", consumes = "application/json")
 	public Object createUser(@Valid @RequestBody UserDto userDto) {
 		User user = new User();
-		user.setFirstName(userDto.getFirstName());
 		if (userRepository.findByEmailContaining(userDto.getEmail()).size() != 0) return "User already exists";
 		user.setEmail(userDto.getEmail());
-		user.setRole(UserRoleEnum.ROLE_USER.toString());
-		user.setCountry(userDto.getCountry());
 		user.setPassword(encryptPassword(userDto.getPassword()));
-		user.setTags(userDto.getTags());
+		user.setRole(UserRoleEnum.ROLE_USER.toString());
+		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
 		user.setAvatarPicture(userDto.getAvatarPicture());
 		user.setAboutUser(userDto.getAboutUser());
@@ -56,7 +54,6 @@ public class UserController {
 		if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
 		if (userDto.getPassword() != null) user.setPassword(userDto.getPassword());
 		if (userDto.getRole() != null) user.setRole(userDto.getRole());
-		if (userDto.getTags() != null) user.setTags(userDto.getTags());
 		if (userDto.getFirstName() != null) user.setFirstName(userDto.getFirstName());
 		if (userDto.getLastName() != null) user.setLastName(userDto.getLastName());
 		if (userDto.getAvatarPicture() != null) user.setAvatarPicture(userDto.getAvatarPicture());

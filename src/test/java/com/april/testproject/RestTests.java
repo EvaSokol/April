@@ -71,6 +71,7 @@ public class RestTests {
 				break;
 		}
 		System.out.println("uri: " + uri);
+		if (jsonObject != null) System.out.println("body: " + jsonObject.toString());
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getBody().asString());
 		if (id != 0) System.out.println(id);
@@ -113,6 +114,7 @@ public class RestTests {
 		catch(IllegalArgumentException e2){
 		}
 		System.out.println("uri: " + uri);
+		if (jsonObject != null) System.out.println("body: " + jsonObject.toString());
 		System.out.println(response.getStatusCode());
 		System.out.println(response.getBody().asString());
 

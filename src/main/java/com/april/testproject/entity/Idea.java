@@ -46,6 +46,7 @@ public class Idea implements Comparator<Idea> {
 	@Type(type="timestamp")
 	private Date creationDate;
 	private BigDecimal price;
+	private Integer rate;
 
 	public List<String> getTags(){
 		List<String> list = new ArrayList<>();
@@ -61,6 +62,7 @@ public class Idea implements Comparator<Idea> {
 		System.out.println("userId:" + userId);
 		System.out.println("tags:" + getTags());
 		System.out.println("header:" + header);
+		System.out.println("rate: " + rate);
 		System.out.println("---------------------------");
 	}
 
