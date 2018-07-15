@@ -134,16 +134,18 @@
 		{
 			"name": "Get user by Id",
 			"request": {
-				"url": "localhost:8080/api/v1/user/3",
+				"url": "localhost:8080/api/v1/user/2460",
 				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json"
+						"value": "application/json",
+						"description": ""
 					},
 					{
 						"key": "Authorization",
-						"value": "Basic YWRtaW46YWRtaW4="
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
 					}
 				],
 				"body": {
@@ -157,18 +159,16 @@
 		{
 			"name": "Get tag by Id",
 			"request": {
-				"url": "localhost:8080/api/v1/tag/7",
+				"url": "localhost:8080/api/v1/tagById/7",
 				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					},
 					{
 						"key": "Authorization",
-						"value": "Basic YWRtaW46YWRtaW4=",
-						"description": ""
+						"value": "Basic YWRtaW46YWRtaW4="
 					}
 				],
 				"body": {
@@ -279,18 +279,15 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					},
 					{
 						"key": "Authorization",
-						"value": "Basic bmV3dGVzdG1haWw3ODZAbWFpbC50ZXN0OnBhc3N3b3JkMTIz",
-						"description": ""
+						"value": "Basic a2ltQG1haWwudGVzdDp0ZXN0"
 					},
 					{
 						"key": "Accept",
 						"value": "application/json",
-						"description": "",
 						"disabled": true
 					}
 				],
@@ -366,16 +363,18 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json"
+						"value": "application/json",
+						"description": ""
 					},
 					{
 						"key": "Authorization",
-						"value": "Basic YW15QG1haWwudGVzdDoxMjM0"
+						"value": "Basic YW15QG1haWwudGVzdDoxMjM0",
+						"description": ""
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"rate\":693,\"price\":693,\"header\":\"Some test header693\",\"mainPicture\":\"mainPicture693\",\"shortDescription\":\"ShortDescription693\",\"fullDescription\":\"fullDescription693\",\"userId\":\"2182\",\"pictureList\":\"pictureList693\",\"status\":\"new\",\"tags\":\"charity,it\"}"
+					"raw": "{price\":693,\"header\":\"Some test header693\",\"mainPicture\":\"mainPicture693\",\"shortDescription\":\"ShortDescription693\",\"fullDescription\":\"fullDescription693\",\"userId\":\"2182\",\"pictureList\":\"pictureList693\",\"status\":\"new\",\"tags\":\"charity,it\"}"
 				},
 				"description": null
 			},
@@ -618,7 +617,7 @@
 		{
 			"name": "Get Idea by Id",
 			"request": {
-				"url": "http://localhost:8080/api/v1/idea/2469",
+				"url": "http://localhost:8080/api/v1/idea/21",
 				"method": "GET",
 				"header": [
 					{
@@ -628,7 +627,38 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Basic bmV3dGVzdG1haWw3ODZAbWFpbC50ZXN0OnBhc3N3b3JkMTIz",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":2057,\"status\":\"new\",\"tags\":\"it,charity\",\"userId\":\"2056\",\"header\":\"Some test header667\",\"mainPicture\":\"mainPicture667\",\"shortDescription\":\"ShortDescription667\",\"fullDescription\":\"fullDescription667\",\"pictureList\":\"pictureList667\",\"creationDate\":1529381076008,\"rate\":0,\"price\":667,\"whoLiked\":\"\"}"
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get Idea with UserName By Idea Id",
+			"request": {
+				"url": "http://localhost:8080/api/v1/getIdeaUserNameById/23",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
 						"description": ""
 					},
 					{
