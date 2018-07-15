@@ -60,7 +60,7 @@
         <sql dbms="postgresql" splitStatements="true" stripComments="true">
             insert into public.users
             (id, email, password, role, tags, first_name, last_name, avatar_picture, about_user, about_company, country, city ,reg_date) values
-            ('2', 'kim@mail.test', '$2a$10$FwFJEreSyUeo0Ri5PZ.MF.ZzXoxOO84xdXSdRVeB4f5UlBYrbrYRq', 'ROLE_USER', 'Kim', 'tag1,tag2,tag3', 'Jon In', 'avatar', 'About User', 'About Company', 'Italy', 'Rome', '2018-06-15 22:22:58.777')
+            ('2', 'kim@mail.test', '$2a$10$FwFJEreSyUeo0Ri5PZ.MF.ZzXoxOO84xdXSdRVeB4f5UlBYrbrYRq', 'ROLE_USER', 'tag1,tag2,tag3', 'Kim', 'Jon-In', 'avatar', 'About User', 'About Company', 'Italy', 'Rome', '2018-06-15 22:22:58.777')
         </sql>
     </changeSet>
     <changeSet author="EvaSokolyanskaya" id="20180529-3">

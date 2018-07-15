@@ -2,6 +2,7 @@ package com.april.testproject;
 
 import com.april.testproject.config.AppUserDetailsService;
 import com.april.testproject.dto.IdeaDto;
+import com.april.testproject.dto.IdeaUserNameDto;
 import com.april.testproject.entity.Idea;
 import com.april.testproject.entity.Tag;
 import com.april.testproject.entity.User;
@@ -95,6 +96,30 @@ public class IdeaController {
 	public Object getIdeaById(@PathVariable(value = "id") Long ideaId) {
 		return ideaRepository.findOne(ideaId);
 	}
+
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
+	@GetMapping(value = "getIdeaUserNameById/{id}", consumes = "application/json")
+	public Object getIdeaUserNameById(@PathVariable(value = "id") Long ideaId) {
+		IdeaUserNameDto dto = new IdeaUserNameDto();
+		Idea idea = ideaRepository.findOne(ideaId);
+		Long userId = Long.valueOf(idea.getUserId());
+		dto.setId(ideaId);
+		dto.setStatus(idea.getStatus());
+		dto.setTags(idea.getTags().toString());
+		dto.setUserId(userId);
+		dto.setHeader(idea.getHeader());
+		dto.setMainPicture(idea.getMainPicture());
+		dto.setShortDescription(idea.getShortDescription());
+		dto.setFullDescription(idea.getFullDescription());
+		dto.setPictureList(idea.getPictureList());
+		dto.setCreationDate(idea.getCreationDate());
+		dto.setPrice(idea.getPrice());
+		dto.setRate(idea.getRate());
+		dto.setFirstName(userRepository.getOne(userId).getFirstName());
+		dto.setLastName(userRepository.getOne(userId).getLastName());
+		return dto;
+	}
+
 
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	@GetMapping(value = "getIdeasPageByDate/{pageNumber}", consumes = "application/json")
